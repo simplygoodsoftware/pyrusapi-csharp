@@ -9,7 +9,7 @@
     <iconUrl>https://pyrus.com/ru/help/_media/api/pyrus_logo_p_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Pyrus.ApiClient is a .NET implementation of Pyrus API. It supports all the API endpoints.</description>
-	<projectUrl>https://pyrus.com/en/help/api/library_csharp</projectUrl>
+	<projectUrl>https://github.com/simplygoodsoftware/pyrusapi-csharp</projectUrl>
     <copyright>Copyright ©2017 Simply Good Software, Inc.</copyright>
     <tags>pyrus pyrus.api api pyrus.com</tags>
 	<dependencies>
