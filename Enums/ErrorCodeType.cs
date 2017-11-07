@@ -1,0 +1,158 @@
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace PyrusApiClient
+{
+	[JsonConverter(typeof(StringEnumConverter))]
+	public enum ErrorCodeType
+	{
+		[EnumMember(Value = "server_error")]
+		ServerError = 0,
+
+		//Unauthorized (401)
+		[EnumMember(Value = "authorization_error")]
+		AuthorizationError = 100,
+
+		[EnumMember(Value = "token_not_specified")]
+		TokenNotSpecified = 101,
+
+		[EnumMember(Value = "revoked_token")]
+		RevokedToken = 102,
+
+		[EnumMember(Value = "expired_token")]
+		ExpiredToken = 103,
+
+		[EnumMember(Value = "invalid_token")]
+		InvalidToken = 104,
+
+		[EnumMember(Value = "account_blocked")]
+		AccountBlocked = 105,
+
+		[EnumMember(Value = "invalid_credentials")]
+		InvalidCredentials = 106,
+
+		//BadRequest (400)
+
+		[EnumMember(Value = "invalid_field_id")]
+		InvalidFieldId = 201,
+
+		[EnumMember(Value = "invalid_field_name")]
+		InvalidFieldName = 202,
+
+		[EnumMember(Value = "invalid_field_id_name")]
+		InvalidFieldIdName = 203,
+
+		[EnumMember(Value = "non_unique_name")]
+		NonUniqueName = 204,
+
+		[EnumMember(Value = "field_identity_missing")]
+		FieldIdentityMissing = 205,
+
+		[EnumMember(Value = "duplicate_field")]
+		DuplicateField = 206,
+
+		[EnumMember(Value = "invalid_catalog_id")]
+		InvalidCatalogId = 207,
+
+		[EnumMember(Value = "invalid_catalog_item_name")]
+		InvalidCatalogItemName = 208,
+
+		[EnumMember(Value = "non_unique_catalog_item_name")]
+		NonUniqueCatalogItemName = 209,
+
+		[EnumMember(Value = "invalid_catalog_item_id")]
+		InvalidCatalogItemId = 210,
+
+		[EnumMember(Value = "catalog_item_id_name_mismatch")]
+		InvalidCatalogItemIdName = 211,
+
+		[EnumMember(Value = "invalid_email")]
+		InvalidEmail = 212,
+
+		[EnumMember(Value = "non_unique_email")]
+		NonUniqueEmail = 213,
+
+		[EnumMember(Value = "invalid_person_id_email")]
+		InvalidPersonIdEmail = 214,
+
+		[EnumMember(Value = "unrecognized_attachment_id")]
+		UnrecognizedAttachmentId = 215,
+
+		[EnumMember(Value = "required_field_missing")]
+		RequiredFieldMissing = 216,
+
+		[EnumMember(Value = "type_is_not_supported")]
+		FieldTypeIsNotSupported = 217,
+
+		[EnumMember(Value = "incorrect_parameters_count")]
+		IncorrectParametersCount = 218,
+
+		[EnumMember(Value = "filter_type_is_not_supported")]
+		FilterTypeIsNotSupported = 219,
+
+		[EnumMember(Value = "step_field_does_not_exists")]
+		StepFieldDoesNotExists = 220,
+
+		[EnumMember(Value = "no_file_in_request")]
+		NoFileInRequest = 221,
+
+		[EnumMember(Value = "too_large_request_length")]
+		TooLargeRequestLength = 222,
+
+		[EnumMember(Value = "task_has_no_form")]
+		TaskHasNoForm = 223,
+
+		[EnumMember(Value = "required_parameter_missing")]
+		RequiredParameterMissing = 224,
+
+		[EnumMember(Value = "invalid_value_format")]
+		InvalidValueFormat = 225,
+
+		[EnumMember(Value = "invalid_json")]
+		InvalidJson = 226,
+
+		[EnumMember(Value = "empty_body")]
+		EmptyBody = 228,
+
+		[EnumMember(Value = "text_missing")]
+		TextMissing = 229,
+
+		[EnumMember(Value = "form_id_missing")]
+		FormIdMissing = 230,
+
+		[EnumMember(Value = "invalid_person_id")]
+		InvalidPersonId = 231,
+
+		[EnumMember(Value = "deleted_field")]
+		DeletedField = 232,
+
+		[EnumMember(Value = "person_identity_missing")]
+		PersonIdentityMissing = 233,
+
+		[EnumMember(Value = "catalog_identity_missing")]
+		CatalogItemIdMissing = 234,
+
+		[EnumMember(Value = "form_has_no_task")]
+		FormHasNoTask = 235,
+		//Forbidden (403)
+		[EnumMember(Value = "access_denied_project")]
+		AccessDeniedProject = 301,
+
+		[EnumMember(Value = "access_denied_task")]
+		AccessDeniedTask = 302,
+
+		[EnumMember(Value = "access_denied_catalog")]
+		AccessDeniedCatalog = 303,
+
+		[EnumMember(Value = "access_denied_form")]
+		AccessDeniedForm = 304,
+
+		[EnumMember(Value = "access_denied_person")]
+		AccessDeniedPerson,
+
+		//Too many Requests (429)
+		[EnumMember(Value = "too_many_requests")]
+		TooManyRequests = 400
+	}
+}

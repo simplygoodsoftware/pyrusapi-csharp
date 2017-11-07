@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2F417273-AD68-48B2-8592-B51F0AFF5C5E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pyrus.ApiClient</RootNamespace>
+    <AssemblyName>Pyrus.ApiClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\FormLink.cs" />
+    <Compile Include="Entities\FormFields\FormFieldFormLink.cs" />
+    <Compile Include="Enums\ActivityAction.cs" />
+    <Compile Include="Enums\ApprovalChoice.cs" />
+    <Compile Include="Enums\Checkmark.cs" />
+    <Compile Include="Enums\Flag.cs" />
+    <Compile Include="Enums\FormFieldType.cs" />
+    <Compile Include="Enums\Status.cs" />
+    <Compile Include="PyrusClient.cs" />
+    <Compile Include="Entities\CatalogItem.cs" />
+    <Compile Include="Entities\FormFields\FormFieldCreateDate.cs" />
+    <Compile Include="Entities\FormFields\FormFieldDueDate.cs" />
+    <Compile Include="Entities\FormFields\FormField.cs" />
+    <Compile Include="Entities\FormFieldInfo.cs" />
+    <Compile Include="Entities\FormFields\FormFieldAuthor.cs" />
+    <Compile Include="Entities\FormFields\FormFieldCatalog.cs" />
+    <Compile Include="Entities\FormFields\FormFieldCheckmark.cs" />
+    <Compile Include="Entities\FormFields\FormFieldDate.cs" />
+    <Compile Include="Entities\FormFields\FormFieldEmail.cs" />
+    <Compile Include="Entities\FormFields\FormFieldFile.cs" />
+    <Compile Include="Entities\FormFields\FormFieldFlag.cs" />
+    <Compile Include="Entities\FormFields\FormFieldMoney.cs" />
+    <Compile Include="Entities\FormFields\FormFieldMultipleChoice.cs" />
+    <Compile Include="Entities\FormFields\FormFieldNote.cs" />
+    <Compile Include="Entities\FormFields\FormFieldNumber.cs" />
+    <Compile Include="Entities\FormFields\FormFieldPerson.cs" />
+    <Compile Include="Entities\FormFields\FormFieldPhone.cs" />
+    <Compile Include="Entities\FormFields\FormFieldProject.cs" />
+    <Compile Include="Entities\FormFields\FormFieldStatus.cs" />
+    <Compile Include="Entities\FormFields\FormFieldStep.cs" />
+    <Compile Include="Entities\FormFields\FormFieldTable.cs" />
+    <Compile Include="Entities\FormFields\FormFieldText.cs" />
+    <Compile Include="Entities\FormFields\FormFieldTime.cs" />
+    <Compile Include="Entities\FormFields\FormFieldTitle.cs" />
+    <Compile Include="Entities\Organization.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\Task.cs" />
+    <Compile Include="Entities\TaskComment.cs" />
+    <Compile Include="Enums\ErrorCodeType.cs" />
+    <Compile Include="Exceptions\PyrusApiClientException.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Exceptions\InvalidParametersCountException.cs" />
+    <Compile Include="JsonConverters\DateTimeJsonConverter.cs" />
+    <Compile Include="JsonConverters\FormFieldJsonConverter.cs" />
+    <Compile Include="JsonConverters\FormRegisterRequestJsonConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestHelper.cs" />
+    <Compile Include="Requests\FormRegisterRequest.cs" />
+    <Compile Include="Requests\TaskCommentRequest.cs" />
+    <Compile Include="Requests\TaskRequest.cs" />
+    <Compile Include="Responses\AuthResponse.cs" />
+    <Compile Include="Responses\CatalogResponse.cs" />
+    <Compile Include="Responses\ContactsResponse.cs" />
+    <Compile Include="Responses\FormRegisterResponse.cs" />
+    <Compile Include="Responses\FormResponse.cs" />
+    <Compile Include="Responses\FormsResponse.cs" />
+    <Compile Include="Responses\ResponseBase.cs" />
+    <Compile Include="Responses\TaskResponse.cs" />
+    <Compile Include="Responses\UploadResponse.cs" />
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\Approval.cs" />
+    <None Include="packages.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
