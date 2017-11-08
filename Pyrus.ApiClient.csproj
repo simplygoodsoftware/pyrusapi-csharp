@@ -113,6 +113,7 @@
     <Compile Include="Entities\Approval.cs" />
     <None Include="packages.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup />
