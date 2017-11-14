@@ -1,5 +1,7 @@
 # Pyrus.ApiClient
 
+[![NuGet version](https://badge.fury.io/nu/Pyrus.ApiClient.svg)](https://badge.fury.io/nu/Pyrus.ApiClient)
+
 The Pyrus API provides a .NET implementation of core API methods. To get started, you must do the following:
 
 ## Getting Started
