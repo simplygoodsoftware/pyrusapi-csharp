@@ -77,6 +77,9 @@ namespace PyrusApiClient
 		Project = 22,
 
 		[EnumMember(Value = "form_link")]
-		FormLink = 23
+		FormLink = 23,
+
+		[EnumMember(Value = "due_date_time")]
+		DueDateTime = 24
 	}
 }

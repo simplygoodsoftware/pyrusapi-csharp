@@ -135,6 +135,19 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "form_has_no_task")]
 		FormHasNoTask = 235,
+
+		[EnumMember(Value = "either_due_date_or_due_can_be_set")]
+		EitherDueDateOrDueCanBeSet = 236,
+
+		[EnumMember(Value = "negative_duration")]
+		NegativeDuration = 237,
+
+		[EnumMember(Value = "duration_is_too_long")]
+		DurationIsTooLong = 238,
+
+		[EnumMember(Value = "due_missing")]
+		DueMissing = 239,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
@@ -149,7 +162,10 @@ namespace PyrusApiClient
 		AccessDeniedForm = 304,
 
 		[EnumMember(Value = "access_denied_person")]
-		AccessDeniedPerson,
+		AccessDeniedPerson = 305,
+
+		[EnumMember(Value = "access_denied_close_task")]
+		AccessDeniedCloseTask = 306,
 
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]

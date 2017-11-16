@@ -25,6 +25,13 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
 		public DateTime? DueDate { get; set; }
 
+		[JsonProperty("due")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
+		public DateTime? Due { get; set; }
+
+		[JsonProperty("duration")]
+		public int? Duration { get; set; }
+
 		[JsonProperty("close_date")]
 		public DateTime? CloseDate { get; set; }
 

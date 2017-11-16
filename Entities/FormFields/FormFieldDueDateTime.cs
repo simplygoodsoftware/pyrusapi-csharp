@@ -4,20 +4,20 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-	public class FormFieldDueDate : FormField
+	public class FormFieldDueDateTime : FormField
 	{
-		public FormFieldDueDate()
+		public FormFieldDueDateTime()
 		{
 			
 		}
 
-		public FormFieldDueDate(int id, DateTime value)
+		public FormFieldDueDateTime(int id, DateTime? value)
 		{
-			Id = id;
 			Value = value;
+			Id = id;
 		}
 
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		[JsonProperty("value")]
 		public DateTime? Value { get; set; }
 	}

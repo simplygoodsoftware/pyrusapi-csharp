@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\FormFields\FormFieldDueDateTime.cs" />
     <Compile Include="Entities\FormLink.cs" />
     <Compile Include="Entities\FormFields\FormFieldFormLink.cs" />
     <Compile Include="Enums\ActivityAction.cs" />
@@ -55,7 +56,6 @@
     <Compile Include="Enums\Flag.cs" />
     <Compile Include="Enums\FormFieldType.cs" />
     <Compile Include="Enums\Status.cs" />
-    <Compile Include="PyrusClient.cs" />
     <Compile Include="Entities\CatalogItem.cs" />
     <Compile Include="Entities\FormFields\FormFieldCreateDate.cs" />
     <Compile Include="Entities\FormFields\FormFieldDueDate.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="JsonConverters\FormFieldJsonConverter.cs" />
     <Compile Include="JsonConverters\FormRegisterRequestJsonConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PyrusClient.cs" />
     <Compile Include="RequestHelper.cs" />
     <Compile Include="Requests\FormRegisterRequest.cs" />
     <Compile Include="Requests\TaskCommentRequest.cs" />
@@ -112,7 +113,6 @@
   <ItemGroup>
     <Compile Include="Entities\Approval.cs" />
     <None Include="packages.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

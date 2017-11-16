@@ -55,6 +55,9 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (formFieldType == FormFieldType.DueDate.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldDueDate>();
 
+			if (formFieldType == FormFieldType.DueDateTime.GetAttribute<EnumMemberAttribute>().Value)
+				return obj.ToObject<FormFieldDueDateTime>();
+
 			if (formFieldType == FormFieldType.Status.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldStatus>();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
@@ -42,7 +43,15 @@ namespace PyrusApiClient
 		public Person[] ParticipantsRemoved { get; set; }
 
 		[JsonProperty("due_date")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
 		public DateTime? DueDate { get; set; }
+
+		[JsonProperty("due")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
+		public DateTime? Due { get; set; }
+
+		[JsonProperty("duration")]
+		public int? Duration { get; set; }
 
 		[JsonProperty("attachments")]
 		public File[] Attachments { get; set; }
