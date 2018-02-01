@@ -17,6 +17,9 @@ namespace PyrusApiClient
 		Rejected,
 
 		[EnumMember(Value = "revoked")]
-		Revoked
+		Revoked,
+
+		[EnumMember(Value = "acknowledged")]
+		Acknowledged
 	}
 }
