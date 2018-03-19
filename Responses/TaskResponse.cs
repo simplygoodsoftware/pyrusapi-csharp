@@ -5,6 +5,6 @@ namespace PyrusApiClient
 	public class TaskResponse : ResponseBase
 	{
 		[JsonProperty("task")]
-		public Task Task { get; set; }
+		public TaskWithComments Task { get; set; }
 	}
 }

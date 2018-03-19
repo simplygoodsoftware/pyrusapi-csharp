@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
@@ -11,16 +12,16 @@ namespace PyrusApiClient
 		public int? ImmutableStep { get; set; }
 
 		[JsonProperty("options")]
-		public ChoiceOption[] Options { get; set; }
+		public List<ChoiceOption> Options { get; set; } = new List<ChoiceOption>();
 
 		[JsonProperty("catalog_id")]
 		public int? CatalogId { get; set; }
 
 		[JsonProperty("columns")]
-		public FormField[] Columns { get; set; }
+		public List<FormField> Columns { get; set; } = new List<FormField>();
 
 		[JsonProperty("fields")]
-		public FormField[] Fields { get; set; }
+		public List<FormField> Fields { get; set; } = new List<FormField>();
 
 		[JsonProperty("form_id")]
 		public int FormId { get; set; }
@@ -34,6 +35,6 @@ namespace PyrusApiClient
 		public string ChoiceValue { get; set; }
 
 		[JsonProperty("fields")]
-		public FormField[] Fields { get; set; }
+		public List<FormField> Fields { get; set; } = new List<FormField>();
 	}
 }

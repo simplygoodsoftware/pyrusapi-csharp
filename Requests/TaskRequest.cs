@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
-using PyrusApiClient;
+using PyrusApiClient.Builders;
 
-namespace Pyrus.ApiClient.Requests
+namespace PyrusApiClient
 {
 	public class TaskRequest
 	{
@@ -24,6 +25,13 @@ namespace Pyrus.ApiClient.Requests
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		public DateTime? Due { get; set; }
 
+		[JsonProperty("scheduled_date")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		public DateTime? ScheduledDate { get; set; }
+
+		[JsonProperty("cancel_schedule")]
+		public bool? CancelSchedule { get; set; }
+
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
 
@@ -31,21 +39,21 @@ namespace Pyrus.ApiClient.Requests
 		public int? FormId { get; set; }
 
 		[JsonProperty("attachments")]
-		public string[] Attachments { get; set; }
+		public List<string> Attachments { get; set; } = new List<string>();
 
 		[JsonProperty("responsible")]
 		public Person Responsible { get; set; }
 
 		[JsonProperty("fields")]
-		public FormField[] Fields { get; set; }
+		public List<FormField> Fields { get; set; } = new List<FormField>();
 
 		[JsonProperty("approvals")]
-		public Approval[][] Approvals { get; set; }
+		public List<List<Person>> Approvals { get; set; } = new List<List<Person>>();
 
 		[JsonProperty("participants")]
-		public Person[] Participants { get; set; }
+		public List<Person> Participants { get; set; } = new List<Person>();
 
-		[JsonProperty("lists")]
-		public int[] Lists { get; set; }
+		[JsonProperty("list_ids")]
+		public List<int> ListIds { get; set; } = new List<int>();
 	}
 }

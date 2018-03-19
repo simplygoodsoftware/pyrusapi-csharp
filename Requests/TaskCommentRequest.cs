@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
+using PyrusApiClient.Builders;
 
 namespace PyrusApiClient
 {
@@ -16,16 +18,22 @@ namespace PyrusApiClient
 		public ActivityAction? Action { get; set; }
 
 		[JsonProperty("attachments")]
-		public string[] Attachments { get; set; }
+		public List<string> Attachments { get; set; } = new List<string>();
 
 		[JsonProperty("field_updates")]
-		public FormField[] FieldUpdates { get; set; }
+		public List<FormField> FieldUpdates { get; set; } = new List<FormField>();
 
 		[JsonProperty("approvals_added")]
-		public Person[][] ApprovalsAdded { get; set; }
+		public List<List<Person>> ApprovalsAdded { get; set; } = new List<List<Person>>();
+
+		[JsonProperty("approvals_removed")]
+		public List<List<Person>> ApprovalsRemoved { get; set; } = new List<List<Person>>();
 
 		[JsonProperty("participants_added")]
-		public Person[] ParticipantsAdded { get; set; }
+		public List<Person> ParticipantsAdded { get; set; } = new List<Person>();
+
+		[JsonProperty("participants_removed")]
+		public List<Person> ParticipantsRemoved { get; set; } = new List<Person>();
 
 		[JsonProperty("due_date")]
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
@@ -37,5 +45,20 @@ namespace PyrusApiClient
 
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
+		
+		[JsonProperty("scheduled_date")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		public DateTime? ScheduledDate { get; set; }
+
+		[JsonProperty("cancel_schedule")]
+		public bool? CancelSchedule { get; set; }
+
+		[JsonProperty("added_list_ids")]
+		public List<int> AddedListIds { get; set; } = new List<int>();
+
+		[JsonProperty("removed_list_ids")]
+		public List<int> RemovedListIds { get; set; } = new List<int>();
+
+
 	}
 }

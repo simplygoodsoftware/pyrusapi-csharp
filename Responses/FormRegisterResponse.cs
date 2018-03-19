@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
 	public class FormRegisterResponse : ResponseBase
 	{
 		[JsonProperty("tasks")]
-		public Task[] Tasks { get; set; }
+		public List<Task> Tasks { get; set; }
 	}
 }

@@ -8,7 +8,6 @@ namespace PyrusApiClient
 	{
 		public FormFieldDueDate()
 		{
-			
 		}
 
 		public FormFieldDueDate(int id, DateTime value)

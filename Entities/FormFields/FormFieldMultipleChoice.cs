@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
 	public class FormFieldMultipleChoice : FormField
 	{
 		[JsonProperty("value")]
-		public MultipleChoice Value { get; set; }
+		public MultipleChoice Value { get; set; } = new MultipleChoice();
 	}
 
 	public class MultipleChoice
@@ -14,6 +15,6 @@ namespace PyrusApiClient
 		public int? ChoiceId { get; set; }
 
 		[JsonProperty("fields")]
-		public FormField[] Fields { get; set; }
+		public List<FormField> Fields { get; set; } = new List<FormField>();
 	}
 }

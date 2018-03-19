@@ -50,19 +50,13 @@ var forms = formsResponse.Forms;
   
 ```csharp
 var formId = 14653;
-var formRegisterRequest = new FormRegisterRequest
-{
-  IncludeArchived = true,
-  Filters = new FormFilter[]
-  {
-    new EqualsFilter(5, new FilterValue(253)),
-    new GreaterThanFilter(
-       2, 
-       new FilterValue(DateTime.Today.AddDays(-5)))
-  }
-};
-
-var formRegisterResponse = await pyrusClient.GetRegistry(formId, formRegisterRequest);
+var formRegisterResponse = await RequestBuilder
+	.GetRegistry(formId)
+	.IncludingArchived()
+	.FilteredBy
+	.Field(5).EqualsTo(253)
+	.Field(2).GreaterThen(DateTime.Today.AddDays(-5))
+	.Process(pyrusClient);
 
 var tasks = formRegisterResponse.Tasks;
 ```
@@ -81,51 +75,27 @@ var task = taskResponse.Task;
 
 ```csharp
 var taskId = 15353;
-var taskComment = new TaskCommentRequest
-{
-  ApprovalChoice = ApprovalChoice.Approved,
-  FieldUpdates = new FormField[]
-  {
-    new FormFieldTable
-    {
-      Id = 1,
-      Value = new []
-      {
-        new TableRow
-        {
-          RowId = 15,
-          Cells = new FormField[]
-          {
-            new FormFieldText
-            {
-              Name = "Comment",
-              Value = "That's right"
-            }
-          }
-        }
-      }
-    } 
-  }
-};
-
-var taskResponse = await pyrusClient.CommentTask(taskId, taskComment);
+var taskResponse = await RequestBuilder
+	.CommentFormTask(taskId)
+	.Approve()
+	.FieldUpdates.Add(
+		FormField.Create<FormFieldTable>(1)
+		.AddRow(15, new List<FormField>
+			{
+				FormField.Create<FormFieldText>("Comment").WithValue("Thhats's right")
+			}))
+	.Process(pyrusClient);
 ```
 
 * Create a task
   
 ```csharp
-var taskRequest = new TaskRequest
-{
-  Text = "Help me",
-  Participants = new []
-  {
-    new Person {Email = "Amanda.Smith@gmail.com"}, 
-    new Person {Id = 1646}
-  },
-  DueDate = DateTime.Today.AddDays(2)
-};
-
-var taskResponse = await pyrusClient.CreateTask(taskRequest);
+var taskResponse = await RequestBuilder
+	.CreateSimpleTask("Help me")
+	.AddParticipant("Amanda.Smith@gmail.com")
+	.AddParticipant(1646)
+	.WithDueDate(DateTime.Today.AddDays(2))
+	.Process(pyrusClient);
 ```
 
 ## Files
@@ -154,4 +124,19 @@ var items = catalogResponse.Items;
 
 ```csharp
 var contactsResponse = await pyrusClient.GetContacts();
+```
+
+## Lists
+
+* Get all lists
+
+```csharp
+var listsResponse = await pyrusClient.GetLists();
+```
+
+* Get all tasks in list
+
+```csharp
+var listId = 1322
+var taskListResponse = await pyrusClient.GetTaskList(listId, maxTasksCount: 25, includeArchived:true);
 ```

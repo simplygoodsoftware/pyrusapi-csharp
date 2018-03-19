@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -12,11 +13,8 @@ namespace Pyrus.ApiClient.JsonConverters
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			var request = value as FormRegisterRequest;
-			if (request == null)
-			{
+			if (!(value is FormRegisterRequest request))
 				return;
-			}
 
 			writer.WriteStartObject();
 
@@ -26,9 +24,9 @@ namespace Pyrus.ApiClient.JsonConverters
 				serializer.Serialize(writer, "y");
 			}
 
-			if (request.Steps != null && request.Steps.Length != 0)
+			if (request.Steps != null && request.Steps.Count != 0)
 			{
-				var steps = String.Join(",", request.Steps);
+				var steps = string.Join(",", request.Steps);
 				writer.WritePropertyName(request.GetPropertyAttribute<JsonPropertyAttribute>(nameof(request.Steps)).PropertyName);
 				serializer.Serialize(writer, steps);
 			}
@@ -38,7 +36,7 @@ namespace Pyrus.ApiClient.JsonConverters
 				foreach (var filter in request.Filters)
 				{
 					writer.WritePropertyName($"fld{filter.FieldId}");
-					string filterValue = GetFilterValue(filter.OperatorId, filter.Values);
+					var filterValue = GetFilterValue(filter.OperatorId, filter.Values);
 					serializer.Serialize(writer, filterValue);
 				}
 			}
@@ -46,7 +44,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			writer.WriteEndObject();
 		}
 
-		private string GetFilterValue(OperatorId operatorId, FilterValue[] values)
+		private string GetFilterValue(OperatorId operatorId, string[] values)
 		{
 			if (values.Length == 0)
 			{
@@ -60,24 +58,24 @@ namespace Pyrus.ApiClient.JsonConverters
 					if (values.Length > 1)
 						throw new InvalidParametersCountException($"Operator {operatorId.GetAttribute<EnumMemberAttribute>().Value} can not have more than one value");	
 
-					return values[0].Value;
+					return values[0];
 				case OperatorId.LessThan:
 					if (values.Length > 1)
 						throw new InvalidParametersCountException($"Operator {operatorId.GetAttribute<EnumMemberAttribute>().Value} can not have more than one value");
 
-					return $"lt{values[0].Value}";
+					return $"lt{values[0]}";
 				case OperatorId.GreaterThan:
 					if (values.Length > 1)
 						throw new InvalidParametersCountException($"Operator {operatorId.GetAttribute<EnumMemberAttribute>().Value} can not have more than one value");
 
-					return $"gt{values[0].Value}";
+					return $"gt{values[0]}";
 				case OperatorId.IsIn:
-					return string.Join(",", values.Select(v => v.Value));
+					return string.Join(",", values);
 				case OperatorId.Range:
 					if (values.Length != 2)
 						throw new InvalidParametersCountException($"Operator {operatorId.GetAttribute<EnumMemberAttribute>().Value} can have only two values");
 
-					return $"gt{values[0].Value},lt{values[1].Value}";
+					return $"gt{values[0]},lt{values[1]}";
 				default:
 					return null;
 			}

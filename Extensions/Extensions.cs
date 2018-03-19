@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace PyrusApiClient.Extensions
 {
-	public static class Extensions
+	internal static class Extensions
 	{
-		public static T GetAttribute<T>(this object member)
+		internal static T GetAttribute<T>(this object member)
 		{
 			object[] attributes = null;
 			var type = member as Type;
@@ -31,7 +31,7 @@ namespace PyrusApiClient.Extensions
 			return default(T);
 		}
 
-		public static T GetPropertyAttribute<T>(this object member, string propertyName)
+		internal static T GetPropertyAttribute<T>(this object member, string propertyName)
 		{
 			var type = member as Type;
 			var attributes = type != null

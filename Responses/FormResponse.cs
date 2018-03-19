@@ -15,7 +15,7 @@ namespace PyrusApiClient
 		public Dictionary<int, string> Steps { get; set; }
 
 		[JsonProperty("fields")]
-		public FormField [] Fields { get; set; }
+		public List<FormField> Fields { get; set; }
 	}
 }
  

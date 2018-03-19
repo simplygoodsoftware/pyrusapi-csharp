@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
@@ -11,6 +12,6 @@ namespace PyrusApiClient
 		public string Name { get; set; }
 
 		[JsonProperty("member_ids")]
-		public int[] MemberIds { get; set; }
+		public List<int> MemberIds { get; set; } = new List<int>();
 	}
 }

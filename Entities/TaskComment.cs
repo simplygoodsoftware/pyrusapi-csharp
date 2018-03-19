@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 
@@ -22,8 +23,8 @@ namespace PyrusApiClient
 		public Person ReassignedPerson { get; set; }
 
 		[JsonProperty("field_updates")]
-		public FormField[] FieldUpdates { get; set; }
-		
+		public List<FormField> FieldUpdates { get; set; } = new List<FormField>();
+
 		[JsonProperty("approval_choice")]
 		public ApprovalChoice? ApprovalChoice { get; set; }
 
@@ -31,16 +32,16 @@ namespace PyrusApiClient
 		public int? ResetToStep { get; set; }
 
 		[JsonProperty("approvals_added")]
-		public Approval[][] ApprovalsAdded { get; set; }
+		public List<List<Approval>> ApprovalsAdded { get; set; } = new List<List<Approval>>();
 
 		[JsonProperty("approvals_removed")]
-		public Approval[][] ApprovalsRemoved { get; set; }
+		public List<List<Approval>> ApprovalsRemoved { get; set; } = new List<List<Approval>>();
 
 		[JsonProperty("participants_added")]
-		public Person[] ParticipantsAdded { get; set; }
+		public List<Person> ParticipantsAdded { get; set; } = new List<Person>();
 
 		[JsonProperty("participants_removed")]
-		public Person[] ParticipantsRemoved { get; set; }
+		public List<Person> ParticipantsRemoved { get; set; } = new List<Person>();
 
 		[JsonProperty("due_date")]
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
@@ -50,13 +51,26 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		public DateTime? Due { get; set; }
 
+		[JsonProperty("scheduled_date")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		public DateTime? ScheduledDate { get; set; }
+
+		[JsonProperty("cancel_schedule")]
+		public bool? CancelSchedule { get; set; }
+
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
 
 		[JsonProperty("attachments")]
-		public File[] Attachments { get; set; }
+		public List<File> Attachments { get; set; } = new List<File>();
 
 		[JsonProperty("action")]
 		public ActivityAction? Action { get; set; }
+
+		[JsonProperty("added_list_ids")]
+		public List<int> AddedListIds { get; set; } = new List<int>();
+
+		[JsonProperty("removed_list_ids")]
+		public List<int> RemvoedListIds { get; set; } = new List<int>();
 	}
 }

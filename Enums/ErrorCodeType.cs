@@ -148,6 +148,15 @@ namespace PyrusApiClient
 		[EnumMember(Value = "due_missing")]
 		DueMissing = 239,
 
+		[EnumMember(Value = "scheduled_date_in_past")]
+		ScheduledDateInPast = 240,
+
+		[EnumMember(Value = "cannot_add_form_project")]
+		CannotAddFormProject = 241,
+
+		[EnumMember(Value = "form_template_cant_be_removed_from_task")]
+		FormTemplateCantBeRemovedFromTask = 242,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
@@ -166,6 +175,9 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "access_denied_close_task")]
 		AccessDeniedCloseTask = 306,
+
+		[EnumMember(Value = "access_denied_reopen_task")]
+		AccessDeniedReopenTask = 307,
 
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]

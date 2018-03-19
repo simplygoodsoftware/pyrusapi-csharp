@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
@@ -14,9 +15,14 @@ namespace PyrusApiClient
 		public long ItemId { get; set; }
 
 		[JsonProperty("headers")]
-		public string[] Headers { get; set; }
+		public List<string> Headers { get; set; }
 
 		[JsonProperty("values")]
-		public string[] Values { get; set; }
+		public List<string> Values { get; set; }
+
+		public override string ToString()
+		{
+			return ItemId.ToString();
+		}
 	}
 }

@@ -1,26 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-	public class Task
+	public class Task : TaskHeader
 	{
-		[JsonProperty("id")]
-		public int Id { get; set; }
-
-		[JsonProperty("text")]
-		public string Text { get; set; }
-
-		[JsonProperty("create_date")]
-		public DateTime CreateDate { get; set; }
-
-		[JsonProperty("last_modified_date")]
-		public DateTime LastModifiedDate { get; set; }
-
-		[JsonProperty("author")]
-		public Person Author { get; set; }
-
 		[JsonProperty("due_date")]
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
 		public DateTime? DueDate { get; set; }
@@ -29,31 +15,32 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		public DateTime? Due { get; set; }
 
+		[JsonProperty("scheduled_date")]
+		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		public DateTime? ScheduledDate { get; set; }
+
+		[JsonProperty("cancel_schedule")]
+		public bool? CancelSchedule { get; set; }
+
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
-
-		[JsonProperty("close_date")]
-		public DateTime? CloseDate { get; set; }
 
 		[JsonProperty("form_id")]
 		public int? FormId { get; set; }
 		
 		[JsonProperty("attachments")]
-		public File[] Attachments { get; set; }
-
-		[JsonProperty("comments")]
-		public TaskComment[] Comments { get; set; }
-		
-		[JsonProperty("responsible")]
-		public Person Responsible { get; set; }
+		public List<File> Attachments { get; set; } = new List<File>();
 
 		[JsonProperty("fields")]
-		public FormField[] Fields { get; set; }
+		public List<FormField> Fields { get; set; } = new List<FormField>();
 
 		[JsonProperty("approvals")]
-		public Approval[][] Approvals { get; set; }
+		public List<List<Approval>> Approvals { get; set; } = new List<List<Approval>>();
 
 		[JsonProperty("participants")]
-		public Person[] Participants { get; set; }
+		public List<Person> Participants { get; set; } = new List<Person>();
+		
+		[JsonProperty("list_ids")]
+		public List<int> ListIds { get; set; } = new List<int>();
 	}
 }

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
@@ -21,6 +22,7 @@ namespace PyrusApiClient
 
 		internal const string AuthEndpoint = "/auth";
 		internal const string FormsEndpoint = "/forms";
+		internal const string ListsEndpoint = "/lists";
 		internal const string TasksEndpoint = "/tasks";
 		internal const string CatalogsEndpoint = "/catalogs";
 		internal const string FilesEndpoint = "/files";
@@ -29,6 +31,7 @@ namespace PyrusApiClient
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string UploadSuffix = "/upload";
+		internal const string TasksSuffix = "/tasks";
 
 		static PyrusClient()
 		{
@@ -74,8 +77,24 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
+			if (request != null && request.Filters.Count != 0)
+				await ValidateFilter(request.Filters, formId);
+
 			var response = await RequestHelper.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(url, request, Token));
 			return response;
+		}
+
+		private async System.Threading.Tasks.Task ValidateFilter(List<FormFilter> requestFilters, int formId)
+		{
+			if (requestFilters.All(f => f.FieldId.HasValue))
+				return;
+
+			var form = await GetForm(formId);
+			if (form == null)
+				return;
+
+			foreach (var requestFilter in requestFilters.Where(f=> !f.FieldId.HasValue))
+				requestFilter.FieldId = FormFilter.GetFieldIdByName(requestFilter.FieldName, form);
 		}
 
 		public async Task<TaskResponse> GetTask(int taskId, string accessToken = null)
@@ -151,6 +170,27 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await RequestHelper.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, fileStream, fileName, Token));
+			return response;
+		}
+
+		public async Task<ListsResponse> GetLists(string accessToken = null)
+		{
+			var url = Settings.Origin + ListsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<ListsResponse>(() => RequestHelper.GetRequest(url, Token));
+			return response;
+		}
+
+		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
+		{
+			var includeArchivedSuffix = includeArchived ? "&include_archived=y" : "";
+			var url = Settings.Origin + ListsEndpoint + $"/{listId}" + TasksSuffix + $"?item_count={itemCount}{includeArchivedSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
 	}

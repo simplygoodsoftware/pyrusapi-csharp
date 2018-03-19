@@ -20,7 +20,7 @@ namespace PyrusApiClient
 			{
 				if (value.EndsWith("/"))
 					value = value.TrimEnd('/');
-
+				
 				_origin = value;
 			}
 		}
