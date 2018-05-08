@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Pyrus.ApiClient is a .NET implementation of Pyrus API. It supports all the API endpoints.</description>
 	<projectUrl>https://github.com/simplygoodsoftware/pyrusapi-csharp</projectUrl>
-    <copyright>Copyright ©2017 Simply Good Software, Inc.</copyright>
+    <copyright>Copyright ©2018 Simply Good Software, Inc.</copyright>
     <tags>pyrus pyrus.api api pyrus.com</tags>
 	<dependencies>
         <dependency id="Newtonsoft.Json" version="9.0.1" />
