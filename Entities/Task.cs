@@ -42,5 +42,11 @@ namespace PyrusApiClient
 		
 		[JsonProperty("list_ids")]
 		public List<int> ListIds { get; set; } = new List<int>();
+
+		[JsonProperty("linked_task_ids")]
+		public List<int> LinkedTaskIds { get; set; }
+
+		[JsonProperty("parent_task_id")]
+		public int? ParentTaskId { get; set; }
 	}
 }
