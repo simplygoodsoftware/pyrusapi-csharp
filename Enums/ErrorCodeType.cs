@@ -163,6 +163,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "too_many_comments")]
 		TooManyComments = 244,
 
+		[EnumMember(Value = "invalid_step_number")]
+		InvalidStepNumber = 245,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
