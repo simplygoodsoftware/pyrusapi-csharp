@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
-using PyrusApiClient.Builders;
 
 namespace PyrusApiClient
 {
@@ -13,6 +12,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("approval_choice")]
 		public ApprovalChoice? ApprovalChoice { get; set; }
+
+		[JsonProperty("approval_steps")]
+		public List<int> ApprovalSteps { get; set; } = new List<int>();
 
 		[JsonProperty("action")]
 		public ActivityAction? Action { get; set; }
@@ -58,7 +60,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("removed_list_ids")]
 		public List<int> RemovedListIds { get; set; } = new List<int>();
-
-
 	}
 }

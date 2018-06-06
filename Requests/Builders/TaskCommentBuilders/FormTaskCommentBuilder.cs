@@ -111,6 +111,24 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder OnStep(int step)
+		{
+			Comment.ApprovalSteps.Add(step);
+			return this;
+		}
+
+		public FormTaskCommentBuilder OnSteps(params int[] steps)
+		{
+			Comment.ApprovalSteps.AddRange(steps);
+			return this;
+		}
+
+		public FormTaskCommentBuilder OnSteps(IEnumerable<int> steps)
+		{
+			Comment.ApprovalSteps.AddRange(steps);
+			return this;
+		}
+
 		public FieldUpdatesBuilder FieldUpdates
 		{
 			get
