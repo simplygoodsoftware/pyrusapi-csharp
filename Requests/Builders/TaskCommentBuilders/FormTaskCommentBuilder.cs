@@ -90,30 +90,30 @@ namespace PyrusApiClient.Builders
 		public FormTaskCommentBuilder RerequestApprovals(IEnumerable<IEnumerable<Approval>> approvals)
 		{
 			foreach (var approval in approvals.SelectMany(a => a))
-				RerequestApprovals(approval);
+				RerequestApproval(approval);
 
 			return this;
 		}
 
-		public FormTaskCommentBuilder RerequestApprovals(int personId, int step = 1)
+		public FormTaskCommentBuilder RerequestApproval(int personId, int step = 1)
 		{
 			var approval = new Approval { Step = step, Person = new Person { Id = personId } };
-			return RerequestApprovals(approval);
+			return RerequestApproval(approval);
 		}
 
-		public FormTaskCommentBuilder RerequestApprovals(string email, int step = 1)
+		public FormTaskCommentBuilder RerequestApproval(string email, int step = 1)
 		{
 			var approval = new Approval { Step = step, Person = new Person { Email = email } };
-			return RerequestApprovals(approval);
+			return RerequestApproval(approval);
 		}
 
-		public FormTaskCommentBuilder RerequestApprovals(Person person, int step = 1)
+		public FormTaskCommentBuilder RerequestApproval(Person person, int step = 1)
 		{
 			var approval = new Approval { Step = step, Person = person };
-			return RerequestApprovals(approval);
+			return RerequestApproval(approval);
 		}
 
-		public FormTaskCommentBuilder RerequestApprovals(Approval approval)
+		public FormTaskCommentBuilder RerequestApproval(Approval approval)
 		{
 			if (!approval.Step.HasValue || approval.Step < 1)
 				throw new ArgumentException("Step should start from 1");
