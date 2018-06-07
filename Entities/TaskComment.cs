@@ -37,6 +37,9 @@ namespace PyrusApiClient
 		[JsonProperty("approvals_removed")]
 		public List<List<Approval>> ApprovalsRemoved { get; set; } = new List<List<Approval>>();
 
+		[JsonProperty("approvals_rerequested")]
+		public List<List<Approval>> ApprovalsRerequested { get; set; } = new List<List<Approval>>();
+
 		[JsonProperty("participants_added")]
 		public List<Person> ParticipantsAdded { get; set; } = new List<Person>();
 

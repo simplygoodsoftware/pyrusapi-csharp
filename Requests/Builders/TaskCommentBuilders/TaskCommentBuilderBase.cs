@@ -9,6 +9,7 @@ namespace PyrusApiClient.Builders
 		protected readonly TaskCommentRequest Comment;
 		protected readonly List<Approval> ApprovalsAdded = new List<Approval>();
 		protected readonly List<Approval> ApprovalsRemoved = new List<Approval>();
+		protected readonly List<Approval> ApprovalsRerequested = new List<Approval>();
 
 		protected TaskCommentBuilderBase(TaskCommentRequest comment)
 		{
@@ -22,6 +23,9 @@ namespace PyrusApiClient.Builders
 
 			if (tcb.ApprovalsRemoved.Count != 0)
 				BuilderHelper.WriteApprovals(tcb.ApprovalsRemoved, tcb.Comment.ApprovalsRemoved);
+
+			if (tcb.ApprovalsRerequested.Count != 0)
+				BuilderHelper.WriteApprovals(tcb.ApprovalsRerequested, tcb.Comment.ApprovalsRerequested);
 
 			return tcb.Comment;
 		}
