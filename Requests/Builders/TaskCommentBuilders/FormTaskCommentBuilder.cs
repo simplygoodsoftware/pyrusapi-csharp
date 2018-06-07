@@ -87,6 +87,41 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder RerequestApprovals(IEnumerable<IEnumerable<Approval>> approvals)
+		{
+			foreach (var approval in approvals.SelectMany(a => a))
+				RerequestApproval(approval);
+
+			return this;
+		}
+
+		public FormTaskCommentBuilder RerequestApproval(int personId, int step = 1)
+		{
+			var approval = new Approval { Step = step, Person = new Person { Id = personId } };
+			return RerequestApproval(approval);
+		}
+
+		public FormTaskCommentBuilder RerequestApproval(string email, int step = 1)
+		{
+			var approval = new Approval { Step = step, Person = new Person { Email = email } };
+			return RerequestApproval(approval);
+		}
+
+		public FormTaskCommentBuilder RerequestApproval(Person person, int step = 1)
+		{
+			var approval = new Approval { Step = step, Person = person };
+			return RerequestApproval(approval);
+		}
+
+		public FormTaskCommentBuilder RerequestApproval(Approval approval)
+		{
+			if (!approval.Step.HasValue || approval.Step < 1)
+				throw new ArgumentException("Step should start from 1");
+
+			ApprovalsRerequested.Add(approval);
+			return this;
+		}
+
 		public FormTaskCommentBuilder Approve()
 		{
 			Comment.ApprovalChoice = ApprovalChoice.Approved;
@@ -138,6 +173,9 @@ namespace PyrusApiClient.Builders
 
 				if (ApprovalsRemoved.Count != 0)
 					BuilderHelper.WriteApprovals(ApprovalsRemoved, Comment.ApprovalsRemoved);
+
+				if (ApprovalsRerequested.Count != 0)
+					BuilderHelper.WriteApprovals(ApprovalsRemoved, Comment.ApprovalsRerequested);
 
 				return new FieldUpdatesBuilder(this, TaskId);
 			}
