@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Entities\FormFields\FormFieldDueDateTime.cs" />
     <Compile Include="Entities\FormFields\FormFieldNewFile.cs" />
     <Compile Include="Entities\FormLink.cs" />
