@@ -11,6 +11,20 @@ namespace Pyrus.ApiClient.JsonConverters
 {
 	internal class FormRegisterRequestJsonConverter: JsonConverter
 	{
+		private static readonly Dictionary<string, string> JsonNames;
+
+		static FormRegisterRequestJsonConverter()
+		{
+			JsonNames = new Dictionary<string, string>();
+
+			var properties = typeof(FormRegisterRequest).GetProperties().Where(prop => prop.IsDefined(typeof(JsonPropertyAttribute), false));
+			foreach (var propertyInfo in properties)
+			{
+				if (propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), false).FirstOrDefault() is JsonPropertyAttribute attribute)
+					JsonNames.Add(propertyInfo.Name, attribute.PropertyName);
+			}
+		}
+
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
 			if (!(value is FormRegisterRequest request))
@@ -20,14 +34,14 @@ namespace Pyrus.ApiClient.JsonConverters
 
 			if (request.IncludeArchived == true)
 			{
-				writer.WritePropertyName(request.GetPropertyAttribute<JsonPropertyAttribute>(nameof(request.IncludeArchived)).PropertyName);
+				writer.WritePropertyName(JsonNames[nameof(request.IncludeArchived)]);
 				serializer.Serialize(writer, "y");
 			}
 
 			if (request.Steps != null && request.Steps.Count != 0)
 			{
 				var steps = string.Join(",", request.Steps);
-				writer.WritePropertyName(request.GetPropertyAttribute<JsonPropertyAttribute>(nameof(request.Steps)).PropertyName);
+				writer.WritePropertyName(JsonNames[nameof(request.Steps)]);
 				serializer.Serialize(writer, steps);
 			}
 
@@ -39,6 +53,18 @@ namespace Pyrus.ApiClient.JsonConverters
 					var filterValue = GetFilterValue(filter.OperatorId, filter.Values);
 					serializer.Serialize(writer, filterValue);
 				}
+			}
+
+			if (request.ModifiedBefore.HasValue)
+			{
+				writer.WritePropertyName(JsonNames[nameof(request.ModifiedBefore)]);
+				serializer.Serialize(writer, request.ModifiedBefore.Value);
+			}
+
+			if (request.ModifiedAfter.HasValue)
+			{
+				writer.WritePropertyName(JsonNames[nameof(request.ModifiedAfter)]);
+				serializer.Serialize(writer, request.ModifiedAfter.Value);
 			}
 
 			writer.WriteEndObject();
@@ -80,6 +106,7 @@ namespace Pyrus.ApiClient.JsonConverters
 					return null;
 			}
 		}
+
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
