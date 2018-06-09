@@ -75,5 +75,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("removed_list_ids")]
 		public List<int> RemvoedListIds { get; set; } = new List<int>();
+
+		[JsonProperty("approval_step")]
+		public int? ApprovalStep { get; set; }
 	}
 }

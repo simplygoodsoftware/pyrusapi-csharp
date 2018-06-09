@@ -48,5 +48,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("parent_task_id")]
 		public int? ParentTaskId { get; set; }
+
+		[JsonProperty("last_note_id")]
+		public int? LastNoteId { get; set; }
 	}
 }
