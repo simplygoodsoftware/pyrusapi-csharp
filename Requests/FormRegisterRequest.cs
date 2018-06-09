@@ -14,11 +14,9 @@ namespace PyrusApiClient
 		public bool? IncludeArchived { get; set; }
 
 		[JsonProperty("modified_before")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		public DateTime? ModifiedBefore { get; set; }
 
 		[JsonProperty("modified_after")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
 		public DateTime? ModifiedAfter { get; set; }
 
 		[JsonProperty("filters")]
