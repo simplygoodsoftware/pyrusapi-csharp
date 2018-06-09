@@ -58,14 +58,13 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (request.ModifiedBefore.HasValue)
 			{
 				writer.WritePropertyName(JsonNames[nameof(request.ModifiedBefore)]);
-
-				serializer.Serialize(writer, request.ModifiedBefore.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+				writer.WriteValue(request.ModifiedBefore.Value.ToUniversalTime().ToString(Constants.DateTimeFormat));
 			}
 
 			if (request.ModifiedAfter.HasValue)
 			{
 				writer.WritePropertyName(JsonNames[nameof(request.ModifiedAfter)]);
-				serializer.Serialize(writer, request.ModifiedAfter.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+				writer.WriteValue(request.ModifiedAfter.Value.ToUniversalTime().ToString(Constants.DateTimeFormat));
 			}
 
 			writer.WriteEndObject();

@@ -6,7 +6,7 @@ namespace PyrusApiClient
 {
 	public class FormFieldDate : FormField
 	{
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		[JsonProperty("value")]
 		public DateTime? Value { get; set; }
 	}

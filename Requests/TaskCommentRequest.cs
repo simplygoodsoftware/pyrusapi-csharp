@@ -41,18 +41,18 @@ namespace PyrusApiClient
 		public List<Person> ParticipantsRemoved { get; set; } = new List<Person>();
 
 		[JsonProperty("due_date")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? DueDate { get; set; }
 
 		[JsonProperty("due")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
 		public DateTime? Due { get; set; }
 
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
 		
 		[JsonProperty("scheduled_date")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? ScheduledDate { get; set; }
 
 		[JsonProperty("cancel_schedule")]

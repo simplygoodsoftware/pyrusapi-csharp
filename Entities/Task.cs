@@ -8,15 +8,15 @@ namespace PyrusApiClient
 	public class Task : TaskHeader
 	{
 		[JsonProperty("due_date")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? DueDate { get; set; }
 
 		[JsonProperty("due")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
 		public DateTime? Due { get; set; }
 
 		[JsonProperty("scheduled_date")]
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? ScheduledDate { get; set; }
 
 		[JsonProperty("cancel_schedule")]
