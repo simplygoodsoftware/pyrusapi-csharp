@@ -58,13 +58,14 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (request.ModifiedBefore.HasValue)
 			{
 				writer.WritePropertyName(JsonNames[nameof(request.ModifiedBefore)]);
-				serializer.Serialize(writer, request.ModifiedBefore.Value);
+
+				serializer.Serialize(writer, JsonConvert.SerializeObject(request.ModifiedBefore.Value));
 			}
 
 			if (request.ModifiedAfter.HasValue)
 			{
 				writer.WritePropertyName(JsonNames[nameof(request.ModifiedAfter)]);
-				serializer.Serialize(writer, request.ModifiedAfter.Value);
+				serializer.Serialize(writer, JsonConvert.SerializeObject(request.ModifiedAfter.Value));
 			}
 
 			writer.WriteEndObject();
