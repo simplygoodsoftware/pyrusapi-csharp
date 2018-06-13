@@ -112,8 +112,11 @@
     <Compile Include="JsonConverters\FormRegisterRequestJsonConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PyrusClient.cs" />
+    <Compile Include="Requests\Builders\AuthRequestBuilder.cs" />
     <Compile Include="Requests\Builders\BuilderHelper.cs" />
     <Compile Include="Requests\Builders\FormRegisterRequestBuilder.cs" />
+    <Compile Include="Requests\Builders\EmptyBuilder.cs" />
+    <Compile Include="Requests\Builders\OnePropertyBuilder.cs" />
     <Compile Include="Requests\Builders\RequestBuilder.cs" />
     <Compile Include="Requests\Builders\TaskBuilders\FormTaskBuilder.cs" />
     <Compile Include="Requests\Builders\TaskBuilders\SimpleTaskBuilder.cs" />
@@ -122,6 +125,8 @@
     <Compile Include="Requests\Builders\TaskCommentBuilders\FormTaskCommentBuilder.cs" />
     <Compile Include="Requests\Builders\TaskCommentBuilders\SimpleTaskCommentBuilder.cs" />
     <Compile Include="Requests\Builders\TaskCommentBuilders\TaskCommentBuilderBase.cs" />
+    <Compile Include="Requests\Builders\TaskListRequestBuilder.cs" />
+    <Compile Include="Requests\Builders\UploadRequestBuilder.cs" />
     <Compile Include="Requests\FormFilters\FilterValue.cs" />
     <Compile Include="Requests\FormFilters\GreaterThanFilter.cs" />
     <Compile Include="Requests\FormFilters\IsInFilter.cs" />
