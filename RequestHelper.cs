@@ -93,7 +93,9 @@ namespace PyrusApiClient
 					}
 					else
 					{
-						result.Content = await response.Content.ReadAsStreamAsync();
+						result.Content = new MemoryStream();
+						await response.Content.CopyToAsync(result.Content);
+						result.Content.Position = 0;
 						result.FileName = response.Content.Headers.ContentDisposition.FileName;
 					}
 
