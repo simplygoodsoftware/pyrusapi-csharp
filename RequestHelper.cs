@@ -135,7 +135,7 @@ namespace PyrusApiClient
 					if (res == null)
 						continue;
 
-					if (res.Content != null && typeof(TResponse) == typeof(UploadResponse))
+					if (res.Content != null && typeof(TResponse) == typeof(DownloadResponse))
 					{
 						var resp = new DownloadResponse
 						{
