@@ -31,6 +31,7 @@ namespace PyrusApiClient
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string UploadSuffix = "/upload";
+		internal const string DownloadSuffix = "/download";
 		internal const string TasksSuffix = "/tasks";
 
 		static PyrusClient()
@@ -170,6 +171,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await RequestHelper.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, fileStream, fileName, Token));
+			return response;
+		}
+
+		public async Task<DownloadResponse> DownloadFile(int fileId, string accessToken = null)
+		{
+			var url = Settings.Origin + FilesEndpoint + DownloadSuffix + $"/{fileId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(url, Token));
 			return response;
 		}
 

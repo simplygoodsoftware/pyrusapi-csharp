@@ -135,6 +135,7 @@
     <Compile Include="Responses\AuthResponse.cs" />
     <Compile Include="Responses\CatalogResponse.cs" />
     <Compile Include="Responses\ContactsResponse.cs" />
+    <Compile Include="Responses\DownloadResponse.cs" />
     <Compile Include="Responses\FormRegisterResponse.cs" />
     <Compile Include="Responses\FormResponse.cs" />
     <Compile Include="Responses\FormsResponse.cs" />
