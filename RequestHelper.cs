@@ -140,10 +140,10 @@ namespace PyrusApiClient
 
 						if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound)
 							resp.ErrorCode = ErrorCodeType.AccessDeniedFile;
+						else if (res.StatusCode == HttpStatusCode.Unauthorized)
+							resp.ErrorCode = ErrorCodeType.AuthorizationError;
 						else if (res.StatusCode != HttpStatusCode.OK)
 							resp.ErrorCode = ErrorCodeType.ServerError;
-						else if (res.StatusCode != HttpStatusCode.Unauthorized)
-							resp.ErrorCode = ErrorCodeType.AuthorizationError;
 
 						return resp as TResponse;
 					}
