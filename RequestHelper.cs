@@ -80,18 +80,12 @@ namespace PyrusApiClient
 			using (var httpClient = PyrusClient.Settings.NewHttpClient())
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
 				using (var response = await httpClient.GetAsync(url))
 				{
-					var result = new MessageWithStatusCode{StatusCode = response.StatusCode};
-					var mediaType = response.Content.Headers.ContentType.MediaType;
-					if (mediaType == "application/json")
-					{
-						result.Message = await response.Content.ReadAsStringAsync();
-					}
-					else
+					var result = new MessageWithStatusCode { StatusCode = response.StatusCode };
+					if (response.StatusCode == HttpStatusCode.OK)
 					{
 						result.Content = new MemoryStream();
 						await response.Content.CopyToAsync(result.Content);
@@ -135,13 +129,20 @@ namespace PyrusApiClient
 					if (res == null)
 						continue;
 
-					if (res.Content != null && typeof(TResponse) == typeof(DownloadResponse))
+					if (typeof(TResponse) == typeof(DownloadResponse))
 					{
 						var resp = new DownloadResponse
 						{
 							Content = res.Content,
 							FileName = res.FileName
 						};
+
+						if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound)
+							resp.ErrorCode = ErrorCodeType.AccessDeniedFile;
+						else if (res.StatusCode != HttpStatusCode.OK)
+							resp.ErrorCode = ErrorCodeType.ServerError;
+						else if (res.StatusCode != HttpStatusCode.Unauthorized)
+							resp.ErrorCode = ErrorCodeType.AuthorizationError;
 
 						return resp as TResponse;
 					}

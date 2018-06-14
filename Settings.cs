@@ -9,6 +9,7 @@ namespace PyrusApiClient
 		public Settings()
 		{
 			Origin = "https://api.pyrus.com/v4";
+			FilesOrigin = "https://files.pyrus.com";
 			RetryCount = 2;
 		}
 
@@ -22,6 +23,20 @@ namespace PyrusApiClient
 					value = value.TrimEnd('/');
 				
 				_origin = value;
+			}
+		}
+
+		private string _filesOrigin;
+
+		public string FilesOrigin
+		{
+			get { return _filesOrigin; }
+			set
+			{
+				if (value.EndsWith("/"))
+					value = value.TrimEnd('/');
+
+				_filesOrigin = value;
 			}
 		}
 
