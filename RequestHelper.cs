@@ -91,6 +91,7 @@ namespace PyrusApiClient
 						await response.Content.CopyToAsync(result.Content);
 						result.Content.Position = 0;
 						result.FileName = response.Content.Headers.ContentDisposition.FileName;
+						result.FileName = result.FileName.TrimStart('"').TrimEnd('"');
 					}
 
 					return result;
