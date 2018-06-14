@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
+using File = PyrusApiClient.File;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
@@ -34,14 +35,19 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
 		}
 
-		public static OneIntPropertyBuilder<TaskResponse> GetTask(int taskId)
+		public static OnePropertyBuilder<int, TaskResponse> GetTask(int taskId)
 		{
-			return new OneIntPropertyBuilder<TaskResponse>(taskId);
+			return new OnePropertyBuilder<int, TaskResponse>(taskId);
 		}
 
-		public static OneIntPropertyBuilder<DownloadResponse> DownloadFile(int fileId)
+		public static OnePropertyBuilder<int, DownloadResponse> DownloadFile(int fileId)
 		{
-			return new OneIntPropertyBuilder<DownloadResponse>(fileId);
+			return new OnePropertyBuilder<int, DownloadResponse>(fileId);
+		}
+
+		public static OnePropertyBuilder<File, DownloadResponse> DownloadFile(File file)
+		{
+			return new OnePropertyBuilder<File, DownloadResponse>(file);
 		}
 
 		public static AuthRequestBuilder Auth(string login, string secretKey)
@@ -49,14 +55,14 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new AuthRequestBuilder(login, secretKey);
 		}
 
-		public static OneIntPropertyBuilder<ContactsResponse> GetCatalog(int catalogId)
+		public static OnePropertyBuilder<int, CatalogResponse> GetCatalog(int catalogId)
 		{
-			return new OneIntPropertyBuilder<ContactsResponse>(catalogId);
+			return new OnePropertyBuilder<int, CatalogResponse>(catalogId);
 		}
 
-		public static OneIntPropertyBuilder<FormResponse> GetForm(int formId)
+		public static OnePropertyBuilder<int, FormResponse> GetForm(int formId)
 		{
-			return new OneIntPropertyBuilder<FormResponse>(formId);
+			return new OnePropertyBuilder<int, FormResponse>(formId);
 		}
 
 		public static EmptyBuilder<ContactsResponse> GetContacts()
@@ -129,24 +135,30 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetRegistry(builder.FormId, builder);
 		}
 
-		public static async Task<TaskResponse> Process(this OneIntPropertyBuilder<TaskResponse> builder, PyrusClient client)
+		public static async Task<TaskResponse> Process(this OnePropertyBuilder<int, TaskResponse> builder, PyrusClient client)
 		{
-			return await client.GetTask(builder.IntProperty);
+			return await client.GetTask(builder.Property);
 		}
 
-		public static async Task<DownloadResponse> Process(this OneIntPropertyBuilder<DownloadResponse> builder, PyrusClient client)
+		public static async Task<DownloadResponse> Process(this OnePropertyBuilder<int, DownloadResponse> builder, PyrusClient client)
 		{
-			return await client.DownloadFile(builder.IntProperty);
+			return await client.DownloadFile(builder.Property);
 		}
+
+		public static async Task<DownloadResponse> Process(this OnePropertyBuilder<File, DownloadResponse> builder, PyrusClient client)
+		{
+			return await client.DownloadFile(builder.Property);
+		}
+
 
 		public static async Task<AuthResponse> Process(this AuthRequestBuilder builder, PyrusClient client)
 		{
 			return await client.Auth(builder.Login, builder.SecretKey);
 		}
 
-		public static async Task<CatalogResponse> Process(this OneIntPropertyBuilder<ContactsResponse> builder, PyrusClient client)
+		public static async Task<CatalogResponse> Process(this OnePropertyBuilder<int, CatalogResponse> builder, PyrusClient client)
 		{
-			return await client.GetCatalog(builder.IntProperty);
+			return await client.GetCatalog(builder.Property);
 		}
 
 		public static async Task<ContactsResponse> Process(this EmptyBuilder<ContactsResponse> builder, PyrusClient client)
@@ -154,9 +166,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetContacts();
 		}
 
-		public static async Task<FormResponse> Process(this OneIntPropertyBuilder<FormResponse> builder, PyrusClient client)
+		public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
 		{
-			return await client.GetForm(builder.IntProperty);
+			return await client.GetForm(builder.Property);
 		}
 
 		public static async Task<FormsResponse> Process(this EmptyBuilder<FormsResponse> builder, PyrusClient client)

@@ -2,13 +2,13 @@
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-	public class OneIntPropertyBuilder<T> where T : ResponseBase
+	public class OnePropertyBuilder<T, TResponse> where TResponse : ResponseBase
 	{
-		internal int IntProperty { get; set; }
+		internal T Property { get; set; }
 
-		internal OneIntPropertyBuilder(int intProperty)
+		internal OnePropertyBuilder(T intProperty)
 		{
-			IntProperty = intProperty;
+			Property = intProperty;
 		}
 	}
 }
