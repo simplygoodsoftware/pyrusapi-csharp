@@ -166,6 +166,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "invalid_step_number")]
 		InvalidStepNumber = 245,
 
+		[EnumMember(Value = "task_already_approved")]
+		TaskAlreadyApproved = 246,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
