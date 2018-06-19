@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
@@ -10,6 +12,12 @@ namespace PyrusApiClient
 
 		[JsonProperty("include_archived")]
 		public bool? IncludeArchived { get; set; }
+
+		[JsonProperty("modified_before")]
+		public DateTime? ModifiedBefore { get; set; }
+
+		[JsonProperty("modified_after")]
+		public DateTime? ModifiedAfter { get; set; }
 
 		[JsonProperty("filters")]
 		public List<FormFilter> Filters { get; set; } = new List<FormFilter>();

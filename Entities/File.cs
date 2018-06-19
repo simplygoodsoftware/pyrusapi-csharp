@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
@@ -18,5 +19,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("url")]
 		public string Url { get; set; }
+
+		[JsonProperty("version")]
+		public int Version { get; set; }
 	}
 }

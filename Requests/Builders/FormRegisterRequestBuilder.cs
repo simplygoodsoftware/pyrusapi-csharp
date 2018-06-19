@@ -43,6 +43,18 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormRegisterRequestBuilder ModifiedBefore(DateTime dateTime)
+		{
+			_formRegisterRequest.ModifiedBefore = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder ModifiedAfter(DateTime dateTime)
+		{
+			_formRegisterRequest.ModifiedAfter = dateTime;
+			return this;
+		}
+
 		public FormRegisterFilterBuilder FilteredBy => new FormRegisterFilterBuilder(this, FormId);
 
 		public class FormRegisterFilterBuilder

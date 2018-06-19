@@ -25,12 +25,12 @@ namespace PyrusApiClient
 		internal const string ListsEndpoint = "/lists";
 		internal const string TasksEndpoint = "/tasks";
 		internal const string CatalogsEndpoint = "/catalogs";
-		internal const string FilesEndpoint = "/files";
+		internal const string UploadFilesEndpoint = "/files/upload";
 		internal const string ContactsEndpoint = "/contacts";
+		internal const string DownloadFilesEndpoint = "/services/attachment";
 
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
-		internal const string UploadSuffix = "/upload";
 		internal const string TasksSuffix = "/tasks";
 
 		static PyrusClient()
@@ -165,11 +165,38 @@ namespace PyrusApiClient
 
 		public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null)
 		{
-			var url = Settings.Origin + FilesEndpoint + UploadSuffix;
+			var url = Settings.Origin + UploadFilesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
 			var response = await RequestHelper.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, fileStream, fileName, Token));
+			return response;
+		}
+
+		public async Task<DownloadResponse> DownloadFile(File file, string accessToken = null)
+		{
+			if (string.IsNullOrEmpty(file.Url) && file.Id == 0)
+				throw new ArgumentException("Url or Id must be filled");
+
+			var url = file.Url;
+			if (string.IsNullOrEmpty(url))
+				return await DownloadFile(file.Id, accessToken);
+
+			return await DownloadFile(url, accessToken);
+		}
+
+		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null)
+		{
+			var url = Settings.FilesOrigin + DownloadFilesEndpoint + $"?Id={attachmentId}";
+			return await DownloadFile(url, accessToken);
+		}
+
+		private async Task<DownloadResponse> DownloadFile(string url, string accessToken = null)
+		{
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(url, Token));
 			return response;
 		}
 

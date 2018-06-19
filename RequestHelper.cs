@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
+using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
 namespace PyrusApiClient
@@ -74,6 +75,30 @@ namespace PyrusApiClient
 			}
 		}
 
+		internal async Task<MessageWithStatusCode> GetFileRequest(string url, string token)
+		{
+			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			{
+				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+
+				using (var response = await httpClient.GetAsync(url))
+				{
+					var result = new MessageWithStatusCode { StatusCode = response.StatusCode };
+					if (response.StatusCode == HttpStatusCode.OK)
+					{
+						result.Content = new MemoryStream();
+						await response.Content.CopyToAsync(result.Content);
+						result.Content.Position = 0;
+						result.FileName = response.Content.Headers.ContentDisposition.FileName;
+						result.FileName = result.FileName.TrimStart('"').TrimEnd('"');
+					}
+
+					return result;
+				}
+			}
+		}
+
 		internal async Task<MessageWithStatusCode> GetRequest(string url, string token = null)
 		{
 			using (var httpClient = PyrusClient.Settings.NewHttpClient())
@@ -105,6 +130,24 @@ namespace PyrusApiClient
 					if (res == null)
 						continue;
 
+					if (typeof(TResponse) == typeof(DownloadResponse))
+					{
+						var resp = new DownloadResponse
+						{
+							Content = res.Content,
+							FileName = res.FileName
+						};
+
+						if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound)
+							resp.ErrorCode = ErrorCodeType.AccessDeniedFile;
+						else if (res.StatusCode == HttpStatusCode.Unauthorized)
+							resp.ErrorCode = ErrorCodeType.AuthorizationError;
+						else if (res.StatusCode != HttpStatusCode.OK)
+							resp.ErrorCode = ErrorCodeType.ServerError;
+
+						return resp as TResponse;
+					}
+						
 					result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					if (result == null)
 						continue;
@@ -158,5 +201,7 @@ namespace PyrusApiClient
 	{
 		internal string Message;
 		internal HttpStatusCode StatusCode;
+		internal Stream Content;
+		internal string FileName;
 	}
 }

@@ -191,6 +191,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "access_denied_file_access_history")]
 		AccessDeniedFileAccessHistory = 308,
 
+		[EnumMember(Value = "access_denied_file")]
+		AccessDeniedFile = 309,
+
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]
 		TooManyRequests = 400

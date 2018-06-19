@@ -16,7 +16,7 @@ namespace PyrusApiClient
 			Id = id;
 		}
 
-		[JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-ddTHH:mm:ssZ")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
 		[JsonProperty("value")]
 		public DateTime? Value { get; set; }
 	}
