@@ -22,5 +22,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("version")]
 		public int Version { get; set; }
+
+		[JsonProperty("root_id")]
+		public int? RootId { get; set; }
 	}
 }
