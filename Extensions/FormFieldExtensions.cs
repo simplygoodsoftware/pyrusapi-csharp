@@ -12,43 +12,43 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldAuthor WithValue(this FormFieldAuthor formField, int personId)
+		public static FormFieldAuthor WithValue(this FormFieldAuthor formField, int? personId)
 		{
-			formField.Value = new Person(personId);
+			formField.Value = personId.HasValue ? new Person(personId.Value) : null;
 			return formField;
 		}
 
 		public static FormFieldAuthor WithValue(this FormFieldAuthor formField, string email)
 		{
-			formField.Value = new Person(email);
+			formField.Value = !string.IsNullOrEmpty(email) ? new Person(email) : null;
 			return formField;
 		}
 
-		public static FormFieldCatalog WithValue(this FormFieldCatalog formField, long itemId)
+		public static FormFieldCatalog WithValue(this FormFieldCatalog formField, long? itemId)
 		{
-			formField.Value = new Catalog { ItemId = itemId };
+			formField.Value = itemId.HasValue ? new Catalog { ItemId = itemId.Value } : null;
 			return formField;
 		}
 
-		public static FormFieldCheckmark WithValue(this FormFieldCheckmark formField, Checkmark checkmark)
+		public static FormFieldCheckmark WithValue(this FormFieldCheckmark formField, Checkmark? checkmark)
 		{
 			formField.Value = checkmark;
 			return formField;
 		}
 
-		public static FormFieldDate WithValue(this FormFieldDate formField,DateTime date)
+		public static FormFieldDate WithValue(this FormFieldDate formField, DateTime? date)
 		{
 			formField.Value = date;
 			return formField;
 		}
 
-		public static FormFieldDueDate WithValue(this FormFieldDueDate formField, DateTime dueDate)
+		public static FormFieldDueDate WithValue(this FormFieldDueDate formField, DateTime? dueDate)
 		{
 			formField.Value = dueDate;
 			return formField;
 		}
 
-		public static FormFieldDueDateTime WithValue(this FormFieldDueDateTime formField, DateTime dueDate)
+		public static FormFieldDueDateTime WithValue(this FormFieldDueDateTime formField, DateTime? dueDate)
 		{
 			formField.Value = dueDate;
 			return formField;
@@ -66,25 +66,25 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, int taskId)
+		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, int? taskId)
 		{
-			formField.Value = new FormLink { TaskId = taskId };
+			formField.Value = taskId.HasValue ?  new FormLink { TaskId = taskId } : null;
 			return formField;
 		}
 
-		public static FormFieldMoney WithValue(this FormFieldMoney formField, decimal money)
+		public static FormFieldMoney WithValue(this FormFieldMoney formField, decimal? money)
 		{
 			formField.Value = money;
 			return formField;
 		}
 
-		public static FormFieldMultipleChoice WithChoice(this FormFieldMultipleChoice formField, int choiceId)
+		public static FormFieldMultipleChoice WithChoice(this FormFieldMultipleChoice formField, int? choiceId)
 		{
 			formField.Value.ChoiceId = choiceId;
 			return formField;
 		}
 
-		public static FormFieldMultipleChoice WithValue(this FormFieldMultipleChoice formField, int choiceId, IEnumerable<FormField> fields)
+		public static FormFieldMultipleChoice WithValue(this FormFieldMultipleChoice formField, int? choiceId, IEnumerable<FormField> fields)
 		{
 			formField.Value.ChoiceId = choiceId;
 			formField.Value.Fields = fields?.ToList() ?? new List<FormField>();
@@ -161,7 +161,7 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldNumber WithValue(this FormFieldNumber formFiled, decimal number)
+		public static FormFieldNumber WithValue(this FormFieldNumber formFiled, decimal? number)
 		{
 			formFiled.Value = number;
 			return formFiled;
@@ -173,15 +173,15 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldPerson WithValue(this FormFieldPerson formField, int personId)
+		public static FormFieldPerson WithValue(this FormFieldPerson formField, int? personId)
 		{
-			formField.Value = new Person(personId);
+			formField.Value = personId.HasValue ? new Person(personId.Value) : null;
 			return formField;
 		}
 
 		public static FormFieldPerson WithValue(this FormFieldPerson formField, string email)
 		{
-			formField.Value = new Person(email);
+			formField.Value = !string.IsNullOrEmpty(email) ? new Person(email) : null;
 			return formField;
 		}
 
@@ -227,9 +227,9 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldTime WithValue(this FormFieldTime formField, DateTime time)
+		public static FormFieldTime WithValue(this FormFieldTime formField, DateTime? time)
 		{
-			formField.Value = time.ToString("HH:mm");
+			formField.Value = time?.ToString("HH:mm");
 			return formField;
 		}
 
