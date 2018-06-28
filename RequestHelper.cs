@@ -41,7 +41,8 @@ namespace PyrusApiClient
 							{
 								NullValueHandling = NullValueHandling.Ignore,
 								DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-								Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() }
+								Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
+								DefaultValueHandling = DefaultValueHandling.Ignore
 							}),
 						Encoding.UTF8, "application/json")))
 				{

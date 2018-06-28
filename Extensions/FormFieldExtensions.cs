@@ -121,15 +121,15 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, string guid)
+		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, string guid, int? rootId = null)
 		{
-			formField.Value = new List<NewFile> { new NewFile { Guid = guid } };
+			formField.Value = new List<NewFile> { new NewFile { Guid = guid, RootId = rootId } };
 			return formField;
 		}
 
-		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, Guid guid)
+		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, Guid guid, int? rootId = null)
 		{
-			formField.Value = new List<NewFile> { new NewFile{ Guid = guid.ToString() } };
+			formField.Value = new List<NewFile> { new NewFile{ Guid = guid.ToString(), RootId = rootId } };
 			return formField;
 		}
 
@@ -144,15 +144,15 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, string guid)
+		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, string guid, int? rootId = null)
 		{
-			formField.Value.Add(new NewFile { Guid = guid });
+			formField.Value.Add(new NewFile { Guid = guid, RootId = rootId });
 			return formField;
 		}
 
-		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, Guid guid)
+		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, Guid guid, int? rootId = null)
 		{
-			formField.Value.Add(new NewFile { Guid = guid.ToString() });
+			formField.Value.Add(new NewFile { Guid = guid.ToString(), RootId = rootId });
 			return formField;
 		}
 

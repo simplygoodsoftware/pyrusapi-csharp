@@ -30,25 +30,31 @@ namespace PyrusApiClient.Builders
 
 		public T AddAttachments(IEnumerable<Guid> attachments)
 		{
-			Task.Attachments.AddRange(attachments.Select(guid => guid.ToString()));
+			Task.Attachments.AddRange(attachments.Select(guid => new NewFile{ Guid = guid.ToString() }));
 			return (T)this;
 		}
 
 		public T AddAttachments(IEnumerable<string> attachments)
 		{
-			Task.Attachments.AddRange(attachments);
+			Task.Attachments.AddRange(attachments.Select(guid => new NewFile { Guid = guid}));
 			return (T)this;
 		}
 
-		public T AddAttachment(Guid guid)
+		public T AddAttachment(Guid guid, int? rootId = null)
 		{
-			Task.Attachments.Add(guid.ToString());
+			Task.Attachments.Add(new NewFile { Guid = guid.ToString(), RootId = rootId });
 			return (T)this;
 		}
 
-		public T AddAttachment(string guid)
+		public T AddAttachment(string guid, int? rootId = null)
 		{
-			Task.Attachments.Add(guid);
+			Task.Attachments.Add(new NewFile { Guid = guid, RootId = rootId });
+			return (T)this;
+		}
+
+		public T AddAttachment(NewFile file)
+		{
+			Task.Attachments.Add(file);
 			return (T)this;
 		}
 

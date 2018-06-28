@@ -38,7 +38,7 @@ namespace PyrusApiClient
 		public int? FormId { get; set; }
 
 		[JsonProperty("attachments")]
-		public List<string> Attachments { get; set; } = new List<string>();
+		public List<NewFile> Attachments { get; set; } = new List<NewFile>();
 
 		[JsonProperty("responsible")]
 		public Person Responsible { get; set; }
