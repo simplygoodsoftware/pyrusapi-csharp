@@ -20,7 +20,7 @@ namespace PyrusApiClient
 		public ActivityAction? Action { get; set; }
 
 		[JsonProperty("attachments")]
-		public List<string> Attachments { get; set; } = new List<string>();
+		public List<NewFile> Attachments { get; set; } = new List<NewFile>();
 
 		[JsonProperty("field_updates")]
 		public List<FormField> FieldUpdates { get; set; } = new List<FormField>();

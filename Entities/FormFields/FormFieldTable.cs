@@ -8,6 +8,11 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public List<TableRow> Value { get; set; } = new List<TableRow>();
+
+		public override string ToString()
+		{
+			return $"Name: {Name}, RowCount: {Value?.Count ?? 0}";
+		}
 	}
 
 	public class TableRow

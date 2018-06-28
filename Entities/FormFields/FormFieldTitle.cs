@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using PyrusApiClient.Extensions;
 
 namespace PyrusApiClient
 {
@@ -7,6 +9,11 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public Title Value { get; set; } = new Title();
+
+		public override string ToString()
+		{
+			return $"{Value?.GetAttribute<EnumMemberAttribute>().Value}";
+		}
 	}
 
 	public class Title
