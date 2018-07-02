@@ -19,5 +19,10 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
 		[JsonProperty("value")]
 		public DateTime? Value { get; set; }
+
+		public override string ToString()
+		{
+			return $"{Value?.ToString(Constants.DateTimeFormat)}";
+		}
 	}
 }

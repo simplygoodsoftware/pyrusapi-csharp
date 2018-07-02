@@ -6,5 +6,10 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public FormLink Value { get; set; }
+
+		public override string ToString()
+		{
+			return Value?.Subject ?? "";
+		}
 	}
 }

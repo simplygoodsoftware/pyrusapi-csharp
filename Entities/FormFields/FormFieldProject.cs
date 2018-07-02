@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace PyrusApiClient
@@ -7,6 +9,14 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public ProjectArray Value { get; set; }
+
+		public override string ToString()
+		{
+			
+			return Value?.Projects == null || Value.Projects.Count == 0
+				? ""
+				: String.Join(", ", Value.Projects.Select(p => p.Name));
+		}
 	}
 
 	public class ProjectArray

@@ -6,5 +6,12 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public Person Value { get; set; }
+
+		public override string ToString()
+		{
+			return Value == null 
+				? ""
+				: $"{Value.FirstName} {Value.LastName}";
+		}
 	}
 }

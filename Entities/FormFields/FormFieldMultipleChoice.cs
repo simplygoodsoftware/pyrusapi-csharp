@@ -7,6 +7,11 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public MultipleChoice Value { get; set; } = new MultipleChoice();
+
+		public override string ToString()
+		{
+			return Value?.ChoiceId?.ToString() ?? "";
+		}
 	}
 
 	public class MultipleChoice

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace PyrusApiClient
@@ -7,6 +8,13 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("value")]
 		public Catalog Value { get; set; }
+
+		public override string ToString()
+		{
+			return Value?.Values == null || Value.Values.Count == 0
+				? ""
+				: String.Join(", ", Value.Values);
+		}
 	}
 
 	public class Catalog
