@@ -80,6 +80,9 @@ namespace PyrusApiClient
 		public int? ApprovalStep { get; set; }
 
 		[JsonProperty("comment_as_roles")]
-		public Role[] CommentAsRoles { get; set; }
+		public List<Role> CommentAsRoles { get; set; }
+
+		[JsonProperty("changed_step")]
+		public int? ChangedStep { get; set; }
 	}
 }
