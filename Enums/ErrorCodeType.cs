@@ -169,6 +169,12 @@ namespace PyrusApiClient
 		[EnumMember(Value = "task_limit_exceeded")]
 		TaskLimitExceeded = 246,
 
+		[EnumMember(Value = "field_is_in_table")]
+		FieldIsInTable = 247,
+
+		[EnumMember(Value = "required_table_field_missing")]
+		RequiredTableFieldMissing = 248,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
