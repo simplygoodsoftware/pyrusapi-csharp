@@ -16,6 +16,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("fields")]
 		public List<FormField> Fields { get; set; }
+
+		[JsonProperty("print_forms")]
+		public List<PrintForm> PrintForms { get; set; }
 	}
 }
  
