@@ -17,6 +17,14 @@ namespace PyrusApiClient
 {
 	internal class RequestHelper
 	{
+
+		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
+		{
+			NullValueHandling = NullValueHandling.Ignore,
+			DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+			Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
+		};
+		
 		public PyrusClient PyrusClient { get; set; }
 
 		public RequestHelper(PyrusClient cient)
@@ -37,12 +45,25 @@ namespace PyrusApiClient
 				using (var response = await httpClient.PostAsync(url,
 					new StringContent(
 						JsonConvert.SerializeObject(request,
-							new JsonSerializerSettings
-							{
-								NullValueHandling = NullValueHandling.Ignore,
-								DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-								Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
-							}),
+							JsonSerializerSettings
+							),
+						Encoding.UTF8, "application/json")))
+				{
+					var message = await response.Content.ReadAsStringAsync();
+					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode };
+				}
+			}
+		}
+
+		internal async Task<MessageWithStatusCode> PutRequest(string url, object request, string token = null)
+		{
+			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			{
+				SetHeaders(httpClient, token, UserAgent);
+				using (var response = await httpClient.PutAsync(url,
+					new StringContent(
+						JsonConvert.SerializeObject(request,
+							JsonSerializerSettings),
 						Encoding.UTF8, "application/json")))
 				{
 					var message = await response.Content.ReadAsStringAsync();

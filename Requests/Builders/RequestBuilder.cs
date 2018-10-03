@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
@@ -93,6 +94,18 @@ namespace Pyrus.ApiClient.Requests.Builders
 		{
 			return new UploadRequestBuilder(fileStream, fileName);
 		}
+
+		public static UpdateCatalogRequestBuilder UpdateCatalog(int catalogId)
+		{
+			return new UpdateCatalogRequestBuilder(catalogId);
+		}
+
+		public static CreateCatalogRequestBuilder CreateCatalog(string name)
+		{
+			return new CreateCatalogRequestBuilder(name);
+		}
+
+		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
 		{
@@ -192,5 +205,17 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 			return await client.UploadFile(builder.FilePath);
 		}
+
+		public static async Task<UpdateCatalogResponse> Process(this UpdateCatalogRequestBuilder builder, PyrusClient client)
+		{
+			return await client.UpdateCatalog(builder.CatalogId, builder);
+		}
+
+		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
+		{
+			return await client.CreateCatalog(builder);
+		}
+
+		#endregion
 	}
 }
