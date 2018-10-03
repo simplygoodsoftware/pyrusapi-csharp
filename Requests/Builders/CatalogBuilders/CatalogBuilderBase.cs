@@ -17,6 +17,12 @@ namespace PyrusApiClient.Builders
 			return (T)this;
 		}
 
+		public T WithHeaders(params string[] headers)
+		{
+			Request.CatalogHeaders = headers.ToList();
+			return (T)this;
+		}
+
 		public T AddHeader(string header)
 		{
 			Request.CatalogHeaders.Add(header);
@@ -44,6 +50,12 @@ namespace PyrusApiClient.Builders
 		public T AddItem(IEnumerable<string> values)
 		{
 			Request.Items.Add(new CatalogItem{Values = values.ToList()});
+			return (T)this;
+		}
+
+		public T AddItem(params string[] values)
+		{
+			Request.Items.Add(new CatalogItem { Values = values.ToList() });
 			return (T)this;
 		}
 
