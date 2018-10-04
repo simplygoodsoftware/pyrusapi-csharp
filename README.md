@@ -149,7 +149,7 @@ var updateCatalogResponse = await RequestBuilder
 * Get all available contacts
 
 ```csharp
-var contactsResponse = await pyrusClient.GetContacts();
+var contactsResponse = await RequestBuilder.GetContacts().Process(pyrusClient);
 ```
 
 ## Lists
@@ -157,12 +157,12 @@ var contactsResponse = await pyrusClient.GetContacts();
 * Get all lists
 
 ```csharp
-var listsResponse = await pyrusClient.GetLists();
+var listsResponse = await RequestBuilder.GetLists().Process(pyrusClient);
 ```
 
 * Get all tasks in list
 
 ```csharp
 var listId = 1322
-var taskListResponse = await pyrusClient.GetTaskList(listId, maxTasksCount: 25, includeArchived:true);
+var taskListResponse = await RequestBuilder.GetTaskList(listId, maxItemCount: 25, includeArchived:true).Process(pyrusClient);
 ```
