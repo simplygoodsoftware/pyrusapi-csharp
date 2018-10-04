@@ -11,13 +11,13 @@ namespace PyrusApiClient.Builders
 			Request = request;
 		}
 
-		public T WithHeaders(IEnumerable<string> headers)
+		public T SetHeaders(IEnumerable<string> headers)
 		{
 			Request.CatalogHeaders = headers.ToList();
 			return (T)this;
 		}
 
-		public T WithHeaders(params string[] headers)
+		public T SetHeaders(params string[] headers)
 		{
 			Request.CatalogHeaders = headers.ToList();
 			return (T)this;
@@ -70,13 +70,13 @@ namespace PyrusApiClient.Builders
 			return (T)this;
 		}
 
-		public T WithItems(IEnumerable<CatalogItem> items)
+		public T SetItems(IEnumerable<CatalogItem> items)
 		{
 			Request.Items = items.ToList();
 			return (T)this;
 		}
 
-		public T WithItems(IEnumerable<IEnumerable<string>> items)
+		public T SetItems(IEnumerable<IEnumerable<string>> items)
 		{
 			Request.Items = items.Select(i => new CatalogItem { Values = i.ToList() }).ToList();
 			return (T)this;

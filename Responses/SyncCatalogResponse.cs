@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-	public class UpdateCatalogResponse : ResponseBase
+	public class SyncCatalogResponse : ResponseBase
 	{
 		[JsonProperty(PropertyName = "apply")]
 		public bool Apply { get; set; }

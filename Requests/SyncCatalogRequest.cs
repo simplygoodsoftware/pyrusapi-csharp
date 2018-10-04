@@ -2,7 +2,7 @@
 
 namespace PyrusApiClient
 {
-	public class UpdateCatalogRequest : CatalogRequestBase
+	public class SyncCatalogRequest : CatalogRequestBase
 	{
 		[JsonProperty(PropertyName = "apply")]
 		public bool Apply { get; set; }

@@ -95,9 +95,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new UploadRequestBuilder(fileStream, fileName);
 		}
 
-		public static UpdateCatalogRequestBuilder UpdateCatalog(int catalogId)
+		public static SyncCatalogRequestBuilder SyncCatalog(int catalogId)
 		{
-			return new UpdateCatalogRequestBuilder(catalogId);
+			return new SyncCatalogRequestBuilder(catalogId);
 		}
 
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
@@ -206,9 +206,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.UploadFile(builder.FilePath);
 		}
 
-		public static async Task<UpdateCatalogResponse> Process(this UpdateCatalogRequestBuilder builder, PyrusClient client)
+		public static async Task<SyncCatalogResponse> Process(this SyncCatalogRequestBuilder builder, PyrusClient client)
 		{
-			return await client.UpdateCatalog(builder.CatalogId, builder);
+			return await client.SyncCatalog(builder.CatalogId, builder);
 		}
 
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)

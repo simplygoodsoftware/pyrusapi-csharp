@@ -137,13 +137,13 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<UpdateCatalogResponse> UpdateCatalog(int catalogId, UpdateCatalogRequest request, string accessToken = null)
+		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
 		{
 			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await RequestHelper.RunQuery<UpdateCatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await RequestHelper.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
 			return response;
 		}
 
