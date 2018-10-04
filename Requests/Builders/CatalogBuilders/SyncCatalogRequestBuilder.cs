@@ -21,9 +21,9 @@
 			return ucrb.Request as SyncCatalogRequest;
 		}
 
-		public SyncCatalogRequestBuilder ApplyChanges(bool apply)
+		public SyncCatalogRequestBuilder ApplyChanges()
 		{
-			((SyncCatalogRequest)Request).Apply = apply;
+			((SyncCatalogRequest)Request).Apply = true;
 			return this;
 		}
 	}
