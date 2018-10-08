@@ -156,10 +156,10 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "form_template_cant_be_removed_from_task")]
 		FormTemplateCantBeRemovedFromTask = 242,
-		
+
 		[EnumMember(Value = "too_many_task_steps")]
 		TooManyTaskSteps = 243,
-		
+
 		[EnumMember(Value = "too_many_comments")]
 		TooManyComments = 244,
 
@@ -174,6 +174,33 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "required_table_field_missing")]
 		RequiredTableFieldMissing = 248,
+
+		[EnumMember(Value = "department_catalog_can_not_be_modified")]
+		DepartmentCatalogCanNotBeModified = 249,
+
+		[EnumMember(Value = "catalog_duplicate_rows")]
+		CatalogDuplicateItems = 250,
+
+		[EnumMember(Value = "empty_catalog_headers")]
+		EmptyCatalogHeaders = 251,
+
+		[EnumMember(Value = "can_not_modify_deleted_catalog")]
+		CanNotModifyDeletedCatalog = 252,
+
+		[EnumMember(Value = "catalog_duplicate_headers")]
+		CatalogDuplicateHeaders = 253,
+
+		[EnumMember(Value = "can_not_modify_first_column")]
+		CanNotModifyFirstColumn = 254,
+
+		[EnumMember(Value = "catalog_headers_items_mismatch")]
+		CatalogHeadersItemsMismatch = 255,
+
+		[EnumMember(Value = "too_many_catalog_items")]
+		TooManyCatalogItems = 256,
+
+		[EnumMember(Value = "catalog_item_max_length_exceeded")]
+		CatalogItemMaxLengthExceeded = 257,
 
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]

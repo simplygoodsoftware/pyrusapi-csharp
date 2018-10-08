@@ -10,5 +10,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("items")]
 		public List<CatalogItem> Items { get; set; }
+
+		[JsonProperty("catalog_headers")]
+		public List<CatalogHeader> Headers { get; set; }
 	}
 }

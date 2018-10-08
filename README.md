@@ -42,7 +42,7 @@ Now you're ready to use other API methods.
 * Get all form templates
   
 ```csharp
-var formsResponse = await pyrusClient.GetForms();
+var formsResponse = await RequestBuilder.GetForms().Process(pyrusClient);
 var forms = formsResponse.Forms;
 ```
 
@@ -67,7 +67,7 @@ var tasks = formRegisterResponse.Tasks;
 
 ```csharp
 var taskId = 15353;
-var taskResponse = await pyrusClient.GetTask(taskId);
+var taskResponse = await RequestBuilder.GetTask(taskId).Process(pyrusClient);;
 var task = taskResponse.Task;
 ```
 
@@ -104,7 +104,7 @@ var taskResponse = await RequestBuilder
 
 ```csharp
 var fileName = @"C:\path\to\file";
-var fileResponse = await pyrusClient.UploadFile(fileName);
+var fileResponse = await RequestBuilder.UploadFile(fileName).Process(pyrusClient);
 var fileId = fileResponse.Guid;
 ```
 
@@ -114,8 +114,34 @@ var fileId = fileResponse.Guid;
 
 ```csharp
 var catalogId = 1525;
-var catalogResponse = await pyrusClient.GetCatalog(catalogId);
+var catalogResponse = await RequestBuilder.GetCatalog(catalogId).Process(pyrusClient);
 var items = catalogResponse.Items;
+```
+
+* Create catalog
+
+```csharp
+var catalogResponse = await RequestBuilder
+	.CreateCatalog("NewCatalog")
+	.SetHeaders("Header1", "Header2")
+	.AddItem("A1", "A2")
+	.AddItem("B1", "B2")
+	.Process(pyrusClient);
+	
+var catalogId = catalogResponse.CatalogId;
+```
+
+* Sync catalog (All unspecified catalog items and text columns will be deleted)
+
+```csharp
+var catalogId = 1236
+var updateCatalogResponse = await RequestBuilder
+	.SyncCatalog(catalogId)
+	.SetHeaders("Header1", "Header3")
+	.AddItem("A1", "A3")
+	.AddItem("C1", "C2")
+	.ApplyChanges()
+	.Process(pyrusClient);
 ```
 
 ## Contacts
@@ -123,7 +149,7 @@ var items = catalogResponse.Items;
 * Get all available contacts
 
 ```csharp
-var contactsResponse = await pyrusClient.GetContacts();
+var contactsResponse = await RequestBuilder.GetContacts().Process(pyrusClient);
 ```
 
 ## Lists
@@ -131,12 +157,12 @@ var contactsResponse = await pyrusClient.GetContacts();
 * Get all lists
 
 ```csharp
-var listsResponse = await pyrusClient.GetLists();
+var listsResponse = await RequestBuilder.GetLists().Process(pyrusClient);
 ```
 
 * Get all tasks in list
 
 ```csharp
 var listId = 1322
-var taskListResponse = await pyrusClient.GetTaskList(listId, maxTasksCount: 25, includeArchived:true);
+var taskListResponse = await RequestBuilder.GetTaskList(listId, maxItemCount: 25, includeArchived:true).Process(pyrusClient);
 ```

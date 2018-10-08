@@ -137,6 +137,26 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			return response;
+		}
+
+		public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + CatalogsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await RequestHelper.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			return response;
+		}
+
 		public async Task<ContactsResponse> GetContacts(string accessToken = null)
 		{
 			var url = Settings.Origin + ContactsEndpoint;
