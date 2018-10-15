@@ -30,6 +30,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("cells")]
 		public List<FormField> Cells { get; set; }
+
+		[JsonProperty("delete")]
+		internal bool Delete { get; set; }
 	}
 
 }
