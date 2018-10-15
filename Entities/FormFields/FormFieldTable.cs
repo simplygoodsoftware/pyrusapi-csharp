@@ -22,7 +22,7 @@ namespace PyrusApiClient
 		public TableRow(int rowId, IEnumerable<FormField> cells)
 		{
 			RowId = rowId;
-			Cells = cells.ToList();
+			Cells = cells?.ToList() ?? new List<FormField>();
 		}
 
 		[JsonProperty("row_id")]

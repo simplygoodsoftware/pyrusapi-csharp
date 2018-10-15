@@ -206,7 +206,7 @@ namespace PyrusApiClient
 
 		public static FormFieldTable DeleteRow(this FormFieldTable formField, int rowId)
 		{
-			formField.Value.Add(new TableRow(rowId, null) { Delete = true });
+			formField.Value.Add(new TableRow { RowId = rowId, Delete = true });
 			return formField;
 		}
 
@@ -241,7 +241,7 @@ namespace PyrusApiClient
 
 		public static FormFieldTable DeleteRows(this FormFieldTable formField, IEnumerable<int> rowIds)
 		{
-			formField.Value.AddRange(rowIds.Select(id => new TableRow(id, null) { Delete = true }));
+			formField.Value.AddRange(rowIds.Select(id => new TableRow { RowId = id, Delete = true }));
 			return formField;
 		}
 
