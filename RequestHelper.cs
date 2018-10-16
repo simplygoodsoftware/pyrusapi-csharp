@@ -23,6 +23,7 @@ namespace PyrusApiClient
 			NullValueHandling = NullValueHandling.Ignore,
 			DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
 			Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
+			ContractResolver = ShouldSerializeListContractResolver.Instance
 		};
 		
 		public PyrusClient PyrusClient { get; set; }
