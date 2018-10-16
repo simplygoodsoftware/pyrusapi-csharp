@@ -32,7 +32,7 @@ namespace PyrusApiClient
 		public List<FormField> Cells { get; set; }
 
 		[JsonProperty("delete", DefaultValueHandling = DefaultValueHandling.Ignore)]
-		internal bool Delete { get; set; }
+		public bool Delete { get; set; }
 	}
 
 }
