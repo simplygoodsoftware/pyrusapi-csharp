@@ -122,5 +122,11 @@ namespace PyrusApiClient.Builders
 			Comment.CancelSchedule = true;
 			return this;
 		}
+
+		public SimpleTaskCommentBuilder SetSubject(string subject)
+		{
+			Comment.Subject = subject;
+			return this;
+		}
 	}
 }
