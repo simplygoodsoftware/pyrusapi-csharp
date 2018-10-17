@@ -22,7 +22,7 @@ namespace PyrusApiClient
 		public TableRow(int rowId, IEnumerable<FormField> cells)
 		{
 			RowId = rowId;
-			Cells = cells.ToList();
+			Cells = cells?.ToList() ?? new List<FormField>();
 		}
 
 		[JsonProperty("row_id")]
@@ -30,6 +30,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("cells")]
 		public List<FormField> Cells { get; set; }
+
+		[JsonProperty("delete", DefaultValueHandling = DefaultValueHandling.Ignore)]
+		public bool Delete { get; set; }
 	}
 
 }

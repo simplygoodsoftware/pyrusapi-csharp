@@ -51,5 +51,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("last_note_id")]
 		public int? LastNoteId { get; set; }
+
+		[JsonProperty("subject")]
+		public string Subject { get; set; }
 	}
 }
