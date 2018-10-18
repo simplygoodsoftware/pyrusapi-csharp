@@ -72,26 +72,16 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, params int[] taskIds)
+		public static FormFieldFormLink WithTaskIds(this FormFieldFormLink formField, params int[] taskIds)
 		{
 			formField.Value = taskIds?.Length > 0 ? new FormLink { TaskIds = taskIds } : null;
 			return formField;
-		}
-
-		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, IEnumerable<int> taskIds)
-		{
-			return formField.WithValue(taskIds?.ToArray());
 		}
 
 		public static FormFieldMoney WithValue(this FormFieldMoney formField, decimal? money)
 		{
 			formField.Value = money;
 			return formField;
-		}
-
-		public static FormFieldMultipleChoice WithChoices(this FormFieldMultipleChoice formField, IEnumerable<int> choiceIds)
-		{
-			return formField.WithValue(choiceIds, null);
 		}
 
 		public static FormFieldMultipleChoice WithChoices(this FormFieldMultipleChoice formField, params int[] choiceIds)
