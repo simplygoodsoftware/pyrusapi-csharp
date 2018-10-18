@@ -68,8 +68,19 @@ namespace PyrusApiClient
 
 		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, int? taskId)
 		{
-			formField.Value = taskId.HasValue ?  new FormLink { TaskId = taskId } : null;
+			formField.Value = taskId.HasValue ?  new FormLink { TaskIds = new [] { taskId.Value } } : null;
 			return formField;
+		}
+
+		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, params int[] taskIds)
+		{
+			formField.Value = taskIds?.Length > 0 ? new FormLink { TaskIds = taskIds } : null;
+			return formField;
+		}
+
+		public static FormFieldFormLink WithValue(this FormFieldFormLink formField, IEnumerable<int> taskIds)
+		{
+			return formField.WithValue(taskIds?.ToArray());
 		}
 
 		public static FormFieldMoney WithValue(this FormFieldMoney formField, decimal? money)
@@ -78,15 +89,31 @@ namespace PyrusApiClient
 			return formField;
 		}
 
+		public static FormFieldMultipleChoice WithChoices(this FormFieldMultipleChoice formField, IEnumerable<int> choiceIds)
+		{
+			return formField.WithValue(choiceIds, null);
+		}
+
+		public static FormFieldMultipleChoice WithChoices(this FormFieldMultipleChoice formField, params int[] choiceIds)
+		{
+			return formField.WithValue(choiceIds, null);
+		}
+
+		public static FormFieldMultipleChoice WithValue(this FormFieldMultipleChoice formField, IEnumerable<int> choiceIds, IEnumerable<FormField> fields)
+		{
+			formField.Value.ChoiceIds = choiceIds?.ToArray();
+			formField.Value.Fields = fields?.ToList() ?? new List<FormField>();
+			return formField;
+		}
+
 		public static FormFieldMultipleChoice WithChoice(this FormFieldMultipleChoice formField, int? choiceId)
 		{
-			formField.Value.ChoiceId = choiceId;
-			return formField;
+			return formField.WithValue(choiceId, null);
 		}
 
 		public static FormFieldMultipleChoice WithValue(this FormFieldMultipleChoice formField, int? choiceId, IEnumerable<FormField> fields)
 		{
-			formField.Value.ChoiceId = choiceId;
+			formField.Value.ChoiceIds = choiceId.HasValue ? new[] { choiceId.Value } : null;
 			formField.Value.Fields = fields?.ToList() ?? new List<FormField>();
 			return formField;
 		}
