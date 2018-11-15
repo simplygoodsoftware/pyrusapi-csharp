@@ -50,7 +50,7 @@ namespace Pyrus.ApiClient.JsonConverters
 				return obj.ToObject<FormFieldCreateDate>();
 
 			if (formFieldType == FormFieldType.MultipleChoice.GetAttribute<EnumMemberAttribute>().Value)
-				return obj.ToObject<FormFieldMultipleChoice>();
+				return obj.ToObject<FormFieldMultipleChoice>(serializer);
 
 			if (formFieldType == FormFieldType.DueDate.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldDueDate>();
