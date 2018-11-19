@@ -202,6 +202,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "catalog_item_max_length_exceeded")]
 		CatalogItemMaxLengthExceeded = 257,
 
+		[EnumMember(Value = "single_value_is_not_supported")]
+		SingleValueIsNotSupported = 258,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
