@@ -24,6 +24,12 @@ namespace PyrusApiClient.Builders
 			return AddApproval(approval);
 		}
 
+		public FormTaskBuilder FillDefaults()
+		{
+			Task.FillDefaults = true;
+			return this;
+		}
+
 		public FormTaskBuilder AddApproval(string email, int step = 1)
 		{
 			var approval = new Approval { Step = step, Person = new Person { Email = email } };
