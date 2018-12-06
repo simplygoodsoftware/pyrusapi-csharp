@@ -205,6 +205,15 @@ namespace PyrusApiClient
 		[EnumMember(Value = "single_value_is_not_supported")]
 		SingleValueIsNotSupported = 258,
 
+		[EnumMember(Value = "participant_limit_exceeded")]
+		ParticipantLimitExceeded = 259,
+
+		[EnumMember(Value = "table_rows_limit_exceeded")]
+		TableRowsLimitExceeded = 260,
+
+		[EnumMember(Value = "text_field_value_limit_exceeded")]
+		TextFieldValueLimitExceeded = 261,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,

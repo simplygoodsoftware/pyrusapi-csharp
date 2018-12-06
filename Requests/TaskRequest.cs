@@ -54,5 +54,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("list_ids")]
 		public List<int> ListIds { get; set; } = new List<int>();
+
+		[JsonProperty("fill_defaults")]
+		public bool FillDefaults { get; set; }
 	}
 }
