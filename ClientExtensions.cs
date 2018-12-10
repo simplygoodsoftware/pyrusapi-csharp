@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -27,7 +25,7 @@ namespace Pyrus.ApiClient
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
-						return (await CreateCsvResponse(res)) as TResponse;
+						return new FormRegisterResponse { Csv = res.Message } as TResponse;
 
 					result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					if (result == null)
@@ -53,18 +51,6 @@ namespace Pyrus.ApiClient
 			catch (Exception e)
 			{
 				throw new PyrusApiClientException(e.Message, e);
-			}
-		}
-
-		private static async Task<FormRegisterResponse> CreateCsvResponse(MessageWithStatusCode res)
-		{
-			using (var reader = new StreamReader(res.Content, res.Encoding))
-			{
-				var csv = await reader.ReadToEndAsync();
-				return new FormRegisterResponse
-				{
-					Csv = csv
-				};
 			}
 		}
 
