@@ -33,10 +33,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			writer.WriteStartObject();
 
 			if (request.IncludeArchived == true)
-			{
-				writer.WritePropertyName(JsonNames[nameof(request.IncludeArchived)]);
-				serializer.Serialize(writer, "y");
-			}
+				WriteCustomBool(writer, serializer, nameof(request.IncludeArchived));
 
 			if (request.Steps != null && request.Steps.Count != 0)
 			{
@@ -46,28 +43,64 @@ namespace Pyrus.ApiClient.JsonConverters
 			}
 
 			if (request.Filters != null && request.Filters.Count != 0)
-			{
-				foreach (var filter in request.Filters)
-				{
-					writer.WritePropertyName($"fld{filter.FieldId}");
-					var filterValue = GetFilterValue(filter.OperatorId, filter.Values);
-					serializer.Serialize(writer, filterValue);
-				}
-			}
+				WriteFilters(writer, serializer, request);
 
 			if (request.ModifiedBefore.HasValue)
-			{
-				writer.WritePropertyName(JsonNames[nameof(request.ModifiedBefore)]);
-				writer.WriteValue(request.ModifiedBefore.Value.ToUniversalTime().ToString(Constants.DateTimeFormat));
-			}
+				WriteDate(writer, nameof(request.ModifiedBefore), request.ModifiedBefore.Value);
 
 			if (request.ModifiedAfter.HasValue)
+				WriteDate(writer, nameof(request.ModifiedAfter), request.ModifiedAfter.Value);
+
+			if (request.ResponseFormat == ResponseFormat.Csv)
 			{
-				writer.WritePropertyName(JsonNames[nameof(request.ModifiedAfter)]);
-				writer.WriteValue(request.ModifiedAfter.Value.ToUniversalTime().ToString(Constants.DateTimeFormat));
+				writer.WritePropertyName(JsonNames[nameof(request.ResponseFormat)]);
+				writer.WriteValue("csv");
+			}
+
+			if (!string.IsNullOrEmpty(request.Delimiter))
+				WriteString(writer, nameof(request.Delimiter), request.Delimiter);
+
+			if (request.SimpleFormat)
+				WriteCustomBool(writer, serializer, nameof(request.IncludeArchived));
+
+			if (!string.IsNullOrEmpty(request.Encoding))
+				WriteString(writer, nameof(request.Encoding), request.Encoding);
+
+			if (request.FieldIds?.Count > 0)
+			{
+				writer.WritePropertyName(JsonNames[nameof(request.FieldIds)]);
+				writer.WriteValue(request.FieldIds);
 			}
 
 			writer.WriteEndObject();
+		}
+
+		private static void WriteCustomBool(JsonWriter writer, JsonSerializer serializer, string propertyName)
+		{
+			writer.WritePropertyName(JsonNames[propertyName]);
+			serializer.Serialize(writer, "y");
+		}
+
+		private static void WriteString(JsonWriter writer, string propertyName, string propertyValue)
+		{
+			writer.WritePropertyName(JsonNames[propertyName]);
+			writer.WriteValue(propertyValue);
+		}
+
+		private static void WriteDate(JsonWriter writer, string propertyName, DateTime propertyValue)
+		{
+			writer.WritePropertyName(JsonNames[propertyName]);
+			writer.WriteValue(propertyValue.ToUniversalTime().ToString(Constants.DateTimeFormat));
+		}
+
+		private void WriteFilters(JsonWriter writer, JsonSerializer serializer, FormRegisterRequest request)
+		{
+			foreach (var filter in request.Filters)
+			{
+				writer.WritePropertyName($"fld{filter.FieldId}");
+				var filterValue = GetFilterValue(filter.OperatorId, filter.Values);
+				serializer.Serialize(writer, filterValue);
+			}
 		}
 
 		private string GetFilterValue(OperatorId operatorId, string[] values)
@@ -106,7 +139,6 @@ namespace Pyrus.ApiClient.JsonConverters
 					return null;
 			}
 		}
-
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{

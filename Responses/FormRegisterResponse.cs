@@ -7,5 +7,7 @@ namespace PyrusApiClient
 	{
 		[JsonProperty("tasks")]
 		public List<Task> Tasks { get; set; }
+
+		public string Csv { get; set; }
 	}
 }
