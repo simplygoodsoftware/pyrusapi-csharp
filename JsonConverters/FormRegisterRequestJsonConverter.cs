@@ -35,7 +35,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (request.IncludeArchived == true)
 				WriteCustomBool(writer, serializer, nameof(request.IncludeArchived));
 
-			if (request.Steps != null && request.Steps.Count != 0)
+			if (request.Steps?.Count > 0)
 			{
 				var steps = string.Join(",", request.Steps);
 				writer.WritePropertyName(JsonNames[nameof(request.Steps)]);
@@ -68,8 +68,9 @@ namespace Pyrus.ApiClient.JsonConverters
 
 			if (request.FieldIds?.Count > 0)
 			{
+				var fieldIds = string.Join(",", request.FieldIds);
 				writer.WritePropertyName(JsonNames[nameof(request.FieldIds)]);
-				writer.WriteValue(request.FieldIds);
+				serializer.Serialize(writer, fieldIds);
 			}
 
 			writer.WriteEndObject();
