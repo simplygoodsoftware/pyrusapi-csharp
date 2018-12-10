@@ -61,7 +61,7 @@ namespace Pyrus.ApiClient.JsonConverters
 				WriteString(writer, nameof(request.Delimiter), request.Delimiter);
 
 			if (request.SimpleFormat)
-				WriteCustomBool(writer, serializer, nameof(request.IncludeArchived));
+				WriteCustomBool(writer, serializer, nameof(request.SimpleFormat));
 
 			if (!string.IsNullOrEmpty(request.Encoding))
 				WriteString(writer, nameof(request.Encoding), request.Encoding);
