@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PyrusApiClient.Builders
 {
@@ -52,6 +53,18 @@ namespace PyrusApiClient.Builders
 		public FormRegisterRequestBuilder ModifiedAfter(DateTime dateTime)
 		{
 			_formRegisterRequest.ModifiedAfter = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder WithFields(IEnumerable<int> fieldIds)
+		{
+			_formRegisterRequest.FieldIds = fieldIds.ToList();
+			return this;
+		}
+
+		public FormRegisterRequestBuilder WithFields(params int[] fieldIds)
+		{
+			_formRegisterRequest.FieldIds = fieldIds.ToList();
 			return this;
 		}
 

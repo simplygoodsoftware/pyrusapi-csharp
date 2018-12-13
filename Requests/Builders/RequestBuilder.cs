@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
@@ -216,6 +219,38 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.CreateCatalog(builder);
 		}
 
+		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
+		{
+			var csvResult = await ProcessToCsv(builder, client, settings);
+			System.IO.File.WriteAllText(filePath, csvResult.Csv, settings?.Encoding ?? Encoding.UTF8);
+			return csvResult.Success;
+		}
+
+		public static async Task<CsvResponse> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, CsvSettings settings = null)
+		{
+			FormRegisterRequest request = builder;
+			request.Encoding = settings?.Encoding?.EncodingName;
+			request.Delimiter = settings?.Delimiter;
+			request.SimpleFormat = settings?.SimpleFormat ?? false;
+			request.ResponseFormat = ResponseFormat.Csv;
+			var response = await client.GetRegistry(builder.FormId, request);
+			if (response?.ErrorCode != null)
+				return new CsvResponse
+				{
+					Csv = $"Unexpected error occured: {JsonConvert.SerializeObject(response)}",
+					Success = false
+				};
+
+			return new CsvResponse { Csv = response?.Csv, Success = true };
+		}
+
 		#endregion
+	}
+
+	public class CsvSettings
+	{
+		public Encoding Encoding { get; set; }
+		public string Delimiter { get; set; }
+		public bool SimpleFormat { get; set; }
 	}
 }

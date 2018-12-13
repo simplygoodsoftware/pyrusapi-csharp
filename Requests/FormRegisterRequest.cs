@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
@@ -21,5 +20,20 @@ namespace PyrusApiClient
 
 		[JsonProperty("filters")]
 		public List<FormFilter> Filters { get; set; } = new List<FormFilter>();
+
+		[JsonProperty("format")]
+		public ResponseFormat ResponseFormat { get; set; }
+
+		[JsonProperty("delimiter")]
+		public string Delimiter { get; set; }
+
+		[JsonProperty("simple_format")]
+		public bool SimpleFormat { get; set; }
+
+		[JsonProperty("encoding")]
+		public string Encoding { get; set; }
+
+		[JsonProperty("field_ids")]
+		public List<int> FieldIds { get; set; }
 	}
 }
