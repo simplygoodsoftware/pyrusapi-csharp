@@ -222,9 +222,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
 			var csvResult = await ProcessToCsv(builder, client, settings);
-			if (csvResult.Success)
-				System.IO.File.WriteAllText(filePath, csvResult.Csv, settings?.Encoding ?? Encoding.UTF8);
-
+			System.IO.File.WriteAllText(filePath, csvResult.Csv, settings?.Encoding ?? Encoding.UTF8);
 			return csvResult.Success;
 		}
 
