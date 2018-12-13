@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
@@ -218,20 +219,30 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.CreateCatalog(builder);
 		}
 
-		public static async System.Threading.Tasks.Task ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
+		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
-			var csv = await ProcessToCsv(builder, client, settings);
-			System.IO.File.WriteAllText(filePath, csv, settings?.Encoding ?? Encoding.UTF8);
+			var csvResult = await ProcessToCsv(builder, client, settings);
+			if (csvResult.Success)
+				System.IO.File.WriteAllText(filePath, csvResult.Csv, settings?.Encoding ?? Encoding.UTF8);
+
+			return csvResult.Success;
 		}
 
-		public static async Task<string> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, CsvSettings settings = null)
+		public static async Task<CsvResponse> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, CsvSettings settings = null)
 		{
 			FormRegisterRequest request = builder;
 			request.Encoding = settings?.Encoding?.EncodingName;
 			request.Delimiter = settings?.Delimiter;
 			request.SimpleFormat = settings?.SimpleFormat ?? false;
 			var response = await client.GetRegistry(builder.FormId, request);
-			return response?.Csv;
+			if (response?.ErrorCode != null)
+				return new CsvResponse
+				{
+					Csv = $"Unexpected error occured: {JsonConvert.SerializeObject(response)}",
+					Success = false
+				};
+
+			return new CsvResponse { Csv = response?.Csv, Success = true };
 		}
 
 		#endregion
