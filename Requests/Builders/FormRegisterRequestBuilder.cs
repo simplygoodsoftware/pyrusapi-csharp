@@ -56,36 +56,6 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormRegisterRequestBuilder AsCsv()
-		{
-			_formRegisterRequest.ResponseFormat = ResponseFormat.Csv;
-			return this;
-		}
-
-		public FormRegisterRequestBuilder WithDelimiter(string delimiter)
-		{
-			_formRegisterRequest.Delimiter = delimiter;
-			return this;
-		}
-
-		public FormRegisterRequestBuilder InSimpleFormat()
-		{
-			_formRegisterRequest.SimpleFormat = true;
-			return this;
-		}
-
-		public FormRegisterRequestBuilder WithEncoding(string encoding)
-		{
-			_formRegisterRequest.Encoding = encoding;
-			return this;
-		}
-
-		public FormRegisterRequestBuilder WithEncoding(Encoding encoding)
-		{
-			_formRegisterRequest.Encoding = encoding.EncodingName;
-			return this;
-		}
-
 		public FormRegisterRequestBuilder WithFields(IEnumerable<int> fieldIds)
 		{
 			_formRegisterRequest.FieldIds = fieldIds.ToList();
