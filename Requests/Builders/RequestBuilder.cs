@@ -234,6 +234,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			request.Encoding = settings?.Encoding?.EncodingName;
 			request.Delimiter = settings?.Delimiter;
 			request.SimpleFormat = settings?.SimpleFormat ?? false;
+			request.ResponseFormat = ResponseFormat.Csv;
 			var response = await client.GetRegistry(builder.FormId, request);
 			if (response?.ErrorCode != null)
 				return new CsvResponse
