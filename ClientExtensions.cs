@@ -21,7 +21,7 @@ namespace Pyrus.ApiClient
 					var res = await action();
 					if (res == null)
 						continue;
-
+					
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
@@ -62,7 +62,7 @@ namespace Pyrus.ApiClient
 				FileName = res.FileName
 			};
 
-			if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound)
+			if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound || res.StatusCode == HttpStatusCode.Gone)
 				resp.ErrorCode = ErrorCodeType.AccessDeniedFile;
 			else if (res.StatusCode == HttpStatusCode.Unauthorized)
 				resp.ErrorCode = ErrorCodeType.AuthorizationError;
