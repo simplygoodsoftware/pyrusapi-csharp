@@ -214,6 +214,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "text_field_value_limit_exceeded")]
 		TextFieldValueLimitExceeded = 261,
 
+		[EnumMember(Value = "unable_to_edit_field")]
+		UnableToEditField = 262,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
