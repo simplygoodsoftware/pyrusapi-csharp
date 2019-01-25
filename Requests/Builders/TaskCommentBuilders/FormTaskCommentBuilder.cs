@@ -164,22 +164,7 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FieldUpdatesBuilder FieldUpdates
-		{
-			get
-			{
-				if (ApprovalsAdded.Count != 0)
-					BuilderHelper.WriteApprovals(ApprovalsAdded, Comment.ApprovalsAdded);
-
-				if (ApprovalsRemoved.Count != 0)
-					BuilderHelper.WriteApprovals(ApprovalsRemoved, Comment.ApprovalsRemoved);
-
-				if (ApprovalsRerequested.Count != 0)
-					BuilderHelper.WriteApprovals(ApprovalsRemoved, Comment.ApprovalsRerequested);
-
-				return new FieldUpdatesBuilder(this, TaskId);
-			}
-		} 
+		public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 
 		public class FieldUpdatesBuilder
 		{
