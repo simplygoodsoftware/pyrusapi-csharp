@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumWithDefaultConverter), Unknown)]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum FormFieldType
 	{
 		[EnumMember(Value = "unknown")]

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumWithDefaultConverter), UnknownError)]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)UnknownError)]
 	public enum ErrorCodeType
 	{
 		[EnumMember(Value = "server_error")]

@@ -10,7 +10,7 @@ namespace PyrusApiClient
 		public int? Id { get; set; }
 
 		[JsonProperty("type")]
-		[JsonConverter(typeof(StringEnumWithDefaultConverter), FormFieldType.Unknown)]
+		[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)FormFieldType.Unknown)]
 		public FormFieldType? Type { get; set; }
 
 		[JsonProperty("name")]
