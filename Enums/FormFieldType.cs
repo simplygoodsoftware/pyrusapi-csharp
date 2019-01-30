@@ -1,10 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), Unknown)]
 	public enum FormFieldType
 	{
 		[EnumMember(Value = "unknown")]

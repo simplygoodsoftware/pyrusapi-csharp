@@ -1,10 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), UnknownError)]
 	public enum ErrorCodeType
 	{
 		[EnumMember(Value = "server_error")]
@@ -247,6 +246,8 @@ namespace PyrusApiClient
 
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]
-		TooManyRequests = 400
+		TooManyRequests = 400,
+
+		UnknownError = 999,
 	}
 }

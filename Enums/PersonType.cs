@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), User)]
 	public enum PersonType
 	{
 		[EnumMember(Value = "user")]

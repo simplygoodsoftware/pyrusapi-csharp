@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace PyrusApiClient
 {
@@ -11,7 +10,7 @@ namespace PyrusApiClient
 		public int? Id { get; set; }
 
 		[JsonProperty("type")]
-		[JsonConverter(typeof(StringEnumConverter))]
+		[JsonConverter(typeof(StringEnumWithDefaultConverter), FormFieldType.Unknown)]
 		public FormFieldType? Type { get; set; }
 
 		[JsonProperty("name")]
