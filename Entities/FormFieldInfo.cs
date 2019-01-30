@@ -34,6 +34,9 @@ namespace PyrusApiClient
 		[JsonProperty("choice_value")]
 		public string ChoiceValue { get; set; }
 
+		[JsonProperty("deleted")]
+		public bool Deleted { get; set; }
+
 		[JsonProperty("fields")]
 		public List<FormField> Fields { get; set; } = new List<FormField>();
 	}
