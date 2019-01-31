@@ -3,32 +3,39 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-public class StringEnumWithDefaultConverter : StringEnumConverter
+namespace Pyrus.ApiClient.JsonConverters
 {
-	private readonly int _defaultValue;
-
-	public StringEnumWithDefaultConverter()
-	{ }
-
-	public StringEnumWithDefaultConverter(int defaultValue)
+	public class StringEnumWithDefaultConverter : StringEnumConverter
 	{
-		_defaultValue = defaultValue;
-	}
+		private readonly int _defaultValue;
 
-	public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-	{
-		try
+		public StringEnumWithDefaultConverter()
+		{ }
+
+		public StringEnumWithDefaultConverter(int defaultValue)
 		{
-			return base.ReadJson(reader, objectType, existingValue, serializer);
+			_defaultValue = defaultValue;
 		}
-		catch
-		{
-			return Enum.Parse(objectType, $"{_defaultValue}");
-		}
-	}
 
-	public override bool CanConvert(Type objectType)
-	{
-		return base.CanConvert(objectType) && objectType.GetTypeInfo().IsEnum && Enum.IsDefined(objectType, _defaultValue);
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			try
+			{
+				return base.ReadJson(reader, objectType, existingValue, serializer);
+			}
+			catch
+			{
+				var underlyingType = Nullable.GetUnderlyingType(objectType);
+				if (underlyingType != null)
+					return Enum.ToObject(underlyingType, _defaultValue);
+
+				return Enum.ToObject(objectType, _defaultValue);
+			}
+		}
+
+		public override bool CanConvert(Type objectType)
+		{
+			return base.CanConvert(objectType) && objectType.GetTypeInfo().IsEnum && Enum.IsDefined(objectType, _defaultValue);
+		}
 	}
 }

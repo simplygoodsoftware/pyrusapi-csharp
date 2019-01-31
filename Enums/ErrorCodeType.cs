@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
