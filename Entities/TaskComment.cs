@@ -87,5 +87,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("changed_step")]
 		public int? ChangedStep { get; set; }
+
+		[JsonIgnore]
+		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
 	}
 }

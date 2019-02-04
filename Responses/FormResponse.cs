@@ -19,6 +19,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("print_forms")]
 		public List<PrintForm> PrintForms { get; set; }
+
+		[JsonIgnore]
+		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsByForm(Fields);
 	}
 }
  
