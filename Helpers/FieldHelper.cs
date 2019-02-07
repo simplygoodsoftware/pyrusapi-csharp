@@ -21,7 +21,8 @@ namespace PyrusApiClient
 					res.AddRange(GetFlatFieldsListByTask(fft.Value?.Fields));
 				else if (field is FormFieldTable fftb)
 					foreach (var row in fftb.Value ?? new List<TableRow>())
-						res.AddRange(GetFlatFieldsListByTask(row.Cells));
+						if (row.Cells?.Count > 0)
+							res.AddRange(row.Cells);
 			}
 
 			return res;
@@ -42,7 +43,8 @@ namespace PyrusApiClient
 				else if (field is FormFieldTitle)
 					res.AddRange(GetFlatFieldsByForm(field.Info?.Fields));
 				else if (field is FormFieldTable)
-					res.AddRange(GetFlatFieldsByForm(field.Info?.Columns));
+					if (field.Info?.Columns?.Count > 0)
+						res.AddRange(field.Info.Columns);
 			}
 
 			return res;
