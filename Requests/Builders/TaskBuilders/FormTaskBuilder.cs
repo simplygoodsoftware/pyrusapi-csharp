@@ -51,16 +51,7 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormFieldsBuilder Fields
-		{
-			get
-			{
-				if (Approvals != null)
-					BuilderHelper.WriteApprovals(Approvals, Task.Approvals);
-
-				return new FormFieldsBuilder(this);
-			}
-		} 
+		public FormFieldsBuilder Fields => new FormFieldsBuilder(this);
 
 		public class FormFieldsBuilder
 		{

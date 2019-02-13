@@ -26,6 +26,9 @@ namespace PyrusApiClient
 		[JsonProperty("choice_ids")]
 		public int[] ChoiceIds { get; set; }
 
+		[JsonProperty("choice_names")]
+		public string[] ChoiceNames { get; set; }
+
 		[JsonProperty("fields")]
 		public List<FormField> Fields { get; set; } = new List<FormField>();
 	}

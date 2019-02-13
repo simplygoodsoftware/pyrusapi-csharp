@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)UnknownError)]
 	public enum ErrorCodeType
 	{
 		[EnumMember(Value = "server_error")]
@@ -214,6 +214,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "text_field_value_limit_exceeded")]
 		TextFieldValueLimitExceeded = 261,
 
+		[EnumMember(Value = "unable_to_edit_field")]
+		UnableToEditField = 262,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
@@ -244,6 +247,8 @@ namespace PyrusApiClient
 
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]
-		TooManyRequests = 400
+		TooManyRequests = 400,
+
+		UnknownError = 999,
 	}
 }
