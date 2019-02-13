@@ -184,6 +184,9 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
+			if (fileStream.Length == 0)
+				throw new PyrusApiClientException("Uploaded file can not be empty");
+
 			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, fileStream, fileName, Token));
 			return response;
 		}
