@@ -84,7 +84,7 @@ namespace PyrusApiClient.Builders
 			if (_formRegisterRequest.ClosedBefore.HasValue || _formRegisterRequest.ClosedAfter.HasValue)
 				return this;
 
-			_formRegisterRequest.ClosedBefore = DateTime.UtcNow.AddDays(999);
+			_formRegisterRequest.ClosedBefore = DateTime.MaxValue;
 			return this;
 		}
 
