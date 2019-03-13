@@ -47,9 +47,16 @@ namespace Pyrus.ApiClient.JsonConverters
 
 			if (request.ModifiedBefore.HasValue)
 				WriteDate(writer, nameof(request.ModifiedBefore), request.ModifiedBefore.Value);
-
 			if (request.ModifiedAfter.HasValue)
 				WriteDate(writer, nameof(request.ModifiedAfter), request.ModifiedAfter.Value);
+			if (request.CreatedBefore.HasValue)
+				WriteDate(writer, nameof(request.CreatedBefore), request.CreatedBefore.Value);
+			if (request.CreatedAfter.HasValue)
+				WriteDate(writer, nameof(request.CreatedAfter), request.CreatedAfter.Value);
+			if (request.ClosedBefore.HasValue)
+				WriteDate(writer, nameof(request.ClosedBefore), request.ClosedBefore.Value);
+			if (request.ClosedAfter.HasValue)
+				WriteDate(writer, nameof(request.ClosedAfter), request.ClosedAfter.Value);
 
 			if (request.ResponseFormat == ResponseFormat.Csv)
 			{

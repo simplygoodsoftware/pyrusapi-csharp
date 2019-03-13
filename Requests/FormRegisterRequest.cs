@@ -18,6 +18,18 @@ namespace PyrusApiClient
 		[JsonProperty("modified_after")]
 		public DateTime? ModifiedAfter { get; set; }
 
+		[JsonProperty("created_before")]
+		public DateTime? CreatedBefore { get; set; }
+
+		[JsonProperty("created_after")]
+		public DateTime? CreatedAfter { get; set; }
+
+		[JsonProperty("closed_before")]
+		public DateTime? ClosedBefore { get; set; }
+
+		[JsonProperty("closed_after")]
+		public DateTime? ClosedAfter { get; set; }
+
 		[JsonProperty("filters")]
 		public List<FormFilter> Filters { get; set; } = new List<FormFilter>();
 
