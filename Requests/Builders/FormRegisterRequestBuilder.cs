@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PyrusApiClient.Builders
 {
@@ -53,6 +52,39 @@ namespace PyrusApiClient.Builders
 		public FormRegisterRequestBuilder ModifiedAfter(DateTime dateTime)
 		{
 			_formRegisterRequest.ModifiedAfter = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder CreatedBefore(DateTime dateTime)
+		{
+			_formRegisterRequest.CreatedBefore = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder CreatedAfter(DateTime dateTime)
+		{
+			_formRegisterRequest.CreatedAfter = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder ClosedBefore(DateTime dateTime)
+		{
+			_formRegisterRequest.ClosedBefore = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder ClosedAfter(DateTime dateTime)
+		{
+			_formRegisterRequest.ClosedAfter = dateTime;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder OnlyClosed()
+		{
+			if (_formRegisterRequest.ClosedBefore.HasValue || _formRegisterRequest.ClosedAfter.HasValue)
+				return this;
+
+			_formRegisterRequest.ClosedBefore = DateTime.MaxValue;
 			return this;
 		}
 
