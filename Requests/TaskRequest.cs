@@ -28,6 +28,10 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? ScheduledDate { get; set; }
 
+		[JsonProperty("scheduled_date_time_utc")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
+		public DateTime? ScheduledDateTimeUtc { get; set; }
+
 		[JsonProperty("cancel_schedule")]
 		public bool? CancelSchedule { get; set; }
 

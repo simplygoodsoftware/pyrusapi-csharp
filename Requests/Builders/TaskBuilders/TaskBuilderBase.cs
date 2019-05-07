@@ -69,5 +69,17 @@ namespace PyrusApiClient.Builders
 			Task.ListIds.AddRange(listIds);
 			return (T)this;
 		}
+
+		public T ScheduledFor(DateTime date)
+		{
+			Task.ScheduledDate = date;
+			return (T)this;
+		}
+
+		public T ScheduledForDateTimeUtc(DateTime date)
+		{
+			Task.ScheduledDateTimeUtc = date;
+			return (T)this;
+		}
 	}
 }

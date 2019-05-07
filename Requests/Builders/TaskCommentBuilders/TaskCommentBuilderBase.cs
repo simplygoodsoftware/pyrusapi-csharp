@@ -89,5 +89,26 @@ namespace PyrusApiClient.Builders
 			Comment.RemovedListIds.AddRange(listIds);
 			return (T)this;
 		}
+
+		public T ScheduledFor(DateTime date)
+		{
+			Comment.CancelSchedule = null;
+			Comment.ScheduledDate = date;
+			return (T)this;
+		}
+
+		public T ScheduledForDateTimeUtc(DateTime date)
+		{
+			Comment.CancelSchedule = null;
+			Comment.ScheduledDateTimeUtc = date;
+			return (T)this;
+		}
+
+		public T CancelSchedule()
+		{
+			Comment.ScheduledDate = null;
+			Comment.CancelSchedule = true;
+			return (T)this;
+		}
 	}
 }

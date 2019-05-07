@@ -109,20 +109,6 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public SimpleTaskCommentBuilder ScheduledFor(DateTime date)
-		{
-			Comment.CancelSchedule = null;
-			Comment.ScheduledDate = date;
-			return this;
-		}
-
-		public SimpleTaskCommentBuilder CancelSchedule()
-		{
-			Comment.ScheduledDate = null;
-			Comment.CancelSchedule = true;
-			return this;
-		}
-
 		public SimpleTaskCommentBuilder SetSubject(string subject)
 		{
 			Comment.Subject = subject;
