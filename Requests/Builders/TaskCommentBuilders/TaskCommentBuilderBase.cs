@@ -93,6 +93,7 @@ namespace PyrusApiClient.Builders
 		public T ScheduledFor(DateTime date)
 		{
 			Comment.CancelSchedule = null;
+			Comment.ScheduledDateTimeUtc = null;
 			Comment.ScheduledDate = date;
 			return (T)this;
 		}
@@ -100,6 +101,7 @@ namespace PyrusApiClient.Builders
 		public T ScheduledForDateTimeUtc(DateTime date)
 		{
 			Comment.CancelSchedule = null;
+			Comment.ScheduledDate = null;
 			Comment.ScheduledDateTimeUtc = date;
 			return (T)this;
 		}
@@ -107,6 +109,7 @@ namespace PyrusApiClient.Builders
 		public T CancelSchedule()
 		{
 			Comment.ScheduledDate = null;
+			Comment.ScheduledDateTimeUtc = null;
 			Comment.CancelSchedule = true;
 			return (T)this;
 		}

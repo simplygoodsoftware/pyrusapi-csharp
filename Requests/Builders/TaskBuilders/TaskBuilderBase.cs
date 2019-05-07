@@ -72,12 +72,14 @@ namespace PyrusApiClient.Builders
 
 		public T ScheduledFor(DateTime date)
 		{
+			Task.ScheduledDateTimeUtc = null;
 			Task.ScheduledDate = date;
 			return (T)this;
 		}
 
 		public T ScheduledForDateTimeUtc(DateTime date)
 		{
+			Task.ScheduledDate = null;
 			Task.ScheduledDateTimeUtc = date;
 			return (T)this;
 		}
