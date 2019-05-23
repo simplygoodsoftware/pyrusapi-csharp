@@ -59,6 +59,9 @@ namespace PyrusApiClient
 		[JsonProperty("subject")]
 		public string Subject { get; set; }
 
+		[JsonProperty("current_step")]
+		public int? CurrentStep { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsListByTask(Fields);
 	}
