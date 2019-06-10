@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
@@ -64,7 +65,7 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> PostFileRequest(string url, Stream fileStream, string fileName, string token)
+		internal static async Task<MessageWithStatusCode> PostFileRequest(string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
 			using (var httpClient = PyrusClient.Settings.NewHttpClient())
 			{
@@ -72,7 +73,7 @@ namespace PyrusApiClient
 				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
-				var streamContent = new StreamContent(fileStream);
+				var streamContent = new StreamContent(streamFactory.Create());
 
 				var multipart = new MultipartFormDataContent {{streamContent, "file", $"{fileName}"}};
 				using (var response = await httpClient.PostAsync(url, multipart))
