@@ -73,11 +73,6 @@ namespace PyrusApiClient
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
 				var streamContent = new StreamContent(fileStream);
-				streamContent.Headers.Add("Content-Type", "application/octet-stream");
-				var header = $"form-data; name=\"file\"; filename=\"{fileName}\"";
-				var bytes = Encoding.UTF8.GetBytes(header);
-				header = bytes.Aggregate("", (current, b) => current + (char) b);
-				streamContent.Headers.Add("Content-Disposition", header);
 
 				var multipart = new MultipartFormDataContent {{streamContent, "file", $"{fileName}"}};
 				using (var response = await httpClient.PostAsync(url, multipart))
