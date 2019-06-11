@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pyrus.ApiClient.Enums;
 
 namespace PyrusApiClient.Builders
 {
@@ -161,6 +162,16 @@ namespace PyrusApiClient.Builders
 		public FormTaskCommentBuilder OnSteps(IEnumerable<int> steps)
 		{
 			Comment.ApprovalSteps.AddRange(steps);
+			return this;
+		}
+
+		public FormTaskCommentBuilder ExternalComment(string to = null, Channel channel = Channel.Email)
+		{
+			Comment.ExternalComment = new ExternalComment
+			{
+				To = to,
+				Channel = channel
+			};
 			return this;
 		}
 
