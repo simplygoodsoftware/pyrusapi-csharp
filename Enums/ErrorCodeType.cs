@@ -217,6 +217,15 @@ namespace PyrusApiClient
 		[EnumMember(Value = "unable_to_edit_field")]
 		UnableToEditField = 262,
 
+		[EnumMember(Value = "empty_file")]
+		EmptyFile = 263,
+
+		[EnumMember(Value = "bad_multipart_content")]
+		BadMultipartContent = 264,
+
+		[EnumMember(Value = "too_many_decimal_places")]
+		TooManyDecimalPlaces = 265,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,

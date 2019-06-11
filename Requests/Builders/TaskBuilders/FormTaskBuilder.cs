@@ -67,7 +67,7 @@ namespace PyrusApiClient.Builders
 				return this;
 			}
 
-			public FormTaskBuilder BuidlFields()
+			public FormTaskBuilder BuildFields()
 			{
 				return _taskRequestBuilder;
 			}

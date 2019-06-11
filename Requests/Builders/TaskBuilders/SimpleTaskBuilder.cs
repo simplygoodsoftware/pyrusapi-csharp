@@ -101,11 +101,5 @@ namespace PyrusApiClient.Builders
 			Task.Participants.Add(new Person {Email = email});
 			return this;
 		}
-
-		public SimpleTaskBuilder ScheduledFor(DateTime date)
-		{
-			Task.ScheduledDate = date;
-			return this;
-		}
 	}
 }

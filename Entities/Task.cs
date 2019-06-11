@@ -19,6 +19,10 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? ScheduledDate { get; set; }
 
+		[JsonProperty("scheduled_datetime_utc")]
+		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
+		public DateTime? ScheduledDateTimeUtc { get; set; }
+
 		[JsonProperty("cancel_schedule")]
 		public bool? CancelSchedule { get; set; }
 
@@ -54,6 +58,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("subject")]
 		public string Subject { get; set; }
+
+		[JsonProperty("current_step")]
+		public int? CurrentStep { get; set; }
 
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsListByTask(Fields);

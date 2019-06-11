@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Pyrus.ApiClient;
+using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
@@ -187,7 +188,9 @@ namespace PyrusApiClient
 			if (fileStream.Length == 0)
 				throw new PyrusApiClientException("Uploaded file can not be empty");
 
-			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, fileStream, fileName, Token));
+			var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
+
+			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, streamFactory, fileName, Token));
 			return response;
 		}
 
