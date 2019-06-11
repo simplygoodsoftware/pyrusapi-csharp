@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Pyrus.ApiClient.Enums;
 
 namespace PyrusApiClient
 {

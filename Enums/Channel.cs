@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Pyrus.ApiClient.Enums
+namespace PyrusApiClient
 {
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum Channel
