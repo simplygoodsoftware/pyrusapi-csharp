@@ -9,5 +9,8 @@ namespace PyrusApiClient
 
 		[JsonProperty(PropertyName = "to")]
 		public string To { get; set; }
+
+		[JsonProperty(PropertyName = "from")]
+		public string From { get; set; }
 	}
 }
