@@ -235,14 +235,11 @@ namespace PyrusApiClient
 		[EnumMember(Value = "sender_address_field_missing")]
 		SenderAddressFieldMissing = 267,
 
-		[EnumMember(Value = "external_comment_recipient_mismatch")]
-		ExternalCommentRecipientMismatch = 268,
-
 		[EnumMember(Value = "external_comment_recipient_not_found")]
-		ExternalCommentRecipientNotFound = 269,
+		ExternalCommentRecipientNotFound = 268,
 
 		[EnumMember(Value = "default_mailbox_not_found")]
-		DefaultMailboxNotFound = 270,
+		DefaultMailboxNotFound = 269,
 
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
