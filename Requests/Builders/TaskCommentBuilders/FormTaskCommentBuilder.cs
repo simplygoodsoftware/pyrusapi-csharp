@@ -164,11 +164,10 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormTaskCommentBuilder ExternalEmailComment(string to = null)
+		public FormTaskCommentBuilder ExternalEmailComment()
 		{
 			Comment.ExternalComment = new ExternalComment
 			{
-				To = to,
 				Channel = Channel.Email
 			};
 			return this;

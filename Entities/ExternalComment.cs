@@ -8,9 +8,9 @@ namespace PyrusApiClient
 		public Channel Channel { get; set; }
 
 		[JsonProperty(PropertyName = "to")]
-		public string To { get; set; }
+		public ExternalCommentUser To { get; set; }
 
 		[JsonProperty(PropertyName = "from")]
-		public string From { get; set; }
+		public ExternalCommentUser From { get; set; }
 	}
 }
