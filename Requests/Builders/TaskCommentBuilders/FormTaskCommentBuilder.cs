@@ -168,9 +168,10 @@ namespace PyrusApiClient.Builders
 		{
 			Comment.ExternalComment = new ExternalComment
 			{
-				To = to,
 				Channel = Channel.Email
 			};
+			if (to != null)
+				Comment.ExternalComment.To = new ExternalCommentUser{ Email = to };
 			return this;
 		}
 
