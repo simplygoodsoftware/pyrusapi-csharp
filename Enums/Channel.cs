@@ -1,43 +1,45 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum Channel
 	{
+		Unknown = 0,
+
 		[EnumMember(Value = "email")]
-		Email ,
+		Email = 1,
 
 		[EnumMember(Value = "telegram")]
-		Telegram,
+		Telegram = 2,
 
 		[EnumMember(Value = "web")]
-		Web,
+		Web = 3,
 
 		[EnumMember(Value = "facebook")]
-		Facebook,
+		Facebook = 4,
 
 		[EnumMember(Value = "vk")]
-		Vk,
+		Vk = 5,
 
 		[EnumMember(Value = "viber")]
-		Viber,
+		Viber = 6,
 
 		[EnumMember(Value = "mobile_app")]
-		MobileApp,
+		MobileApp = 7,
 
 		[EnumMember(Value = "web_widget")]
-		WebWidget,
+		WebWidget = 8,
 
 		[EnumMember(Value = "moy_sklad")]
-		MoySklad,
+		MoySklad = 9,
 
 		[EnumMember(Value = "zadarma")]
-		Zadarma,
+		Zadarma = 10,
 
 		[EnumMember(Value = "amo_crm")]
-		AmoCrm,
+		AmoCrm = 11
 	}
 }
