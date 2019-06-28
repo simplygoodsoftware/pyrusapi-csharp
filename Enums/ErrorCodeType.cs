@@ -32,6 +32,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "invalid_credentials")]
 		InvalidCredentials = 106,
 
+		[EnumMember(Value = "invalid_application_id")]
+		InvalidApplicationId = 107,
+
 		//BadRequest (400)
 
 		[EnumMember(Value = "invalid_field_id")]
@@ -226,6 +229,18 @@ namespace PyrusApiClient
 		[EnumMember(Value = "too_many_decimal_places")]
 		TooManyDecimalPlaces = 265,
 
+		[EnumMember(Value = "external_comment_empty_text")]
+		ExternalCommentEmptyText = 266,
+
+		[EnumMember(Value = "sender_address_field_missing")]
+		SenderAddressFieldMissing = 267,
+
+		[EnumMember(Value = "external_comment_recipient_not_found")]
+		ExternalCommentRecipientNotFound = 268,
+
+		[EnumMember(Value = "default_mailbox_not_found")]
+		DefaultMailboxNotFound = 269,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
@@ -253,6 +268,12 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "access_denied_file")]
 		AccessDeniedFile = 309,
+
+		[EnumMember(Value = "access_denied_report")]
+		AccessDeniedReport = 310,
+
+		[EnumMember(Value = "access_denied")]
+		AccessDenied = 311,
 
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]

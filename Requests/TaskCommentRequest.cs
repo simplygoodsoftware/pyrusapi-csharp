@@ -70,5 +70,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("removed_list_ids")]
 		public List<int> RemovedListIds { get; set; } = new List<int>();
+
+		[JsonProperty("external_comment")]
+		public ExternalComment ExternalComment { get; set; }
 	}
 }
