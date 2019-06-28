@@ -81,7 +81,7 @@ namespace PyrusApiClient
 		public List<int> AddedListIds { get; set; } = new List<int>();
 
 		[JsonProperty("removed_list_ids")]
-		public List<int> RemvoedListIds { get; set; } = new List<int>();
+		public List<int> RemovedListIds { get; set; } = new List<int>();
 
 		[JsonProperty("approval_step")]
 		public int? ApprovalStep { get; set; }
@@ -91,6 +91,15 @@ namespace PyrusApiClient
 
 		[JsonProperty("changed_step")]
 		public int? ChangedStep { get; set; }
+
+		[JsonProperty("edit_comment_id")]
+		public int? EditCommentId { get; set; }
+
+		[JsonProperty("removed_attachment_ids")]
+		public List<int> RemovedAttachmentIds { get; set; }
+
+		[JsonProperty("delete_comment_id")]
+		public int? DeleteCommentId { get; set; }
 
 		[JsonIgnore]
 		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
