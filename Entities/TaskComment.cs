@@ -92,6 +92,9 @@ namespace PyrusApiClient
 		[JsonProperty("changed_step")]
 		public int? ChangedStep { get; set; }
 
+		[JsonProperty("external_comment")]
+		public ExternalComment ExternalComment { get; set; }
+
 		[JsonProperty("edit_comment_id")]
 		public int? EditCommentId { get; set; }
 

@@ -164,6 +164,15 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder ExternalEmailComment()
+		{
+			Comment.ExternalComment = new ExternalComment
+			{
+				Channel = Channel.Email
+			};
+			return this;
+		}
+
 		public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 
 		public class FieldUpdatesBuilder
