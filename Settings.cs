@@ -52,9 +52,12 @@ namespace PyrusApiClient
 
 		internal readonly string DateFormat = "yyyy-MM-dd";
 
-		public HttpClient NewHttpClient()
+		public HttpClient NewHttpClient(TimeSpan timeout)
 		{
-			return new HttpClient(GetHttpHandler());
+			return new HttpClient(GetHttpHandler())
+			{
+				Timeout = timeout
+			};
 		}
 
 		private HttpClientHandler GetHttpHandler()

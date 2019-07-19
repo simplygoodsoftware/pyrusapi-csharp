@@ -2,7 +2,7 @@
 
 namespace PyrusApiClient
 {
-	public class ExternalCommentUser
+	public class ChannelUser
 	{
 		[JsonProperty(PropertyName = "email")]
 		public string Email { get; set; }

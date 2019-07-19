@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
-	public enum Channel
+	public enum ChannelType
 	{
 		Unknown = 0,
 

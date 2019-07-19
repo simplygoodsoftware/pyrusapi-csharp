@@ -16,6 +16,8 @@ namespace PyrusApiClient
 {
 	internal static class RequestHelper
 	{
+		private static readonly TimeSpan _requestTimeout = TimeSpan.FromMinutes(2);
+		private static readonly TimeSpan _fileRequestTimeout = TimeSpan.FromMinutes(20);
 
 		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -32,7 +34,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostRequest(string url, object request, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
@@ -50,7 +52,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PutRequest(string url, object request, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PutAsync(url,
@@ -67,7 +69,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostFileRequest(string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_fileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
@@ -86,7 +88,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetFileRequest(string url, string token)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_fileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
@@ -110,7 +112,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetRequest(string url, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient())
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.GetAsync(url))
