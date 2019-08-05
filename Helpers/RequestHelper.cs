@@ -101,7 +101,9 @@ namespace PyrusApiClient
 						result.Content = new MemoryStream();
 						await response.Content.CopyToAsync(result.Content);
 						result.Content.Position = 0;
-						result.FileName = response.Content.Headers.ContentDisposition.FileName;
+						result.FileName = !String.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
+							? response.Content.Headers.ContentDisposition.FileNameStar
+							: response.Content.Headers.ContentDisposition.FileName;
 						result.FileName = result.FileName.TrimStart('"').TrimEnd('"');
 					}
 
