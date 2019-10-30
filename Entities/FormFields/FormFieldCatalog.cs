@@ -27,6 +27,9 @@ namespace PyrusApiClient
 		[JsonProperty("item_ids")]
 		public long[] ItemIds { get; set; }
 
+		[JsonProperty("item_names")]
+		public string[] ItemNames { get; set; }
+
 		[JsonProperty("headers")]
 		public List<string> Headers { get; set; }
 

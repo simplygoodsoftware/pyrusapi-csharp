@@ -37,6 +37,12 @@ namespace PyrusApiClient
 			return formField;
 		}
 
+		public static FormFieldCatalog WithValues(this FormFieldCatalog formField, params string[] itemNames)
+		{
+			formField.Value = new Catalog { ItemNames = itemNames };
+			return formField;
+		}
+
 		public static FormFieldCheckmark WithValue(this FormFieldCheckmark formField, Checkmark? checkmark)
 		{
 			formField.Value = checkmark;
