@@ -28,6 +28,9 @@ namespace PyrusApiClient
 		[JsonProperty("values")]
 		public List<string> Values { get; set; }
 
+		[JsonProperty("item_name")]
+		public string ItemName { get; set; }
+
 		public override string ToString()
 		{
 			return ItemId.ToString();

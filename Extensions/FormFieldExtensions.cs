@@ -30,6 +30,12 @@ namespace PyrusApiClient
 			return formField;
 		}
 
+		public static FormFieldCatalog WithValue(this FormFieldCatalog formField, string itemName)
+		{
+			formField.Value = !string.IsNullOrEmpty(itemName) ? new Catalog { ItemName = itemName } : null;
+			return formField;
+		}
+
 		public static FormFieldCheckmark WithValue(this FormFieldCheckmark formField, Checkmark? checkmark)
 		{
 			formField.Value = checkmark;
