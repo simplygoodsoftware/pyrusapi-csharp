@@ -26,6 +26,9 @@ namespace PyrusApiClient
 		[JsonProperty("form_id")]
 		public int FormId { get; set; }
 
+		[JsonProperty("code")]
+		public string Code { get; set; }
+
 		[JsonProperty("decimal_places")]
 		public int? DecimalPlaces { get; set; }
 	}
