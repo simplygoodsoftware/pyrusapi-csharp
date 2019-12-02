@@ -27,6 +27,7 @@ namespace PyrusApiClient
 		internal const string CatalogsEndpoint = "/catalogs";
 		internal const string UploadFilesEndpoint = "/files/upload";
 		internal const string ContactsEndpoint = "/contacts";
+		internal const string ProfileEndpoint = "/profile";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 
 		internal const string RegisterSuffix = "/register";
@@ -239,6 +240,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(url, Token));
+			return response;
+		}
+
+		public async Task<ProfileResponse> GetProfile(string accessToken = null)
+		{
+			var url = Settings.Origin + ProfileEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
 	}
