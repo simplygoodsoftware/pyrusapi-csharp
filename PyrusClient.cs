@@ -28,6 +28,7 @@ namespace PyrusApiClient
 		internal const string UploadFilesEndpoint = "/files/upload";
 		internal const string ContactsEndpoint = "/contacts";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
+		internal const string RolesEndpoint = "/roles";
 
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
@@ -241,5 +242,35 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
+
+        public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
+        {
+            var url = Settings.Origin + RolesEndpoint;
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+            return response;
+        }
+
+        public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
+        {
+            var url = Settings.Origin + RolesEndpoint + $"/{roleId}";
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+            return response;
+        }
+
+        public async Task<RolesResponse> GetRoles(string accessToken = null)
+        {
+            var url = Settings.Origin + RolesEndpoint;
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
+            return response;
+        }
 	}
 }

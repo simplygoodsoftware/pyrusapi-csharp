@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -108,6 +106,20 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new CreateCatalogRequestBuilder(name);
 		}
 
+        public static CreateRoleRequestBuilder CreateRole(string name)
+        {
+            return new CreateRoleRequestBuilder(name);
+        }
+
+        public static UpdateRoleRequestBuilder UpdateRole(int roleId)
+        {
+            return new UpdateRoleRequestBuilder(roleId);
+        }
+
+        public static EmptyBuilder<RolesResponse> GetRoles()
+        {
+            return new EmptyBuilder<RolesResponse>();
+        }
 		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
@@ -218,6 +230,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 		{
 			return await client.CreateCatalog(builder);
 		}
+
+        public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
+        {
+            return await client.CreateRole(builder);
+        }
+
+        public static async Task<RoleResponse> Process(this UpdateRoleRequestBuilder builder, PyrusClient client)
+        {
+            return await client.UpdateRole(builder.RoleId, builder);
+        }
+
+        public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
+        {
+            return await client.GetRoles();
+        }
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{

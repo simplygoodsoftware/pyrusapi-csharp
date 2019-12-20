@@ -11,6 +11,12 @@ namespace PyrusApiClient
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
+		
+		[JsonProperty("banned")]
+		public bool Banned { get; set; }
+
 		[JsonProperty("member_ids")]
 		public List<int> MemberIds { get; set; } = new List<int>();
 	}
