@@ -260,7 +260,7 @@ namespace PyrusApiClient
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(url, request, Token));
             return response;
         }
 
