@@ -24,9 +24,22 @@ namespace PyrusApiClient
 			return formField;
 		}
 
+		[Obsolete]
 		public static FormFieldCatalog WithValue(this FormFieldCatalog formField, long? itemId)
 		{
-			formField.Value = itemId.HasValue ? new Catalog { ItemId = itemId.Value } : null;
+			formField.Value = itemId.HasValue ? new Catalog { ItemIds = new [] { itemId.Value } } : null;
+			return formField;
+		}
+
+		public static FormFieldCatalog WithValues(this FormFieldCatalog formField, params long[] itemIds)
+		{
+			formField.Value = new Catalog { ItemIds = itemIds };
+			return formField;
+		}
+
+		public static FormFieldCatalog WithValues(this FormFieldCatalog formField, params string[] itemNames)
+		{
+			formField.Value = new Catalog { ItemNames = itemNames };
 			return formField;
 		}
 
