@@ -120,6 +120,12 @@ namespace Pyrus.ApiClient.Requests.Builders
         {
             return new EmptyBuilder<RolesResponse>();
         }
+
+        public static EmptyBuilder<ProfileResponse> GetProfile()
+        {
+            return new EmptyBuilder<ProfileResponse>();
+        }
+
 		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
@@ -244,6 +250,11 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
         {
             return await client.GetRoles();
+        }
+
+        public static async Task<ProfileResponse> Process(this EmptyBuilder<ProfileResponse> builder, PyrusClient client)
+        {
+            return await client.GetProfile();
         }
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
