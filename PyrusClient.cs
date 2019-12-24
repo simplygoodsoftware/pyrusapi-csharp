@@ -287,7 +287,7 @@ namespace PyrusApiClient
 
         public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
         {
-            var url = $"{Settings.Origin}{InboxEndpoint}?tasks_count={tasksCount}";
+            var url = $"{Settings.Origin}{InboxEndpoint}?item_count={tasksCount}";
             if (accessToken != null)
                 Token = accessToken;
 
