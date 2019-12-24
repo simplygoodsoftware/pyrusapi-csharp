@@ -30,6 +30,7 @@ namespace PyrusApiClient
 		internal const string ProfileEndpoint = "/profile";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
+        internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
@@ -283,5 +284,15 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
+
+        public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
+        {
+            var url = $"{Settings.Origin}{InboxEndpoint}?tasks_count={tasksCount}";
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(url, Token));
+            return response;
+        }
 	}
 }

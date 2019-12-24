@@ -200,3 +200,12 @@ var roleResponse = await RequestBuilder.UpdateRole(6476)
 ```csharp
 var profileResponse = await RequestBuilder.GetProfile().Process(pyrusClient);
 ```
+
+
+## Inbox
+
+* Get inbox
+
+```csharp
+var inboxResponse = await RequestBuilder.GetInbox(10).Process(pyrusClient);
+```
