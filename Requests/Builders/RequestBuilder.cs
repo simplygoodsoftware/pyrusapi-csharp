@@ -131,6 +131,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 		}
 
+        public static ChangeCatalogRequestBuilder ChangeCatalog(int catalogId)
+        {
+            return new ChangeCatalogRequestBuilder(catalogId);
+        }
+
 		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
@@ -266,6 +271,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		{
 			return await client.GetInbox(builder.Property);
 		}
+
+        public static async Task<CatalogResponse> Process(this ChangeCatalogRequestBuilder builder, PyrusClient client)
+        {
+            return await client.ChangeCatalog(builder.CatalogId, builder);
+        }
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{

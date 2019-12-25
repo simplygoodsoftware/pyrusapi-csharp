@@ -35,6 +35,7 @@ namespace PyrusApiClient
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
+        internal const string ItemsSuffix = "/items";
 
 		static PyrusClient()
 		{
@@ -294,5 +295,15 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
+
+        public async Task<CatalogResponse> ChangeCatalog(int catalogId, ChangeCatalogRequest request, string accessToken = null)
+        {
+            var url = $"{Settings.Origin}{CatalogsEndpoint}/{catalogId}{ItemsSuffix}";
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
+            return response;
+        }
 	}
 }
