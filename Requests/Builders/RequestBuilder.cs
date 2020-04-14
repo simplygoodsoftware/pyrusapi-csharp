@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -106,6 +104,31 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
 		{
 			return new CreateCatalogRequestBuilder(name);
+		}
+
+		public static CreateRoleRequestBuilder CreateRole(string name)
+		{
+			return new CreateRoleRequestBuilder(name);
+		}
+
+		public static UpdateRoleRequestBuilder UpdateRole(int roleId)
+		{
+			return new UpdateRoleRequestBuilder(roleId);
+		}
+
+		public static EmptyBuilder<RolesResponse> GetRoles()
+		{
+			return new EmptyBuilder<RolesResponse>();
+		}
+
+		public static EmptyBuilder<ProfileResponse> GetProfile()
+		{
+			return new EmptyBuilder<ProfileResponse>();
+		}
+
+		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
+		{
+			return new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 		}
 
 		#region Process
@@ -217,6 +240,31 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
 		{
 			return await client.CreateCatalog(builder);
+		}
+
+		public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
+		{
+			return await client.CreateRole(builder);
+		}
+
+		public static async Task<RoleResponse> Process(this UpdateRoleRequestBuilder builder, PyrusClient client)
+		{
+			return await client.UpdateRole(builder.RoleId, builder);
+		}
+
+		public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
+		{
+			return await client.GetRoles();
+		}
+
+		public static async Task<ProfileResponse> Process(this EmptyBuilder<ProfileResponse> builder, PyrusClient client)
+		{
+			return await client.GetProfile();
+		}
+
+		public static async Task<InboxResponse> Process(this OnePropertyBuilder<int, InboxResponse> builder, PyrusClient client)
+		{
+			return await client.GetInbox(builder.Property);
 		}
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
