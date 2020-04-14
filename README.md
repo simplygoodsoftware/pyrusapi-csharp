@@ -166,3 +166,46 @@ var listsResponse = await RequestBuilder.GetLists().Process(pyrusClient);
 var listId = 1322
 var taskListResponse = await RequestBuilder.GetTaskList(listId, maxItemCount: 25, includeArchived:true).Process(pyrusClient);
 ```
+
+## Roles
+
+* Get all organization roles
+
+```csharp
+var rolesResponse = await RequestBuilder.GetRoles().Process(pyrusClient);
+```
+
+* Create role
+
+```csharp
+var roleResponse = await RequestBuilder.CreateRole("TechSupport")
+    .AddMembers(1732, 4368)
+    .Process(pyrusClient);
+```
+
+* Update role
+
+```csharp
+var roleResponse = await RequestBuilder.UpdateRole(6476)
+    .AddMember(2434)
+    .RemoveMembers(1732, 4368)
+    .SetExternalId("CustomIdentifier")
+    .Process(pyrusClient);
+```
+
+## Profile
+
+* Get profile
+
+```csharp
+var profileResponse = await RequestBuilder.GetProfile().Process(pyrusClient);
+```
+
+
+## Inbox
+
+* Get inbox
+
+```csharp
+var inboxResponse = await RequestBuilder.GetInbox(10).Process(pyrusClient);
+```
