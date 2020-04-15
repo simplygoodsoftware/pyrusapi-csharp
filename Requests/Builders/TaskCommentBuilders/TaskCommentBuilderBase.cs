@@ -42,27 +42,45 @@ namespace PyrusApiClient.Builders
 			return (T) this;
 		}
 
-		public T AddAttachments(IEnumerable<Guid> attachments)
+		public T AddAttachment(NewFile attachment)
 		{
-			Comment.Attachments.AddRange(attachments.Select(guid => new NewFile{Guid = guid.ToString() }));
+			Comment.Attachments.Add(attachment);
 			return (T)this;
 		}
 
-		public T AddAttachments(IEnumerable<string> attachments)
+		public T AddAttachments(IEnumerable<NewFile> attachments)
 		{
-			Comment.Attachments.AddRange(attachments.Select(guid => new NewFile { Guid = guid }));
+			Comment.Attachments.AddRange(attachments);
 			return (T)this;
 		}
 
 		public T AddAttachment(Guid guid, int? rootId = null)
 		{
-			Comment.Attachments.Add(new NewFile { Guid = guid.ToString(), RootId = rootId });
+			Comment.Attachments.Add(new NewFileGuid { Guid = guid.ToString(), RootId = rootId });
+			return (T)this;
+		}
+
+		public T AddAttachments(IEnumerable<Guid> attachments)
+		{
+			Comment.Attachments.AddRange(attachments.Select(guid => new NewFileGuid{Guid = guid.ToString() }));
 			return (T)this;
 		}
 
 		public T AddAttachment(string guid, int? rootId = null)
 		{
-			Comment.Attachments.Add(new NewFile { Guid = guid, RootId = rootId });
+			Comment.Attachments.Add(new NewFileGuid { Guid = guid, RootId = rootId });
+			return (T)this;
+		}
+
+		public T AddAttachments(IEnumerable<string> attachments)
+		{
+			Comment.Attachments.AddRange(attachments.Select(guid => new NewFileGuid { Guid = guid }));
+			return (T)this;
+		}
+
+		public T AddAttachment(int attachmentId)
+		{
+			Comment.Attachments.Add(new NewFileId { AttachmentId = attachmentId });
 			return (T)this;
 		}
 
