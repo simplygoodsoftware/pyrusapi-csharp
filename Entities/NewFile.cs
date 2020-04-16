@@ -26,7 +26,7 @@ namespace PyrusApiClient
         {
         }
 
-        public NewFile(string guid, int? rootId)
+        public NewFile(string guid, int? rootId = null)
         {
             Guid = guid ?? throw new System.ArgumentNullException(nameof(guid));
             RootId = rootId;

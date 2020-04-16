@@ -50,7 +50,7 @@ namespace PyrusApiClient.Builders
 		[Obsolete]
 		public T AddAttachments(IEnumerable<Guid> attachments)
 		{
-			Task.Attachments.AddRange(attachments.Select(guid => new NewFile(guid.ToString(), rootId: null)));
+			Task.Attachments.AddRange(attachments.Select(guid => new NewFile(guid.ToString())));
 			return (T)this;
 		}
 
@@ -64,7 +64,7 @@ namespace PyrusApiClient.Builders
 		[Obsolete]
 		public T AddAttachments(IEnumerable<string> attachments)
 		{
-			Task.Attachments.AddRange(attachments.Select(guid => new NewFile(guid, rootId: null)));
+			Task.Attachments.AddRange(attachments.Select(guid => new NewFile(guid)));
 			return (T)this;
 		}
 
