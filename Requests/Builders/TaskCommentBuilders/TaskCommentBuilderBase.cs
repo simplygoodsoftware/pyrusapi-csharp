@@ -54,33 +54,31 @@ namespace PyrusApiClient.Builders
 			return (T)this;
 		}
 
+		[Obsolete]
 		public T AddAttachment(Guid guid, int? rootId = null)
 		{
 			Comment.Attachments.Add(new NewFile(guid.ToString(), rootId));
 			return (T)this;
 		}
 
+		[Obsolete]
 		public T AddAttachments(IEnumerable<Guid> attachments)
 		{
 			Comment.Attachments.AddRange(attachments.Select(guid => new NewFile(guid.ToString(), rootId: null)));
 			return (T)this;
 		}
 
+		[Obsolete]
 		public T AddAttachment(string guid, int? rootId = null)
 		{
 			Comment.Attachments.Add(new NewFile(guid, rootId));
 			return (T)this;
 		}
 
+		[Obsolete]
 		public T AddAttachments(IEnumerable<string> attachments)
 		{
 			Comment.Attachments.AddRange(attachments.Select(guid => new NewFile(guid, rootId: null)));
-			return (T)this;
-		}
-
-		public T AddAttachment(int attachmentId)
-		{
-			Comment.Attachments.Add(new NewFile(attachmentId));
 			return (T)this;
 		}
 

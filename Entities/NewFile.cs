@@ -21,6 +21,7 @@ namespace PyrusApiClient
         [JsonProperty("name", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Name { get; set; }
 
+        [System.Obsolete("Use parametrized constructors.")]
         public NewFile()
         {
         }
