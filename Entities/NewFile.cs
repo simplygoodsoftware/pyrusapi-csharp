@@ -4,18 +4,18 @@ namespace PyrusApiClient
 {
     public class NewFile
     {
-        [JsonProperty("guid")]
+        [JsonProperty("guid", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Guid { get; set; }
 
         [JsonProperty("root_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int? RootId { get; set; }
 
 
-        [JsonProperty("attachment_id")]
+        [JsonProperty("attachment_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int AttachmentId { get; set; }
 
 
-        [JsonProperty("url")]
+        [JsonProperty("url", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Url { get; set; }
 
         [JsonProperty("name", DefaultValueHandling = DefaultValueHandling.Ignore)]
