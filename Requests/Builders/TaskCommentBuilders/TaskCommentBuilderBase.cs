@@ -129,5 +129,14 @@ namespace PyrusApiClient.Builders
 			Comment.CancelSchedule = true;
 			return (T)this;
 		}
+
+		public T Reassign(Person person)
+		{
+			Comment.ReassignTo = person;
+			return (T)this;
+		}
+
+		public T Reassign(int personId) => Reassign(new Person { Id = personId });
+		public T Reassign(string email) => Reassign(new Person { Email = email });
 	}
 }
