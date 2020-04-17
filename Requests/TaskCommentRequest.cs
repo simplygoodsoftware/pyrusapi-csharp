@@ -16,6 +16,9 @@ namespace PyrusApiClient
 		[JsonProperty("approval_choice")]
 		public ApprovalChoice? ApprovalChoice { get; set; }
 
+		[JsonProperty("reassign_to")]
+		public Person ReassignTo { get; set; }
+
 		[JsonProperty("approval_steps")]
 		public List<int> ApprovalSteps { get; set; } = new List<int>();
 
