@@ -113,5 +113,11 @@ namespace PyrusApiClient.Builders
 			Comment.CancelSchedule = true;
 			return (T)this;
 		}
+
+		public T WithSpentMinutes(int spentMinutes)
+		{
+			Comment.SpentMinutes = spentMinutes;
+			return (T)this;
+		}
 	}
 }
