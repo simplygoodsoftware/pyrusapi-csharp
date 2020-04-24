@@ -138,5 +138,11 @@ namespace PyrusApiClient.Builders
 
 		public T Reassign(int personId) => Reassign(new Person { Id = personId });
 		public T Reassign(string email) => Reassign(new Person { Email = email });
+
+		public T WithSpentMinutes(int spentMinutes)
+		{
+			Comment.SpentMinutes = spentMinutes;
+			return (T)this;
+		}
 	}
 }

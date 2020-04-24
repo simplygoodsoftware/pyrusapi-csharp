@@ -76,5 +76,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("channel")]
 		public Channel Channel { get; set; }
+
+		[JsonProperty("spent_minutes")]
+		public int? SpentMinutes { get; set; }
 	}
 }

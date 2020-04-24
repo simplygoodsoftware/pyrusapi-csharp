@@ -104,6 +104,9 @@ namespace PyrusApiClient
 		[JsonProperty("delete_comment_id")]
 		public int? DeleteCommentId { get; set; }
 
+		[JsonProperty("spent_minutes")]
+		public int? SpentMinutes { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
 	}
