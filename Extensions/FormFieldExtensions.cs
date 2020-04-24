@@ -145,55 +145,78 @@ namespace PyrusApiClient
 			return formField;
 		}
 
+		[Obsolete("Use AddValue method.")]
 		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, NewFile file)
 		{
 			formField.Value = new List<NewFile> { file };
 			return formField;
 		}
 
+		[Obsolete("Use AddValue method.")]
 		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, string guid, int? rootId = null)
 		{
-			formField.Value = new List<NewFile> { new NewFile { Guid = guid, RootId = rootId } };
+			formField.Value = new List<NewFile> { new NewFile(guid, rootId) };
 			return formField;
 		}
 
+		[Obsolete("Use AddValue method.")]
 		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, Guid guid, int? rootId = null)
 		{
-			formField.Value = new List<NewFile> { new NewFile{ Guid = guid.ToString(), RootId = rootId } };
+			formField.Value = new List<NewFile> { new NewFile(guid.ToString(), rootId) };
 			return formField;
 		}
 
+		[Obsolete("Use AddValue method.")]
 		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, IEnumerable<string> guids)
 		{
-			formField.Value = guids.Select(guid => new NewFile { Guid = guid }).ToList();
+			formField.Value = guids.Select(guid => new NewFile(guid)).ToList();
 			return formField;
 		}
+
+		[Obsolete("Use AddValue method.")]
 		public static FormFieldNewFile WithValue(this FormFieldNewFile formField, IEnumerable<Guid> guids)
 		{
-			formField.Value = guids.Select(guid => new NewFile { Guid = guid.ToString() }).ToList();
+			formField.Value = guids.Select(guid => new NewFile(guid.ToString())).ToList();
 			return formField;
 		}
 
-		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, string guid, int? rootId = null)
+		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, NewFile attachment)
 		{
-			formField.Value.Add(new NewFile { Guid = guid, RootId = rootId });
+			formField.Value.Add(attachment);
 			return formField;
 		}
 
+		public static FormFieldNewFile AddValues(this FormFieldNewFile formField, IEnumerable<NewFile> attachments)
+		{
+			formField.Value.AddRange(attachments);
+			return formField;
+		}
+
+		[Obsolete]
 		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, Guid guid, int? rootId = null)
 		{
-			formField.Value.Add(new NewFile { Guid = guid.ToString(), RootId = rootId });
+			formField.Value.Add(new NewFile(guid.ToString(), rootId));
 			return formField;
 		}
 
-		public static FormFieldNewFile AddValues(this FormFieldNewFile formField, IEnumerable<string> guids)
-		{
-			formField.Value.AddRange(guids.Select(guid => new NewFile { Guid = guid.ToString() }));
-			return formField;
-		}
+		[Obsolete]
 		public static FormFieldNewFile AddValues(this FormFieldNewFile formField, IEnumerable<Guid> guids)
 		{
-			formField.Value.AddRange(guids.Select(guid => new NewFile { Guid = guid.ToString() }));
+			formField.Value.AddRange(guids.Select(guid => new NewFile(guid.ToString())));
+			return formField;
+		}
+
+		[Obsolete]
+		public static FormFieldNewFile AddValue(this FormFieldNewFile formField, string guid, int? rootId = null)
+		{
+			formField.Value.Add(new NewFile(guid, rootId));
+			return formField;
+		}
+
+		[Obsolete]
+		public static FormFieldNewFile AddValues(this FormFieldNewFile formField, IEnumerable<string> guids)
+		{
+			formField.Value.AddRange(guids.Select(guid => new NewFile(guid)));
 			return formField;
 		}
 
