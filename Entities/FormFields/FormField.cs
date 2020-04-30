@@ -14,6 +14,9 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)FormFieldType.Unknown)]
 		public FormFieldType? Type { get; set; }
 
+		[JsonProperty("code")]
+		public string Code { get; set; }
+
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
@@ -26,18 +29,25 @@ namespace PyrusApiClient
 		[JsonProperty("row_id")]
 		public int? RowId { get; set; }
 
-		public static TField Create<TField>(int id)
-			where TField : FormField, new()
+		public static TField Create<TField>(int id) where TField : FormField, new()
 		{
 			ValidateFieldType(typeof(TField));
 			return new TField { Id = id };
 		}
 
-		public static TField Create<TField>(string name)
-			where TField : FormField, new()
+		public static TField Create<TField>(string name) where TField : FormField, new()
 		{
 			ValidateFieldType(typeof(TField));
 			return new TField { Name = name };
+		}
+
+		public static TField CreateWithCode<TField>(string code) where TField : FormField, new()
+		{
+			if (string.IsNullOrEmpty(code))
+				throw new ArgumentException("Value cannot be null or empty.", nameof(code));
+
+			ValidateFieldType(typeof(TField));
+			return new TField { Code = code };
 		}
 
 		private static void ValidateFieldType(Type type)
