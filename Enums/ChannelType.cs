@@ -40,6 +40,9 @@ namespace PyrusApiClient
 		Zadarma = 10,
 
 		[EnumMember(Value = "amo_crm")]
-		AmoCrm = 11
+		AmoCrm = 11,
+
+		[EnumMember(Value = "instagram")]
+		Instagram = 12
 	}
 }
