@@ -241,6 +241,27 @@ namespace PyrusApiClient
 		[EnumMember(Value = "default_mailbox_not_found")]
 		DefaultMailboxNotFound = 269,
 
+		[EnumMember(Value = "catalog_null_value")]
+		CatalogNullValue = 270,
+
+		[EnumMember(Value = "max_text_length_exceeded")]
+		MaxTextLengthExceeded = 271,
+
+		[EnumMember(Value = "due_outside_of_bounds")]
+		DueOutsideOfBounds = 272,
+
+		[EnumMember(Value = "attachments_forbidden")]
+		AttachmentsForbidden = 273,
+
+		[EnumMember(Value = "unrecognized_call_guid")]
+		UnrecognizedCallGuid = 274,
+
+		[EnumMember(Value = "unsupported_attachment_format")]
+		UnsupportedAttachmentFormat = 275,
+
+		[EnumMember(Value = "validation_error")]
+		ValidationError = 276,
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
