@@ -30,6 +30,7 @@ namespace PyrusApiClient
 		internal const string ProfileEndpoint = "/profile";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
+		internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
@@ -244,35 +245,35 @@ namespace PyrusApiClient
 			return response;
 		}
 
-        public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
-        {
-            var url = Settings.Origin + RolesEndpoint;
-            if (accessToken != null)
-                Token = accessToken;
+		public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + RolesEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
 
-            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
-            return response;
-        }
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			return response;
+		}
 
-        public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
-        {
-            var url = Settings.Origin + RolesEndpoint + $"/{roleId}";
-            if (accessToken != null)
-                Token = accessToken;
+		public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + RolesEndpoint + $"/{roleId}";
+			if (accessToken != null)
+				Token = accessToken;
 
-            var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(url, request, Token));
-            return response;
-        }
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			return response;
+		}
 
-        public async Task<RolesResponse> GetRoles(string accessToken = null)
-        {
-            var url = Settings.Origin + RolesEndpoint;
-            if (accessToken != null)
-                Token = accessToken;
+		public async Task<RolesResponse> GetRoles(string accessToken = null)
+		{
+			var url = Settings.Origin + RolesEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
 
-            var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
-            return response;
-        }
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
+			return response;
+		}
 
 		public async Task<ProfileResponse> GetProfile(string accessToken = null)
 		{
@@ -281,6 +282,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(url, Token));
+			return response;
+		}
+
+		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
+		{
+			var url = $"{Settings.Origin}{InboxEndpoint}?item_count={tasksCount}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
 	}
