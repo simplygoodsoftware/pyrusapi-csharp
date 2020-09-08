@@ -4,7 +4,7 @@ namespace PyrusApiClient
 {
 	public class CreateCatalogRequest : CatalogRequestBase
 	{
-		[JsonProperty(PropertyName = "catalog_name")]
+		[JsonProperty(PropertyName = "name")]
 		public string CatalogName { get; set; }
 	}
 }
