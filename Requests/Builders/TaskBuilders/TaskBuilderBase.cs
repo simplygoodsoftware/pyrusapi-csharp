@@ -93,5 +93,41 @@ namespace PyrusApiClient.Builders
 			Task.ScheduledDateTimeUtc = date;
 			return (T)this;
 		}
+
+		public T AddSubscribers(IEnumerable<Person> subscribers)
+		{
+			Task.Subscribers.AddRange(subscribers);
+			return (T)this;
+		}
+
+		public T AddSubscribers(IEnumerable<int> subscriberIds)
+		{
+			Task.Subscribers.AddRange(subscriberIds.Select(id => new Person { Id = id }));
+			return (T)this;
+		}
+
+		public T AddSubscribers(IEnumerable<string> emails)
+		{
+			Task.Subscribers.AddRange(emails.Select(email => new Person { Email = email }));
+			return (T)this;
+		}
+
+		public T AddSubscriber(Person subscriber)
+		{
+			Task.Subscribers.Add(subscriber);
+			return (T)this;
+		}
+
+		public T AddSubscriber(int subscriberId)
+		{
+			Task.Subscribers.Add(new Person { Id = subscriberId });
+			return (T)this;
+		}
+
+		public T AddSubscriber(string email)
+		{
+			Task.Subscribers.Add(new Person { Email = email });
+			return (T)this;
+		}
 	}
 }

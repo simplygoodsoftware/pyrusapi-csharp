@@ -122,30 +122,6 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormTaskCommentBuilder Approve()
-		{
-			Comment.ApprovalChoice = ApprovalChoice.Approved;
-			return this;
-		}
-
-		public FormTaskCommentBuilder Reject()
-		{
-			Comment.ApprovalChoice = ApprovalChoice.Rejected;
-			return this;
-		}
-
-		public FormTaskCommentBuilder Revoke()
-		{
-			Comment.ApprovalChoice = ApprovalChoice.Revoked;
-			return this;
-		}
-
-		public FormTaskCommentBuilder Acknowledge()
-		{
-			Comment.ApprovalChoice = ApprovalChoice.Acknowledged;
-			return this;
-		}
-
 		public FormTaskCommentBuilder OnStep(int step)
 		{
 			Comment.ApprovalSteps.Add(step);
