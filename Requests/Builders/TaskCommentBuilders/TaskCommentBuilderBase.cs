@@ -11,9 +11,9 @@ namespace PyrusApiClient.Builders
 		protected readonly List<Approval> ApprovalsRemoved = new List<Approval>();
 		protected readonly List<Approval> ApprovalsRerequested = new List<Approval>();
 
-		protected readonly List<Subscriber> SubscribersAdded = new List<Subscriber>();
-		protected readonly List<Subscriber> SubscribersRemoved = new List<Subscriber>();
-		protected readonly List<Subscriber> SubscribersRerequested = new List<Subscriber>();
+		protected readonly List<Subscriber> SubscribersAdded;
+		protected readonly List<Subscriber> SubscribersRemoved;
+		protected readonly List<Subscriber> SubscribersRerequested;
 
 		protected TaskCommentBuilderBase(TaskCommentRequest comment)
 		{
