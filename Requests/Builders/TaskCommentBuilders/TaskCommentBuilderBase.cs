@@ -31,13 +31,13 @@ namespace PyrusApiClient.Builders
 			if (tcb.ApprovalsRerequested.Count != 0)
 				BuilderHelper.WriteApprovals(tcb.ApprovalsRerequested, tcb.Comment.ApprovalsRerequested);
 
-			if (tcb.ApprovalsRerequested.Count != 0)
+			if (tcb.SubscribersAdded.Count != 0)
 				tcb.Comment.SubscribersAdded= tcb.SubscribersAdded.Select(x => x.Person).ToList();
 
-			if (tcb.ApprovalsRerequested.Count != 0)
+			if (tcb.SubscribersRemoved.Count != 0)
 				tcb.Comment.SubscribersRemoved= tcb.SubscribersRemoved.Select(x => x.Person).ToList();
 
-			if (tcb.ApprovalsRerequested.Count != 0)
+			if (tcb.SubscribersRerequested.Count != 0)
 				tcb.Comment.SubscribersRerequested = tcb.SubscribersRerequested.Select(x => x.Person).ToList();
 
 			return tcb.Comment;
