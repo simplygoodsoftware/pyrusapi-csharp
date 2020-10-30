@@ -7,7 +7,6 @@ namespace PyrusApiClient.Builders
 	public abstract class TaskBuilderBase<T> where T : TaskBuilderBase<T>
 	{
 		protected readonly List<Approval> Approvals = new List<Approval>();
-		protected readonly List<Subscriber> Subscribers = new List<Subscriber>();
 		protected readonly TaskRequest Task;
 
 		protected TaskBuilderBase(TaskRequest task)
@@ -19,8 +18,6 @@ namespace PyrusApiClient.Builders
 		{
 			if (tb.Approvals.Count != 0)
 				BuilderHelper.WriteApprovals(tb.Approvals, tb.Task.Approvals);
-			if (tb.Subscribers.Count != 0)
-				tb.Task.Subscribers = tb.Subscribers.Select(x => x.Person).ToList();
 
 			return tb.Task;
 		}

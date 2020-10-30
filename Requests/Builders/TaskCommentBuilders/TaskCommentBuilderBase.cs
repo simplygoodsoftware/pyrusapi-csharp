@@ -11,10 +11,6 @@ namespace PyrusApiClient.Builders
 		protected readonly List<Approval> ApprovalsRemoved = new List<Approval>();
 		protected readonly List<Approval> ApprovalsRerequested = new List<Approval>();
 
-		protected readonly List<Subscriber> SubscribersAdded = new List<Subscriber>();
-		protected readonly List<Subscriber> SubscribersRemoved = new List<Subscriber>();
-		protected readonly List<Subscriber> SubscribersRerequested = new List<Subscriber>();
-
 		protected TaskCommentBuilderBase(TaskCommentRequest comment)
 		{
 			Comment = comment;
@@ -30,15 +26,6 @@ namespace PyrusApiClient.Builders
 
 			if (tcb.ApprovalsRerequested.Count != 0)
 				BuilderHelper.WriteApprovals(tcb.ApprovalsRerequested, tcb.Comment.ApprovalsRerequested);
-
-			if (tcb.SubscribersAdded.Count != 0)
-				tcb.Comment.SubscribersAdded= tcb.SubscribersAdded.Select(x => x.Person).ToList();
-
-			if (tcb.SubscribersRemoved.Count != 0)
-				tcb.Comment.SubscribersRemoved= tcb.SubscribersRemoved.Select(x => x.Person).ToList();
-
-			if (tcb.SubscribersRerequested.Count != 0)
-				tcb.Comment.SubscribersRerequested = tcb.SubscribersRerequested.Select(x => x.Person).ToList();
 
 			return tcb.Comment;
 		}
