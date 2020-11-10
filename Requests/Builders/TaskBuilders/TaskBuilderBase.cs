@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PyrusApiClient.Builders
 {
-	public abstract class TaskBuilderBase<T> where T: TaskBuilderBase<T>
+	public abstract class TaskBuilderBase<T> where T : TaskBuilderBase<T>
 	{
 		protected readonly List<Approval> Approvals = new List<Approval>();
 		protected readonly TaskRequest Task;
@@ -21,7 +21,7 @@ namespace PyrusApiClient.Builders
 
 			return tb.Task;
 		}
-		
+
 		public T HasParent(int parentTaskId)
 		{
 			Task.ParentTaskId = parentTaskId;
@@ -93,5 +93,23 @@ namespace PyrusApiClient.Builders
 			Task.ScheduledDateTimeUtc = date;
 			return (T)this;
 		}
+
+		public T AddSubscribers(IEnumerable<Person> subscribers)
+		{
+			Task.Subscribers.AddRange(subscribers);
+			return (T)this;
+		}
+		public T AddSubscribers(IEnumerable<int> subscriberIds) => AddSubscribers(subscriberIds.Select(id => new Person { Id = id }));
+		public T AddSubscribers(IEnumerable<string> emails) => AddSubscribers(emails.Select(email => new Person { Email = email }));
+
+
+		public T AddSubscriber(Person subscriber)
+		{
+			Task.Subscribers.Add(subscriber);
+			return (T)this;
+		}
+		public T AddSubscriber(int subscriberId) => AddSubscriber(new Person { Id = subscriberId });
+		public T AddSubscriber(string email) => AddSubscriber(new Person { Email = email });
 	}
 }
+	
