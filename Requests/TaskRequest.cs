@@ -56,6 +56,9 @@ namespace PyrusApiClient
 		[JsonProperty("participants")]
 		public List<Person> Participants { get; set; } = new List<Person>();
 
+		[JsonProperty("subscribers")]
+		public List<Person> Subscribers { get; set; } = new List<Person>();
+
 		[JsonProperty("list_ids")]
 		public List<int> ListIds { get; set; } = new List<int>();
 
