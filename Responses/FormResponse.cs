@@ -20,6 +20,9 @@ namespace PyrusApiClient
 		[JsonProperty("print_forms")]
 		public List<PrintForm> PrintForms { get; set; }
 
+		[JsonProperty("deleted_or_closed")]
+		public bool DeletedOrClosed { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsByForm(Fields);
 	}
