@@ -33,6 +33,12 @@ namespace PyrusApiClient
 		[JsonProperty("type")]
 		public PersonType Type { get; set; }
 
+		[JsonProperty("department_id")]
+		public int? DepartmentId { get; set; }
+
+		[JsonProperty("department_name")]
+		public string DepartmentName { get; set; }
+
 		public override string ToString()
 		{
 			return Id?.ToString() ?? Email;
