@@ -22,6 +22,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("deleted_or_closed")]
 		public bool DeletedOrClosed { get; set; }
+		[JsonProperty("folder")]
+		public string[] Folder { get; set; }
 
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsByForm(Fields);

@@ -121,6 +121,26 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<RolesResponse>();
 		}
 
+		public static CreateMemberRequestBuilder CreateMember(string name)
+		{
+			return new CreateMemberRequestBuilder(name);
+		}
+
+		public static UpdateMemberRequestBuilder UpdateMember(int memberId)
+		{
+			return new UpdateMemberRequestBuilder(memberId);
+		}
+		
+		public static DeleteMemberRequestBuilder DeleteMember(int memberId)
+		{
+			return new DeleteMemberRequestBuilder(memberId);
+		}
+
+		public static EmptyBuilder<MembersResponse> GetMembers()
+		{
+			return new EmptyBuilder<MembersResponse>();
+		}
+
 		public static EmptyBuilder<ProfileResponse> GetProfile()
 		{
 			return new EmptyBuilder<ProfileResponse>();
@@ -255,6 +275,26 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
 		{
 			return await client.GetRoles();
+		}
+
+		public static async Task<MemberResponse> Process(this CreateMemberRequestBuilder builder, PyrusClient client)
+		{
+			return await client.CreateMember(builder);
+		}
+
+		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
+		{
+			return await client.UpdateMember(builder.MemberId, builder);
+		}
+
+		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
+		{
+			return await client.DeleteMember(builder.MemberId);
+		}
+
+		public static async Task<MembersResponse> Process(this EmptyBuilder<MembersResponse> builder, PyrusClient client)
+		{
+			return await client.GetMembers();
 		}
 
 		public static async Task<ProfileResponse> Process(this EmptyBuilder<ProfileResponse> builder, PyrusClient client)

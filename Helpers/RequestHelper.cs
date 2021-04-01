@@ -67,6 +67,19 @@ namespace PyrusApiClient
 			}
 		}
 
+		internal static async Task<MessageWithStatusCode> DeleteRequest(string url, string token = null)
+		{
+			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
+			{
+				SetHeaders(httpClient, token, UserAgent);
+				using (var response = await httpClient.DeleteAsync(url))
+				{
+					var message = await response.Content.ReadAsStringAsync();
+					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+				}
+			}
+		}
+
 		internal static async Task<MessageWithStatusCode> PostFileRequest(string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
 			using (var httpClient = PyrusClient.Settings.NewHttpClient(_fileRequestTimeout))

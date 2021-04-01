@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
+using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
@@ -30,6 +31,7 @@ namespace PyrusApiClient
 		internal const string ProfileEndpoint = "/profile";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
+		internal const string MembersEndpoint = "/members";
 		internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
@@ -265,6 +267,36 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + MembersEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			return response;
+		}
+
+		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			return response;
+		}
+
+		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
+		{
+			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.DeleteRequest(url, Token));
+			return response;
+		}
+
 		public async Task<RolesResponse> GetRoles(string accessToken = null)
 		{
 			var url = Settings.Origin + RolesEndpoint;
@@ -272,6 +304,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
+			return response;
+		}
+
+		public async Task<MembersResponse> GetMembers(string accessToken = null)
+		{
+			var url = Settings.Origin + MembersEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
 
