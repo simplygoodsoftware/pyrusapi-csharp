@@ -121,9 +121,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<RolesResponse>();
 		}
 
-		public static CreateMemberRequestBuilder CreateMember(string name)
+		public static CreateMemberRequestBuilder CreateMember(string email)
 		{
-			return new CreateMemberRequestBuilder(name);
+			return new CreateMemberRequestBuilder(email);
 		}
 
 		public static UpdateMemberRequestBuilder UpdateMember(int memberId)
