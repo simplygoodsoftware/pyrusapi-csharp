@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-   public  class CreateMemberRequestBuilder
-    {
-        private readonly CreateMemberRequest _request;
+	public  class CreateMemberRequestBuilder
+	{
+		private readonly CreateMemberRequest _request;
 
-        public CreateMemberRequestBuilder(string email)
-        {
-            _request = new CreateMemberRequest
-            {
-                Email = email
-            };
-        }
+		public CreateMemberRequestBuilder(string email)
+		{
+			_request = new CreateMemberRequest
+			{
+				Email = email
+			};
+		}
 
 		public CreateMemberRequestBuilder For(string firstName, string lastName)
 		{
@@ -50,8 +50,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static implicit operator CreateMemberRequest(CreateMemberRequestBuilder cmrb)
-        {
-            return cmrb._request;
-        }
-    }
+		{
+			return cmrb._request;
+		}
+	}
 }

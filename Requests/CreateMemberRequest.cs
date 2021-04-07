@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests
 {
-    public class CreateMemberRequest
-    {
+	public class CreateMemberRequest
+	{
 		[JsonProperty(PropertyName = "first_name")]
 		public string FirstName { get; set; }
 

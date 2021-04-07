@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-    public class UpdateMemberRequestBuilder
-    {
+	public class UpdateMemberRequestBuilder
+	{
 		public int MemberId { get; }
 		private readonly UpdateMemberRequest _request;
 
