@@ -18,9 +18,9 @@ namespace Pyrus.ApiClient.Requests.Builders
             };
         }
 
-		public CreateMemberRequestBuilder For(string name, string lastName)
+		public CreateMemberRequestBuilder For(string firstName, string lastName)
 		{
-			_request.FirstName = name;
+			_request.FirstName = firstName;
 			_request.LastName = lastName;
 			return this;
 		}
