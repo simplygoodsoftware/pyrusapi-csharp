@@ -1,22 +1,15 @@
 ﻿using Newtonsoft.Json;
+using PyrusApiClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PyrusApiClient
+namespace Pyrus.ApiClient.Responses
 {
-	public class Person
+	public class MemberResponse : ResponseBase
 	{
-		public Person()
-		{
-		}
-
-		public Person(int id)
-		{
-			Id = id;
-		}
-
-		public Person(string email)
-		{
-			Email = email;
-		}
 
 		[JsonProperty("id")]
 		public int? Id { get; set; }
@@ -51,9 +44,21 @@ namespace PyrusApiClient
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
-		public override string ToString()
-		{
-			return Id?.ToString() ?? Email;
-		}
+		public Person Person =>
+			new Person
+			{ 
+				Id = Id,
+				FirstName = FirstName,
+				LastName = LastName,
+				Email = Email,
+				Type = Type,
+				DepartmentId = DepartmentId,
+				DepartmentName = DepartmentName,
+				Banned = Banned,
+				Position = Position,
+				Skype = Skype,
+				Phone = Phone,
+			};
+
 	}
 }
