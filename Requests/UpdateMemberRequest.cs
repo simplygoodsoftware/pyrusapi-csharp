@@ -30,7 +30,7 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "skype")]
 		public string Skype { get; set; }
 
-		[JsonProperty(PropertyName = "phone_number")]
+		[JsonProperty(PropertyName = "phone")]
 		public string Phone { get; set; }
 	}
 }
