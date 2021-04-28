@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
+using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Exceptions;
@@ -76,9 +77,9 @@ namespace Pyrus.ApiClient
 		{
 			try
 			{
-				var url = PyrusClient.Settings.Origin + PyrusClient.AuthEndpoint + $"/?login={client.Login}&security_key={client.SecretKey}";
+				var url = PyrusClient.Settings.Origin + PyrusClient.AuthEndpoint;
 
-				var response = await RequestHelper.GetRequest(url);
+				var response = await RequestHelper.PostRequest(url, new AuthRequest(){Login = client.Login, SecurityKey = client.SecretKey });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;
