@@ -6,63 +6,52 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-   public  class CreateMemberRequestBuilder
-    {
-        private readonly CreateMemberRequest _request;
+	public  class CreateMemberRequestBuilder
+	{
+		private readonly CreateMemberRequest _request;
 
-        public CreateMemberRequestBuilder(string email)
-        {
-            _request = new CreateMemberRequest
-            {
-                Email = email
-            };
-        }
-
-		public CreateMemberRequestBuilder WithFirstName(string name)
+		public CreateMemberRequestBuilder(string email)
 		{
-			_request.FirstName = name;
+			_request = new CreateMemberRequest
+			{
+				Email = email
+			};
+		}
+
+		public CreateMemberRequestBuilder For(string firstName, string lastName)
+		{
+			_request.FirstName = firstName;
+			_request.LastName = lastName;
 			return this;
 		}
 
-		public CreateMemberRequestBuilder WithLastName(string name)
-		{
-			_request.LastName = name;
-			return this;
-		}
-
-		public CreateMemberRequestBuilder WithEmail(string email)
-		{
-			_request.Email = email;
-			return this;
-		}
-
-		public CreateMemberRequestBuilder WithDepartmentId(int departmentId)
+		public CreateMemberRequestBuilder WorkingAt(int departmentId)
 		{
 			_request.DepartmentId = departmentId;
 			return this;
 		}
 
-		public CreateMemberRequestBuilder WithPosition(string position)
+		public CreateMemberRequestBuilder As(string position)
 		{
 			_request.Position = position;
 			return this;
 		}
 
-		public CreateMemberRequestBuilder WithPhone(string phone)
+		public CreateMemberRequestBuilder WorkPhone(string phone)
 		{
 			_request.Phone = phone;
 			return this;
 		}
 
-		public CreateMemberRequestBuilder WithSkype(string skype)
+		public CreateMemberRequestBuilder Skype(string skype)
 		{
 			_request.Skype = skype;
 			return this;
 		}
 
 		public static implicit operator CreateMemberRequest(CreateMemberRequestBuilder cmrb)
-        {
-            return cmrb._request;
-        }
-    }
+		{
+			return cmrb._request;
+		}
+	}
 }

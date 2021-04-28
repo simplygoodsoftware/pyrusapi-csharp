@@ -46,8 +46,9 @@ namespace PyrusApiClient
 	
 		public async Task<AuthResponse> Auth(string login, string securityKey)
 		{
-			var url = Settings.Origin + AuthEndpoint + $"?login={login}&security_key={securityKey}";
-			var response = await this.RunQuery<AuthResponse>(() => RequestHelper.GetRequest(url));
+			var url = Settings.Origin + AuthEndpoint;
+			var response = await this.RunQuery<AuthResponse>(() 
+				=> RequestHelper.PostRequest(url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
 			Token = response.AccessToken;
 			return response;
 		}

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Responses
 {
-    public class MemberResponse : ResponseBase
-    {
+	public class MemberResponse : ResponseBase
+	{
 
 		[JsonProperty("id")]
 		public int? Id { get; set; }
@@ -44,8 +44,8 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
-        public Person Person =>
-            new Person
+		public Person Person =>
+			new Person
 			{ 
 				Id = Id,
 				FirstName = FirstName,

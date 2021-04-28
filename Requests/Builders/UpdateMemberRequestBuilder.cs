@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-    public class UpdateMemberRequestBuilder
-    {
+	public class UpdateMemberRequestBuilder
+	{
 		public int MemberId { get; }
 		private readonly UpdateMemberRequest _request;
 
@@ -17,17 +17,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			_request = new UpdateMemberRequest();
 		}
 
-		public UpdateMemberRequestBuilder SetFirstName(string name)
+		public UpdateMemberRequestBuilder Rename(string firstName, string lastName)
 		{
-			_request.FirstName = name;
+			_request.FirstName = firstName;
+			_request.LastName = lastName;
 			return this;
 		}	
-		
-		public UpdateMemberRequestBuilder SetLastName(string name)
-		{
-			_request.LastName = name;
-			return this;
-		}
 		
 		public UpdateMemberRequestBuilder SetEmail(string email)
 		{
@@ -35,25 +30,25 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 		
-		public UpdateMemberRequestBuilder SetDepartmentId(int departmentId)
+		public UpdateMemberRequestBuilder WorkingAt(int departmentId)
 		{
 			_request.DepartmentId = departmentId;
 			return this;
 		}
 		
-		public UpdateMemberRequestBuilder SetPosition(string position)
+		public UpdateMemberRequestBuilder As(string position)
 		{
 			_request.Position = position;
 			return this;
 		}
 		
-		public UpdateMemberRequestBuilder SetPhone(string phone)
+		public UpdateMemberRequestBuilder WorkPhone(string phone)
 		{
 			_request.Phone = phone;
 			return this;
 		}
 		
-		public UpdateMemberRequestBuilder SetSkype(string skype)
+		public UpdateMemberRequestBuilder Skype(string skype)
 		{
 			_request.Skype = skype;
 			return this;
