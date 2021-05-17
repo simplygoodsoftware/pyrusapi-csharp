@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -48,9 +49,30 @@ namespace PyrusApiClient
 		{
 			if (string.IsNullOrEmpty(fieldName))
 				throw new ArgumentException("Field name can not be empty");
-			
-			if (form.FlatFields == null)
+
+			List<int> fields = null;
+
+			if (form.Fields != null)
+			{
+				fields = form.Fields.Where(f => !string.IsNullOrEmpty(f.Name) && f.Name.ToUpper().Equals(fieldName.ToUpper()) && f.Id.HasValue).Select(f => f.Id.Value).ToList();
+
+				if (fields.Count > 1)
+					throw new ArgumentException("Field name is not unique on the form.");
+
+				if (fields.Count == 0)
+					fields = ValidateFlatFieldsCount(fieldName, form);
+			}
+			else
+				fields = ValidateFlatFieldsCount(fieldName, form);
+
+			return fields.First();
+		}
+
+		private static List<int> ValidateFlatFieldsCount(string fieldName, FormResponse form)
+        {
+			if(form.FlatFields == null)
 				throw new ArgumentException($"There is no fields on the form {form.Id}");
+
 			var fields = form.FlatFields.Where(f => !string.IsNullOrEmpty(f.Name) && f.Name.ToUpper().Equals(fieldName.ToUpper()) && f.Id.HasValue).Select(f => f.Id.Value).ToList();
 
 			if (fields.Count > 1)
@@ -58,8 +80,8 @@ namespace PyrusApiClient
 
 			if (fields.Count == 0)
 				throw new ArgumentException("Field with specified name not found on the form.");
-
-			return fields.First();
+			return fields;
 		}
+
 	}
 }
