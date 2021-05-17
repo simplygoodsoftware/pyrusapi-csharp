@@ -49,9 +49,9 @@ namespace PyrusApiClient
 			if (string.IsNullOrEmpty(fieldName))
 				throw new ArgumentException("Field name can not be empty");
 			
-			if (form.Fields == null)
+			if (form.FlatFields == null)
 				throw new ArgumentException($"There is no fields on the form {form.Id}");
-			var fields = form.Fields.Where(f => !string.IsNullOrEmpty(f.Name) && f.Name.ToUpper().Equals(fieldName.ToUpper()) && f.Id.HasValue).Select(f => f.Id.Value).ToList();
+			var fields = form.FlatFields.Where(f => !string.IsNullOrEmpty(f.Name) && f.Name.ToUpper().Equals(fieldName.ToUpper()) && f.Id.HasValue).Select(f => f.Id.Value).ToList();
 
 			if (fields.Count > 1)
 				throw new ArgumentException("Field name is not unique on the form.");
