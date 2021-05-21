@@ -19,7 +19,7 @@ namespace PyrusApiClient
 
 		public string Token { get; set; }
 
-		public static Settings Settings { get; set; }
+		public Settings Settings { get; set; }
 
 		internal const string AuthEndpoint = "/auth";
 		internal const string FormsEndpoint = "/forms";
@@ -38,17 +38,18 @@ namespace PyrusApiClient
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
 
-		static PyrusClient()
+		public PyrusClient(
+			string origin = "https://api.pyrus.com/v4",
+			string filesOrigin = "https://files.pyrus.com")
 		{
-			Settings = new Settings();
+			Settings = new Settings(origin, filesOrigin);
 		}
 
-	
 		public async Task<AuthResponse> Auth(string login, string securityKey)
 		{
 			var url = Settings.Origin + AuthEndpoint;
 			var response = await this.RunQuery<AuthResponse>(() 
-				=> RequestHelper.PostRequest(url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
+				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
 			Token = response.AccessToken;
 			return response;
 		}
@@ -59,7 +60,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<FormsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<FormsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -69,7 +70,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 			
-			var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -82,7 +83,7 @@ namespace PyrusApiClient
 			if (request != null && request.Filters.Count != 0)
 				await ValidateFilter(request.Filters, formId);
 
-			var response = await this.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -105,7 +106,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -115,7 +116,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(url, comment, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, comment, Token));
 			return response;
 		}
 
@@ -125,7 +126,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(url, task, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, task, Token));
 			return response;
 		}
 
@@ -135,7 +136,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -145,7 +146,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -155,7 +156,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -165,7 +166,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ContactsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ContactsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -196,7 +197,7 @@ namespace PyrusApiClient
 
 			var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
 
-			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, streamFactory, fileName, Token));
+			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(this, url, streamFactory, fileName, Token));
 			return response;
 		}
 
@@ -223,7 +224,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(url, Token));
+			var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this, url, Token));
 			return response;
 		}
 
@@ -233,7 +234,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -244,7 +245,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -254,7 +255,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -264,7 +265,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -274,7 +275,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -284,7 +285,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -294,7 +295,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.DeleteRequest(url, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.DeleteRequest(this, url, Token));
 			return response;
 		}
 
@@ -304,7 +305,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -314,7 +315,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -324,7 +325,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -334,7 +335,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 	}
