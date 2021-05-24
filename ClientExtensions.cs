@@ -17,7 +17,7 @@ namespace Pyrus.ApiClient
 			try
 			{
 				var result = default(TResponse);
-				for (var i = 0; i < client.Settings.RetryCount; i++)
+				for (var i = 0; i < client.CustomSettings.RetryCount; i++)
 				{
 					var res = await action();
 					if (res == null)
@@ -34,7 +34,7 @@ namespace Pyrus.ApiClient
 
 					if (result.Error != null)
 					{
-						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.Settings.RetryCount - 1)
+						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.CustomSettings.RetryCount - 1)
 							continue;
 
 						var isValidParameters = await client.GetTokenAsync();
@@ -77,7 +77,7 @@ namespace Pyrus.ApiClient
 		{
 			try
 			{
-				var url = client.Settings.Origin + PyrusClient.AuthEndpoint;
+				var url = client.CustomSettings.Origin + PyrusClient.AuthEndpoint;
 
 				var response = await RequestHelper.PostRequest(client, url, new AuthRequest(){Login = client.Login, SecurityKey = client.SecretKey });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);

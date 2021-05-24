@@ -19,11 +19,17 @@ namespace PyrusApiClient
 
 		public string Token { get; set; }
 
-		public Settings Settings 
+		public static Settings Settings { get; set; }
+
+		/// <summary>
+		/// Returns custom settings if they were specified in <see cref="PyrusClient"/> constructor.
+		/// Otherwise, returns static settings
+		/// </summary>
+		public Settings CustomSettings 
 		{ 
-			get =>_customSettings != null
+			get => _customSettings != null
 				? _customSettings
-				: _defaultSettings; 
+				: Settings;
 		}
 
 		internal const string AuthEndpoint = "/auth";
@@ -46,7 +52,7 @@ namespace PyrusApiClient
 
 		static PyrusClient()
 		{
-			_defaultSettings = new Settings("https://api.pyrus.com/v4", "https://files.pyrus.com");
+			Settings = new Settings("https://api.pyrus.com/v4", "https://files.pyrus.com");
 		}
 
 		public PyrusClient(
@@ -59,7 +65,7 @@ namespace PyrusApiClient
 
 		public async Task<AuthResponse> Auth(string login, string securityKey)
 		{
-			var url = Settings.Origin + AuthEndpoint;
+			var url = CustomSettings.Origin + AuthEndpoint;
 			var response = await this.RunQuery<AuthResponse>(() 
 				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
 			Token = response.AccessToken;
@@ -68,7 +74,7 @@ namespace PyrusApiClient
 
 		public async Task<FormsResponse> GetForms(string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint;
+			var url = CustomSettings.Origin + FormsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -78,7 +84,7 @@ namespace PyrusApiClient
 
 		public async Task<FormResponse> GetForm(int formId, string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint + $"/{formId}";
+			var url = CustomSettings.Origin + FormsEndpoint + $"/{formId}";
 			if (accessToken != null)
 				Token = accessToken;
 			
@@ -88,7 +94,7 @@ namespace PyrusApiClient
 
 		public async Task<FormRegisterResponse> GetRegistry(int formId, FormRegisterRequest request = null, string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint + $"/{formId}" + RegisterSuffix;
+			var url = CustomSettings.Origin + FormsEndpoint + $"/{formId}" + RegisterSuffix;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -114,7 +120,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskResponse> GetTask(int taskId, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint + $"/{taskId}";
+			var url = CustomSettings.Origin + TasksEndpoint + $"/{taskId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -124,7 +130,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint + $"/{taskId}" + CommentSuffix;
+			var url = CustomSettings.Origin + TasksEndpoint + $"/{taskId}" + CommentSuffix;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -134,7 +140,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskResponse> CreateTask(TaskRequest task, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint;
+			var url = CustomSettings.Origin + TasksEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -144,7 +150,7 @@ namespace PyrusApiClient
 
 		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
+			var url = CustomSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -154,7 +160,7 @@ namespace PyrusApiClient
 
 		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
+			var url = CustomSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -164,7 +170,7 @@ namespace PyrusApiClient
 
 		public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint;
+			var url = CustomSettings.Origin + CatalogsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -174,7 +180,7 @@ namespace PyrusApiClient
 
 		public async Task<ContactsResponse> GetContacts(string accessToken = null)
 		{
-			var url = Settings.Origin + ContactsEndpoint;
+			var url = CustomSettings.Origin + ContactsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -200,7 +206,7 @@ namespace PyrusApiClient
 
 		public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null)
 		{
-			var url = Settings.Origin + UploadFilesEndpoint;
+			var url = CustomSettings.Origin + UploadFilesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -227,7 +233,7 @@ namespace PyrusApiClient
 
 		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null)
 		{
-			var url = Settings.FilesOrigin + DownloadFilesEndpoint + $"?Id={attachmentId}";
+			var url = CustomSettings.FilesOrigin + DownloadFilesEndpoint + $"?Id={attachmentId}";
 			return await DownloadFile(url, accessToken);
 		}
 
@@ -242,7 +248,7 @@ namespace PyrusApiClient
 
 		public async Task<ListsResponse> GetLists(string accessToken = null)
 		{
-			var url = Settings.Origin + ListsEndpoint;
+			var url = CustomSettings.Origin + ListsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -253,7 +259,7 @@ namespace PyrusApiClient
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
 			var includeArchivedSuffix = includeArchived ? "&include_archived=y" : "";
-			var url = Settings.Origin + ListsEndpoint + $"/{listId}" + TasksSuffix + $"?item_count={itemCount}{includeArchivedSuffix}";
+			var url = CustomSettings.Origin + ListsEndpoint + $"/{listId}" + TasksSuffix + $"?item_count={itemCount}{includeArchivedSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -263,7 +269,7 @@ namespace PyrusApiClient
 
 		public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint;
+			var url = CustomSettings.Origin + RolesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -273,7 +279,7 @@ namespace PyrusApiClient
 
 		public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint + $"/{roleId}";
+			var url = CustomSettings.Origin + RolesEndpoint + $"/{roleId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -283,7 +289,7 @@ namespace PyrusApiClient
 
 		public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint;
+			var url = CustomSettings.Origin + MembersEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -293,7 +299,7 @@ namespace PyrusApiClient
 
 		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			var url = CustomSettings.Origin + MembersEndpoint + $"/{memberId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -303,7 +309,7 @@ namespace PyrusApiClient
 
 		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersBatchEndpoint;
+			var url = CustomSettings.Origin + MembersBatchEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -313,7 +319,7 @@ namespace PyrusApiClient
 
 		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			var url = CustomSettings.Origin + MembersEndpoint + $"/{memberId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -323,7 +329,7 @@ namespace PyrusApiClient
 
 		public async Task<RolesResponse> GetRoles(string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint;
+			var url = CustomSettings.Origin + RolesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -333,7 +339,7 @@ namespace PyrusApiClient
 
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint;
+			var url = CustomSettings.Origin + MembersEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -343,7 +349,7 @@ namespace PyrusApiClient
 
 		public async Task<ProfileResponse> GetProfile(string accessToken = null)
 		{
-			var url = Settings.Origin + ProfileEndpoint;
+			var url = CustomSettings.Origin + ProfileEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -353,7 +359,7 @@ namespace PyrusApiClient
 
 		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
 		{
-			var url = $"{Settings.Origin}{InboxEndpoint}?item_count={tasksCount}";
+			var url = $"{CustomSettings.Origin}{InboxEndpoint}?item_count={tasksCount}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -361,7 +367,6 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		private static Settings _defaultSettings { get; }
 		private Settings _customSettings { get; }
 	}
 }
