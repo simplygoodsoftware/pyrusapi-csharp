@@ -6,10 +6,10 @@ namespace PyrusApiClient
 {
 	public class Settings
 	{
-		public Settings()
+		public Settings(string origin, string filesOrigin)
 		{
-			Origin = "https://api.pyrus.com/v4";
-			FilesOrigin = "https://files.pyrus.com";
+			Origin = origin;
+			FilesOrigin = filesOrigin;
 			RetryCount = 2;
 		}
 

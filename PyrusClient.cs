@@ -21,6 +21,17 @@ namespace PyrusApiClient
 
 		public static Settings Settings { get; set; }
 
+		/// <summary>
+		/// Returns custom settings if they were specified in <see cref="PyrusClient"/> constructor.
+		/// Otherwise, returns static settings
+		/// </summary>
+		public Settings CustomSettings 
+		{ 
+			get => _customSettings != null
+				? _customSettings
+				: Settings;
+		}
+
 		internal const string AuthEndpoint = "/auth";
 		internal const string FormsEndpoint = "/forms";
 		internal const string ListsEndpoint = "/lists";
@@ -32,6 +43,7 @@ namespace PyrusApiClient
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
 		internal const string MembersEndpoint = "/members";
+		internal const string MembersBatchEndpoint = "/members/batch";
 		internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
@@ -40,49 +52,56 @@ namespace PyrusApiClient
 
 		static PyrusClient()
 		{
-			Settings = new Settings();
+			Settings = new Settings("https://api.pyrus.com/v4", "https://files.pyrus.com");
 		}
 
-	
+		public PyrusClient(
+			string origin = null,
+			string filesOrigin = null)
+		{
+			if (!string.IsNullOrEmpty(origin) || !string.IsNullOrEmpty(filesOrigin))
+				_customSettings = new Settings(origin, filesOrigin);
+		}
+
 		public async Task<AuthResponse> Auth(string login, string securityKey)
 		{
-			var url = Settings.Origin + AuthEndpoint;
+			var url = CustomSettings.Origin + AuthEndpoint;
 			var response = await this.RunQuery<AuthResponse>(() 
-				=> RequestHelper.PostRequest(url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
+				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
 			Token = response.AccessToken;
 			return response;
 		}
 
 		public async Task<FormsResponse> GetForms(string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint;
+			var url = CustomSettings.Origin + FormsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<FormsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<FormsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<FormResponse> GetForm(int formId, string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint + $"/{formId}";
+			var url = CustomSettings.Origin + FormsEndpoint + $"/{formId}";
 			if (accessToken != null)
 				Token = accessToken;
 			
-			var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<FormRegisterResponse> GetRegistry(int formId, FormRegisterRequest request = null, string accessToken = null)
 		{
-			var url = Settings.Origin + FormsEndpoint + $"/{formId}" + RegisterSuffix;
+			var url = CustomSettings.Origin + FormsEndpoint + $"/{formId}" + RegisterSuffix;
 			if (accessToken != null)
 				Token = accessToken;
 
 			if (request != null && request.Filters.Count != 0)
 				await ValidateFilter(request.Filters, formId);
 
-			var response = await this.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -101,71 +120,71 @@ namespace PyrusApiClient
 
 		public async Task<TaskResponse> GetTask(int taskId, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint + $"/{taskId}";
+			var url = CustomSettings.Origin + TasksEndpoint + $"/{taskId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint + $"/{taskId}" + CommentSuffix;
+			var url = CustomSettings.Origin + TasksEndpoint + $"/{taskId}" + CommentSuffix;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(url, comment, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, comment, Token));
 			return response;
 		}
 
 		public async Task<TaskResponse> CreateTask(TaskRequest task, string accessToken = null)
 		{
-			var url = Settings.Origin + TasksEndpoint;
+			var url = CustomSettings.Origin + TasksEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(url, task, Token));
+			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, task, Token));
 			return response;
 		}
 
 		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
+			var url = CustomSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint + $"/{catalogId}";
+			var url = CustomSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + CatalogsEndpoint;
+			var url = CustomSettings.Origin + CatalogsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<ContactsResponse> GetContacts(string accessToken = null)
 		{
-			var url = Settings.Origin + ContactsEndpoint;
+			var url = CustomSettings.Origin + ContactsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ContactsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ContactsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
@@ -187,7 +206,7 @@ namespace PyrusApiClient
 
 		public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null)
 		{
-			var url = Settings.Origin + UploadFilesEndpoint;
+			var url = CustomSettings.Origin + UploadFilesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -196,7 +215,7 @@ namespace PyrusApiClient
 
 			var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
 
-			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(url, streamFactory, fileName, Token));
+			var response = await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(this, url, streamFactory, fileName, Token));
 			return response;
 		}
 
@@ -214,7 +233,7 @@ namespace PyrusApiClient
 
 		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null)
 		{
-			var url = Settings.FilesOrigin + DownloadFilesEndpoint + $"?Id={attachmentId}";
+			var url = CustomSettings.FilesOrigin + DownloadFilesEndpoint + $"?Id={attachmentId}";
 			return await DownloadFile(url, accessToken);
 		}
 
@@ -223,119 +242,131 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(url, Token));
+			var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<ListsResponse> GetLists(string accessToken = null)
 		{
-			var url = Settings.Origin + ListsEndpoint;
+			var url = CustomSettings.Origin + ListsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
 			var includeArchivedSuffix = includeArchived ? "&include_archived=y" : "";
-			var url = Settings.Origin + ListsEndpoint + $"/{listId}" + TasksSuffix + $"?item_count={itemCount}{includeArchivedSuffix}";
+			var url = CustomSettings.Origin + ListsEndpoint + $"/{listId}" + TasksSuffix + $"?item_count={itemCount}{includeArchivedSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint;
+			var url = CustomSettings.Origin + RolesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint + $"/{roleId}";
+			var url = CustomSettings.Origin + RolesEndpoint + $"/{roleId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint;
+			var url = CustomSettings.Origin + MembersEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			var url = CustomSettings.Origin + MembersEndpoint + $"/{memberId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
+		{
+			var url = CustomSettings.Origin + MembersBatchEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
+			var url = CustomSettings.Origin + MembersEndpoint + $"/{memberId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.DeleteRequest(url, Token));
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.DeleteRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<RolesResponse> GetRoles(string accessToken = null)
 		{
-			var url = Settings.Origin + RolesEndpoint;
+			var url = CustomSettings.Origin + RolesEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
 		{
-			var url = Settings.Origin + MembersEndpoint;
+			var url = CustomSettings.Origin + MembersEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<ProfileResponse> GetProfile(string accessToken = null)
 		{
-			var url = Settings.Origin + ProfileEndpoint;
+			var url = CustomSettings.Origin + ProfileEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
 		{
-			var url = $"{Settings.Origin}{InboxEndpoint}?item_count={tasksCount}";
+			var url = $"{CustomSettings.Origin}{InboxEndpoint}?item_count={tasksCount}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
+
+		private Settings _customSettings { get; }
 	}
 }
