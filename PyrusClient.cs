@@ -19,7 +19,12 @@ namespace PyrusApiClient
 
 		public string Token { get; set; }
 
-		public Settings Settings { get; set; }
+		public Settings Settings 
+		{ 
+			get =>_customSettings != null
+				? _customSettings
+				: _defaultSettings; 
+		}
 
 		internal const string AuthEndpoint = "/auth";
 		internal const string FormsEndpoint = "/forms";
@@ -32,17 +37,24 @@ namespace PyrusApiClient
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
 		internal const string MembersEndpoint = "/members";
+		internal const string MembersBatchEndpoint = "/members/batch";
 		internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
 
-		public PyrusClient(
-			string origin = "https://api.pyrus.com/v4",
-			string filesOrigin = "https://files.pyrus.com")
+		static PyrusClient()
 		{
-			Settings = new Settings(origin, filesOrigin);
+			_defaultSettings = new Settings("https://api.pyrus.com/v4", "https://files.pyrus.com");
+		}
+
+		public PyrusClient(
+			string origin = null,
+			string filesOrigin = null)
+		{
+			if (!string.IsNullOrEmpty(origin) || !string.IsNullOrEmpty(filesOrigin))
+				_customSettings = new Settings(origin, filesOrigin);
 		}
 
 		public async Task<AuthResponse> Auth(string login, string securityKey)
@@ -289,6 +301,16 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + MembersBatchEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
 		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
 		{
 			var url = Settings.Origin + MembersEndpoint + $"/{memberId}";
@@ -338,5 +360,8 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
+
+		private static Settings _defaultSettings { get; }
+		private Settings _customSettings { get; }
 	}
 }
