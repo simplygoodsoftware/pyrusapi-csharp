@@ -47,7 +47,7 @@ namespace PyrusApiClient
 
 		static PyrusClient()
 		{
-			Settings = new Settings("https://api.pyrus.com/v4", "https://files.pyrus.com");
+			Settings = new Settings();
 		}
 
 		public PyrusClient() : this(Settings)
