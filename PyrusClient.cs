@@ -56,7 +56,7 @@ namespace PyrusApiClient
 
 		public PyrusClient(Settings settings)
 		{
-			ClientSettings = settings ?? throw new ArgumentNullException(nameof(settings)); ;
+			ClientSettings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
 
 		public async Task<AuthResponse> Auth(string login, string securityKey)
