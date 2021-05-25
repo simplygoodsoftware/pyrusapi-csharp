@@ -5,7 +5,7 @@ namespace Pyrus.ApiClient.Responses
 {
     public class ChangeMembersResponse : ResponseBase
     {
-        public IEnumerable<Person> Members { get; set; } = new List<Person>();
-        public IEnumerable<string> Errors { get; set; } = new List<string>();
+        public List<Person> Members { get; set; } = new List<Person>();
+        public List<string> Errors { get; set; } = new List<string>();
     }
 }
