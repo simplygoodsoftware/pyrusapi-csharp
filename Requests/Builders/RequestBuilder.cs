@@ -141,6 +141,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<MembersResponse>();
 		}
 
+		public static CreateBotRequestBuilder CreateBot(string name)
+		{
+			return new CreateBotRequestBuilder(name);
+		}
+
+		public static UpdateBotRequestBuilder UpdateBot(int botId)
+		{
+			return new UpdateBotRequestBuilder(botId);
+		}
+
+		public static EmptyBuilder<BotsResponse> GetBots()
+		{
+			return new EmptyBuilder<BotsResponse>();
+		}
+
 		public static EmptyBuilder<ProfileResponse> GetProfile()
 		{
 			return new EmptyBuilder<ProfileResponse>();
@@ -295,6 +310,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<MembersResponse> Process(this EmptyBuilder<MembersResponse> builder, PyrusClient client)
 		{
 			return await client.GetMembers();
+		}
+
+		public static async Task<BotResponse> Process(this CreateBotRequestBuilder builder, PyrusClient client)
+		{
+			return await client.CreateBot(builder);
+		}
+
+		public static async Task<BotResponse> Process(this UpdateBotRequestBuilder builder, PyrusClient client)
+		{
+			return await client.UpdateBot(builder.BotId, builder);
+		}
+
+		public static async Task<BotsResponse> Process(this EmptyBuilder<BotsResponse> builder, PyrusClient client)
+		{
+			return await client.GetBots();
 		}
 
 		public static async Task<ProfileResponse> Process(this EmptyBuilder<ProfileResponse> builder, PyrusClient client)
