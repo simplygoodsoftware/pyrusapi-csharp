@@ -31,7 +31,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public UpdateBotRequestBuilder RemoveUrlValidation()
 		{
-			_request.NeedUrlValidation = true;
+			_request.NeedUrlValidation = false;
 			return this;
 		}
 

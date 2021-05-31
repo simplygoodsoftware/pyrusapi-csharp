@@ -38,7 +38,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		
 		public CreateBotRequestBuilder WithoutUrlValidation()
 		{
-			_request.NeedUrlValidation =  true;
+			_request.NeedUrlValidation =  false;
 			return this;
 		}
 
