@@ -17,7 +17,7 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
-		[JsonProperty("is_enable")]
+		[JsonProperty("is_enabled")]
 		public bool? IsEnabled { get; set; }
 
 		[JsonProperty("hook_url")]
