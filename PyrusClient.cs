@@ -306,8 +306,7 @@ namespace PyrusApiClient
 		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersBatchEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
