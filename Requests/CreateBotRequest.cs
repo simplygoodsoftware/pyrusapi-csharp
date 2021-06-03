@@ -14,11 +14,5 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "hook_url")]
 		public string HookUrl { get; set; }
-
-		[JsonProperty(PropertyName = "version")]
-		public int BotVersion { get; set; } = 4;
-
-		[JsonProperty(PropertyName = "need_url_validation")]
-		public bool? NeedUrlValidation { get; set; }
 	}
 }

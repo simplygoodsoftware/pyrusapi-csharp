@@ -24,24 +24,6 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public CreateBotRequestBuilder Version(int botVersion)
-		{
-			_request.BotVersion = botVersion;
-			return this;
-		}
-
-		public CreateBotRequestBuilder WithUrlValidation()
-		{
-			_request.NeedUrlValidation =  true;
-			return this;
-		}
-		
-		public CreateBotRequestBuilder WithoutUrlValidation()
-		{
-			_request.NeedUrlValidation =  false;
-			return this;
-		}
-
 		public static implicit operator CreateBotRequest(CreateBotRequestBuilder cbrb)
 		{
 			return cbrb._request;

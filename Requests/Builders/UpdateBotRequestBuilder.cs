@@ -23,18 +23,6 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public UpdateBotRequestBuilder AddUrlValidation()
-		{
-			_request.NeedUrlValidation = true;
-			return this;
-		}
-
-		public UpdateBotRequestBuilder RemoveUrlValidation()
-		{
-			_request.NeedUrlValidation = false;
-			return this;
-		}
-
 		public UpdateBotRequestBuilder Enable()
 		{
 			_request.IsEnabled = true;

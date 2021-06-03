@@ -21,13 +21,10 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "update_secret_key")]
 		public bool? UpdateSecretKey { get; set; }
 
-		[JsonProperty(PropertyName = "need_url_validation")]
-		public bool? NeedUrlValidation { get; set; }
-
-		[JsonProperty(PropertyName = "bot_settings")]
+		[JsonProperty(PropertyName = "parameters")]
 		public string BotSettings { get; set; }
 
-		[JsonProperty(PropertyName = "bot_description")]
+		[JsonProperty(PropertyName = "description")]
 		public string BotDescription { get; set; }
 	}
 }
