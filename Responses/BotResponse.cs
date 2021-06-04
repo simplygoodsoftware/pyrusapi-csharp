@@ -23,13 +23,13 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("hook_url")]
 		public string HookUrl { get; set; }
 
-		[JsonProperty("bot_description")]
+		[JsonProperty("description")]
 		public string BotDescription { get; set; }
 
-		[JsonProperty("bot_settings")]
+		[JsonProperty("settings")]
 		public string BotSettings { get; set; }
 
-		[JsonProperty("bot_version")]
+		[JsonProperty("version")]
 		public string BotVersion { get; set; }
 
 		[JsonProperty("client_id")]

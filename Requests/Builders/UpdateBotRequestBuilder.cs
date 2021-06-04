@@ -35,12 +35,6 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 		
-		public UpdateBotRequestBuilder UpdateSecretKey()
-		{
-			_request.UpdateSecretKey = true;
-			return this;
-		}
-
 		public UpdateBotRequestBuilder ChangeSettings(string botSettings)
 		{
 			_request.BotSettings = botSettings;
