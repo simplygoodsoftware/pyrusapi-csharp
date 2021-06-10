@@ -39,17 +39,8 @@ namespace PyrusApiClient
 		[JsonProperty("version")]
 		public string BotVersion { get; set; }
 
-		[JsonProperty("client_id")]
-		public string ClientId { get; set; }
-
-		[JsonProperty("event_type")]
-		public int EventType { get; set; }
-
 		[JsonProperty("login")]
 		public string Login { get; set; }
-
-		[JsonProperty("secret_key")]
-		public string SecretKey { get; set; }
 
 		public override string ToString()
 		{
