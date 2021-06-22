@@ -38,9 +38,10 @@ namespace PyrusApiClient
 		internal const string DownloadFilesEndpoint = "/services/attachment";
 		internal const string RolesEndpoint = "/roles";
 		internal const string MembersEndpoint = "/members";
-		internal const string MembersBatchEndpoint = "/members/batch";
+		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 
+		internal const string BatchSuffix = "/batch";
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
@@ -305,10 +306,30 @@ namespace PyrusApiClient
 
 		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + MembersBatchEndpoint;
+			var url = ClientSettings.Origin + MembersEndpoint + BatchSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<BotResponse> UpdateBot(int BotId, UpdateBotRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint + $"/{BotId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -339,6 +360,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<BotsResponse> GetBots(string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
