@@ -319,7 +319,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -329,7 +329,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -369,7 +369,7 @@ namespace PyrusApiClient
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(url, Token));
+			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
