@@ -32,9 +32,9 @@ namespace PyrusApiClient
 		private static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
-		internal static async Task<MessageWithStatusCode> PostRequest(string url, object request, string token = null)
+		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
@@ -50,9 +50,9 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> PutRequest(string url, object request, string token = null)
+		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PutAsync(url,
@@ -67,9 +67,9 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> DeleteRequest(string url, string token = null)
+		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.DeleteAsync(url))
@@ -80,9 +80,9 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> PostFileRequest(string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
+		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
@@ -99,9 +99,9 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> GetFileRequest(string url, string token)
+		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
@@ -125,9 +125,9 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> GetRequest(string url, string token = null)
+		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = PyrusClient.Settings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.GetAsync(url))

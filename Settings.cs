@@ -6,10 +6,18 @@ namespace PyrusApiClient
 {
 	public class Settings
 	{
+		public const string PyrusOrigin = "https://api.pyrus.com/v4";
+		public const string PyrusFilesOrigin = "https://files.pyrus.com";
+
 		public Settings()
+			: this(PyrusOrigin, PyrusFilesOrigin)
 		{
-			Origin = "https://api.pyrus.com/v4";
-			FilesOrigin = "https://files.pyrus.com";
+		}
+
+		public Settings(string origin, string filesOrigin)
+		{
+			Origin = origin;
+			FilesOrigin = filesOrigin;
 			RetryCount = 2;
 		}
 
