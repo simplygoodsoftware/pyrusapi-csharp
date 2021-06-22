@@ -39,6 +39,7 @@ namespace PyrusApiClient
 		internal const string RolesEndpoint = "/roles";
 		internal const string MembersEndpoint = "/members";
 		internal const string MembersBatchEndpoint = "/members/batch";
+		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 
 		internal const string RegisterSuffix = "/register";
@@ -312,6 +313,26 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(url, request, Token));
+			return response;
+		}
+
+		public async Task<BotResponse> UpdateBot(int BotId, UpdateBotRequest request, string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint + $"/{BotId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(url, request, Token));
+			return response;
+		}
+
 		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint + $"/{memberId}";
@@ -339,6 +360,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<BotsResponse> GetBots(string accessToken = null)
+		{
+			var url = Settings.Origin + BotsEndpoint;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(url, Token));
 			return response;
 		}
 
