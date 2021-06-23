@@ -267,20 +267,45 @@ namespace PyrusApiClient
 		public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + RolesEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<RolesResponse> CreateRoles(CreateRoleRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + RolesEndpoint + $"/{roleId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<RolesResponse> UpdateRoles(UpdateRoleRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<RolesResponse> DeleteRoles(RoleDeleteRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
