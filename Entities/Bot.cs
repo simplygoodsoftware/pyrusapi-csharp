@@ -30,6 +30,9 @@ namespace PyrusApiClient
 		[JsonProperty("hook_url")]
 		public string HookUrl { get; set; }
 
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
+
 		[JsonProperty("description")]
 		public string BotDescription { get; set; }
 
@@ -42,9 +45,6 @@ namespace PyrusApiClient
 		[JsonProperty("login")]
 		public string Login { get; set; }
 
-		public override string ToString()
-		{
-			return Id?.ToString() ?? Name;
-		}
+		public override string ToString() => Id?.ToString() ?? Name;
 	}
 }
