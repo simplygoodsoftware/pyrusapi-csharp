@@ -340,7 +340,7 @@ namespace PyrusApiClient
 
 		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + BotsEndpoint;
+			var url = ClientSettings.Origin + BotsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -350,7 +350,7 @@ namespace PyrusApiClient
 
 		public async Task<BotResponse> UpdateBot(int BotId, UpdateBotRequest request, string accessToken = null)
 		{
-			var url = Settings.Origin + BotsEndpoint + $"/{BotId}";
+			var url = ClientSettings.Origin + BotsEndpoint + $"/{BotId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -390,7 +390,7 @@ namespace PyrusApiClient
 
 		public async Task<BotsResponse> GetBots(string accessToken = null)
 		{
-			var url = Settings.Origin + BotsEndpoint;
+			var url = ClientSettings.Origin + BotsEndpoint;
 			if (accessToken != null)
 				Token = accessToken;
 
