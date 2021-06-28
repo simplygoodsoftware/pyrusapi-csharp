@@ -51,6 +51,9 @@ namespace PyrusApiClient
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
+
 		public override string ToString()
 		{
 			return Id?.ToString() ?? Email;

@@ -312,8 +312,7 @@ namespace PyrusApiClient
 		public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
@@ -322,8 +321,7 @@ namespace PyrusApiClient
 		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint + $"/{memberId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
@@ -381,8 +379,7 @@ namespace PyrusApiClient
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
