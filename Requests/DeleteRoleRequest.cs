@@ -2,7 +2,7 @@
 
 namespace Pyrus.ApiClient.Requests
 {
-	public class RoleDeleteRequest
+	public class DeleteRoleRequest
 	{
 		[JsonProperty(PropertyName = "id")]
 		public int Id { get; set; }

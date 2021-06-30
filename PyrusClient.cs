@@ -41,7 +41,7 @@ namespace PyrusApiClient
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 
-		internal const string BatchSuffix = "/batch";
+		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
@@ -275,7 +275,7 @@ namespace PyrusApiClient
 
 		public async Task<RolesResponse> CreateRoles(CreateRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
@@ -293,16 +293,16 @@ namespace PyrusApiClient
 
 		public async Task<RolesResponse> UpdateRoles(UpdateRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<RolesResponse> DeleteRoles(RoleDeleteRequest[] request, string accessToken = null)
+		public async Task<RolesResponse> DeleteRoles(DeleteRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
@@ -329,7 +329,7 @@ namespace PyrusApiClient
 
 		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + MembersEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + MembersEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
@@ -339,8 +339,7 @@ namespace PyrusApiClient
 		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
@@ -349,8 +348,7 @@ namespace PyrusApiClient
 		public async Task<BotResponse> UpdateBot(int BotId, UpdateBotRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint + $"/{BotId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
