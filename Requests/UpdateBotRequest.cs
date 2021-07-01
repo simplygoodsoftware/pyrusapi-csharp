@@ -13,7 +13,7 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "is_enabled")]
 		public bool? IsEnabled { get; set; }
 
-		[JsonProperty(PropertyName = "settings")]
+		[JsonProperty(PropertyName = "bot_settings")]
 		public string BotSettings { get; set; }
 
 		[JsonProperty(PropertyName = "description")]
