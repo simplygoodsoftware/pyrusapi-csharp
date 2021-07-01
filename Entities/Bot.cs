@@ -36,7 +36,7 @@ namespace PyrusApiClient
 		[JsonProperty("description")]
 		public string BotDescription { get; set; }
 
-		[JsonProperty("settings")]
+		[JsonProperty("bot_settings")]
 		public string BotSettings { get; set; }
 
 		[JsonProperty("version")]
