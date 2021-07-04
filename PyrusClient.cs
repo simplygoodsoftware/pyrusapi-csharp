@@ -305,7 +305,7 @@ namespace PyrusApiClient
 			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
-			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
 
