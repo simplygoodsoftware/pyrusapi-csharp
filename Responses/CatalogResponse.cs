@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Pyrus.ApiClient.Entities;
 
 namespace PyrusApiClient
 {
 	public class CatalogResponse : ResponseBase
 	{
-		[JsonProperty("catalog_id")]
-		public int CatalogId { get; set; }
-
-		[JsonProperty("items")]
-		public List<CatalogItem> Items { get; set; }
-
-		[JsonProperty("catalog_headers")]
-		public List<CatalogHeader> Headers { get; set; }
+		public OrgCatalog Catalog { get; set; }
 	}
 }

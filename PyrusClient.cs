@@ -148,30 +148,63 @@ namespace PyrusApiClient
 		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<CatalogsResponse> GetCatalogs(string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<SyncCatalogsResponse> SyncCatalogs(SyncCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<SyncCatalogsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<CatalogsResponse> CreateCatalogs(CreateCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteCatalogs(DeleteCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
 
