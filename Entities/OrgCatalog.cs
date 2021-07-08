@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PyrusApiClient;
 using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Entities
@@ -15,10 +14,10 @@ namespace Pyrus.ApiClient.Entities
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
-		[JsonProperty("catalog_headers")]
-		public List<CatalogHeader> Headers { get; set; }
+		[JsonProperty("version")]
+		public long Version { get; set; }
 
-		[JsonProperty("items")]
-		public List<CatalogItem> Items { get; set; }
+		[JsonProperty("supervisors")]
+		public List<int> Supervisors { get; set; }
 	}
 }
