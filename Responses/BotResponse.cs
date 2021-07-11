@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
 using PyrusApiClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Responses
 {
@@ -26,7 +21,7 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("description")]
 		public string BotDescription { get; set; }
 
-		[JsonProperty("settings")]
+		[JsonProperty("bot_settings")]
 		public string BotSettings { get; set; }
 
 		[JsonProperty("version")]

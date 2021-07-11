@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
+using PyrusApiClient;
 using System.Collections.Generic;
 
-namespace PyrusApiClient
+namespace Pyrus.ApiClient.Entities
 {
-	public class SyncCatalogResponse : ResponseBase
+	public class CatalogDiff
 	{
 		[JsonProperty("apply")]
 		public bool Apply { get; set; }
