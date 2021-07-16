@@ -419,8 +419,7 @@ namespace PyrusApiClient
 		public async Task<BotsResponse> GetBots(string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;

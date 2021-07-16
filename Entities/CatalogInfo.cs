@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Entities
 {
-	public class OrgCatalog
+	public class CatalogInfo
 	{
 		[JsonProperty("catalog_id")]
-		public int CatalogId { get; set; }
+		public int Id { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }

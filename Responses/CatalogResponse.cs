@@ -17,6 +17,12 @@ namespace PyrusApiClient
 		[JsonProperty("version")]
 		public long Version { get; set; }
 
+		[JsonProperty("external_version")]
+		public long ExternalVersion { get; set; }
+
+		[JsonProperty("deleted")]
+		public bool Deleted { get; set; }
+
 		[JsonProperty("supervisors")]
 		public List<int> Supervisors { get; set; }
 

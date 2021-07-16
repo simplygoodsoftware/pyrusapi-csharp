@@ -5,6 +5,9 @@ namespace PyrusApiClient
 {
 	public class SyncCatalogResponse : ResponseBase
 	{
+		[JsonProperty("catalog_id")]
+		public int Id { get; set; }
+
 		[JsonProperty("apply")]
 		public bool Apply { get; set; }
 

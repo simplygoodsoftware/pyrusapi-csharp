@@ -8,6 +8,6 @@ namespace Pyrus.ApiClient.Responses
 	public class CatalogsResponse : ResponseBase
 	{
 		[JsonProperty("catalogs")]
-		public List<OrgCatalog> Catalogs { get; set; }
+		public List<CatalogInfo> Catalogs { get; set; }
 	}
 }
