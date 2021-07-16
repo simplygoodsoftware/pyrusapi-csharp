@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace PyrusApiClient
+namespace Pyrus.ApiClient.Entities
 {
-	public class CatalogResponse : ResponseBase
+	public class CatalogInfo
 	{
 		[JsonProperty("catalog_id")]
-		public int CatalogId { get; set; }
+		public int Id { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
@@ -25,11 +25,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("supervisors")]
 		public List<int> Supervisors { get; set; }
-
-		[JsonProperty("catalog_headers")]
-		public List<CatalogHeader> Headers { get; set; }
-
-		[JsonProperty("items")]
-		public List<CatalogItem> Items { get; set; }
 	}
 }

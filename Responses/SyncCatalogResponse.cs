@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace PyrusApiClient
 {
 	public class SyncCatalogResponse : ResponseBase
 	{
-		[JsonProperty(PropertyName = "apply")]
+		[JsonProperty("catalog_id")]
+		public int Id { get; set; }
+
+		[JsonProperty("apply")]
 		public bool Apply { get; set; }
 
-		[JsonProperty(PropertyName = "added")]
+		[JsonProperty("added")]
 		public List<CatalogItem> Added { get; set; }
 
-		[JsonProperty(PropertyName = "deleted")]
+		[JsonProperty("deleted")]
 		public List<CatalogItem> Deleted { get; set; }
 
-		[JsonProperty(PropertyName = "updated")]
+		[JsonProperty("updated")]
 		public List<CatalogItem> Updated { get; set; }
 
-		[JsonProperty(PropertyName = "catalog_headers")]
+		[JsonProperty("catalog_headers")]
 		public List<CatalogHeader> CatalogHeaders { get; set; }
 	}
 }

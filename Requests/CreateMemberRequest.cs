@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -29,5 +24,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "phone")]
 		public string Phone { get; set; }
+
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
 	}
 }
