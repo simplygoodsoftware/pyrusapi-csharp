@@ -27,8 +27,15 @@ namespace Pyrus.ApiClient
 						return CreateDownloadResponse<TResponse>(res);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
+					try
+					{
+						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
+					}
+                    catch
+                    {
+						result = null;
+                    }
 
-					result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					if (result == null)
 						continue;
 
