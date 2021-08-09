@@ -12,6 +12,7 @@ namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
+		private const int DefaultRetryTimeout = 200;
 		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
@@ -19,6 +20,9 @@ namespace Pyrus.ApiClient
 				var result = default(TResponse);
 				for (var i = 0; i < client.ClientSettings.RetryCount; i++)
 				{
+					if(i > 0)
+                        await System.Threading.Tasks.Task.Delay(TimeSpan.FromMilliseconds(DefaultRetryTimeout));
+
 					var res = await action();
 					if (res == null)
 						continue;
@@ -33,6 +37,8 @@ namespace Pyrus.ApiClient
 					}
 					catch
 					{
+						if (i == client.ClientSettings.RetryCount - 1)
+							throw;
 						continue;
 					}
 
