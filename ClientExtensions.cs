@@ -31,10 +31,10 @@ namespace Pyrus.ApiClient
 					{
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
-                    catch
-                    {
+					catch
+					{
 						result = null;
-                    }
+					}
 
 					if (result == null)
 						continue;

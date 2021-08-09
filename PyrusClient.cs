@@ -11,7 +11,7 @@ using PyrusApiClient.Exceptions;
 
 namespace PyrusApiClient
 {
-	public class PyrusClient : IPyrusClient
+	public class PyrusClient
 	{
 		public string SecretKey { get; set; }
 
