@@ -33,11 +33,8 @@ namespace Pyrus.ApiClient
 					}
 					catch
 					{
-						result = null;
-					}
-
-					if (result == null)
 						continue;
+					}
 
 					if (result.Error != null)
 					{
