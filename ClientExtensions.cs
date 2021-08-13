@@ -12,6 +12,7 @@ namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
+		private readonly static TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
@@ -19,6 +20,9 @@ namespace Pyrus.ApiClient
 				var result = default(TResponse);
 				for (var i = 0; i < client.ClientSettings.RetryCount; i++)
 				{
+					if(i > 0)
+                        await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+
 					var res = await action();
 					if (res == null)
 						continue;
@@ -27,9 +31,18 @@ namespace Pyrus.ApiClient
 						return CreateDownloadResponse<TResponse>(res);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
+					try
+					{
+						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
+					}
+					catch
+					{
+						if (i == client.ClientSettings.RetryCount - 1)
+							throw;
+						continue;
+					}
 
-					result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
-					if (result == null)
+					if (result is null)
 						continue;
 
 					if (result.Error != null)

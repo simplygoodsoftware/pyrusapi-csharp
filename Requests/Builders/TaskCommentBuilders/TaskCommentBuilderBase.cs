@@ -144,6 +144,13 @@ namespace PyrusApiClient.Builders
 			Comment.SpentMinutes = spentMinutes;
 			return (T)this;
 		}
+
+		public T WithSkipSatisfactionRequest(bool skip = true)
+        {
+			Comment.SkipSatisfactionRequest = skip;
+			return (T)this;
+        }
+
         #region subscribers
         public T AddSubscribers(IEnumerable<Person> subscribers)
 		{

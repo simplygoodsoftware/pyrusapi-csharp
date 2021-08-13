@@ -41,7 +41,7 @@ namespace PyrusApiClient
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 
-		internal const string BatchSuffix = "/batch";
+		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
@@ -148,30 +148,63 @@ namespace PyrusApiClient
 		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<CatalogsResponse> GetCatalogs(string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint + $"/{catalogId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<SyncCatalogsResponse> SyncCatalogs(SyncCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<SyncCatalogsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + CatalogsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<CatalogsResponse> CreateCatalogs(CreateCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteCatalogs(DeleteCatalogRequest[] request, string accessToken = null)
+		{
+			var url = ClientSettings.Origin + CatalogsEndpoint + BulkSuffix;
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -275,7 +308,7 @@ namespace PyrusApiClient
 
 		public async Task<RolesResponse> CreateRoles(CreateRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
@@ -293,27 +326,26 @@ namespace PyrusApiClient
 
 		public async Task<RolesResponse> UpdateRoles(UpdateRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<RolesResponse> DeleteRoles(RoleDeleteRequest[] request, string accessToken = null)
+		public async Task<RolesResponse> DeleteRoles(DeleteRoleRequest[] request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + RolesEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + RolesEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
-			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			var response = await this.RunQuery<RolesResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
 
 		public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
@@ -322,8 +354,7 @@ namespace PyrusApiClient
 		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint + $"/{memberId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
@@ -331,7 +362,7 @@ namespace PyrusApiClient
 
 		public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
 		{
-			var url = ClientSettings.Origin + MembersEndpoint + BatchSuffix;
+			var url = ClientSettings.Origin + MembersEndpoint + BulkSuffix;
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
@@ -341,8 +372,7 @@ namespace PyrusApiClient
 		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
@@ -351,8 +381,7 @@ namespace PyrusApiClient
 		public async Task<BotResponse> UpdateBot(int BotId, UpdateBotRequest request, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint + $"/{BotId}";
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
@@ -381,8 +410,7 @@ namespace PyrusApiClient
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
 		{
 			var url = ClientSettings.Origin + MembersEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
@@ -391,8 +419,7 @@ namespace PyrusApiClient
 		public async Task<BotsResponse> GetBots(string accessToken = null)
 		{
 			var url = ClientSettings.Origin + BotsEndpoint;
-			if (accessToken != null)
-				Token = accessToken;
+			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
