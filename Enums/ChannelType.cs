@@ -43,6 +43,9 @@ namespace PyrusApiClient
 		AmoCrm = 11,
 
 		[EnumMember(Value = "instagram")]
-		Instagram = 12
+		Instagram = 12,
+
+		[EnumMember(Value = "private_channel")]
+		PrivateChannel = 13,
 	}
 }
