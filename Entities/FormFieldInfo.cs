@@ -31,6 +31,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("decimal_places")]
 		public int? DecimalPlaces { get; set; }
+
+		[JsonProperty("multiple_choice")]
+		public bool? MultipleChoice { get; set; }
 	}
 	public class ChoiceOption
 	{
