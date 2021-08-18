@@ -47,5 +47,23 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "private_channel")]
 		PrivateChannel = 13,
+
+		[EnumMember(Value = "jira")]
+		Jira = 14,
+
+		[EnumMember(Value = "beeline")]
+		Beeline = 15,
+
+		[EnumMember(Value = "api_telephony")]
+		ApiTeelphony = 16,
+
+		[EnumMember(Value = "zoom")]
+		Zoom = 17,
+
+		[EnumMember(Value = "web_form")]
+		WebForm = 18,
+
+		[EnumMember(Value = "whats_app")]
+		WhatsApp = 19,
 	}
 }
