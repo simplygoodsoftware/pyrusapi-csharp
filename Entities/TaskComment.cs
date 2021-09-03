@@ -119,6 +119,9 @@ namespace PyrusApiClient
 		[JsonProperty("skip_satisfaction")]
 		public bool? SkipSatisfactionRequest { get; set; }
 
+		[JsonProperty("sms")]
+		public Sms Sms { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
 	}
