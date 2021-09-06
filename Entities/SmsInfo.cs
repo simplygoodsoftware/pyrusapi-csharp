@@ -4,9 +4,6 @@ namespace PyrusApiClient
 {
 	public class SmsInfo
 	{
-		[JsonProperty("phone_number")]
-		public string PhoneNumber { get; set; }
-
 		[JsonProperty("error_code")]
 		public SendSmsError ErrorCode { get; set; }
 
