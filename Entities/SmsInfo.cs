@@ -2,7 +2,7 @@
 
 namespace PyrusApiClient
 {
-	public class Sms
+	public class SmsInfo
 	{
 		[JsonProperty("phone_number")]
 		public string PhoneNumber { get; set; }
