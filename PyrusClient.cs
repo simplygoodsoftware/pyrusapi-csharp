@@ -135,6 +135,17 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<MultipleTasksCommentResponse> CommentMultipleTasks(MultipleTasksCommentRequest request, string accessToken = null)
+        {
+			var url = ClientSettings.Origin + TasksEndpoint + CommentSuffix;
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MultipleTasksCommentResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+
 		public async Task<TaskResponse> CreateTask(TaskRequest task, string accessToken = null)
 		{
 			var url = ClientSettings.Origin + TasksEndpoint;

@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.Entities;
+using Pyrus.ApiClient.Requests.Builders.TaskBuilders;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
@@ -20,6 +23,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		{
 			return new SimpleTaskBuilder(new TaskRequest{Text = text});
 		}
+
+		public static MultipleCommentsBuilder MultipleCommentsBuilder(List<CommentDescription> comments = null)
+        {
+			return new MultipleCommentsBuilder(comments);
+        }
 
 		public static FormTaskCommentBuilder CommentFormTask(int taskId)
 		{
@@ -253,6 +261,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		{
 			return await client.GetLists();
 		}
+
+		public static async Task<MultipleTasksCommentResponse> Process(this MultipleCommentsBuilder builder, PyrusClient client)
+        {
+			return await client.CommentMultipleTasks(builder.Request);
+        }
 
 		public static async Task<TaskListResponse> Process(this TaskListRequestBuilder builder, PyrusClient client)
 		{
