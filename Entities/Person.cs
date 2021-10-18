@@ -32,7 +32,7 @@ namespace PyrusApiClient
 		public string Email { get; set; }
 
 		[JsonProperty("rights")]
-		public PersonRights Rights { get; set; }
+		public PersonRights? Rights { get; set; }
 
 		[JsonProperty("type")]
 		public PersonType Type { get; set; }
@@ -57,6 +57,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
+
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
 
 		public override string ToString() => Id?.ToString() ?? Email;
 	}

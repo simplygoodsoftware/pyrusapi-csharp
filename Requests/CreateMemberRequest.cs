@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -12,6 +13,9 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "email")]
 		public string Email { get; set; }
+
+		[JsonProperty("rights")]
+		public PersonRights? Rights { get; set; }
 
 		[JsonProperty(PropertyName = "position")]
 		public string Position { get; set; }
@@ -27,5 +31,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
+
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
 	}
 }

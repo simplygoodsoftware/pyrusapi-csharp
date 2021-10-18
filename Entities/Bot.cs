@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 
 namespace PyrusApiClient
 {
@@ -44,6 +45,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("login")]
 		public string Login { get; set; }
+
+		[JsonProperty("rights")]
+		public PersonRights? Rights { get; set; }
 
 		public override string ToString() => Id?.ToString() ?? Name;
 	}
