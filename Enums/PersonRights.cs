@@ -77,7 +77,10 @@ namespace Pyrus.ApiClient.Enums
 
 		#region Front Rights Set
 		[EnumMember]
-		UIAdministrator = ManageRoles | ManagePersonsInOrganization | EditOrganizationSettings | InvitePersonsToOrganization | NewOrganizationDefaultRights,
+		UIAdministrator = UIOrganizationManager | UIAccountant | UISupervisor | UIConfigurationManager,
+
+		[EnumMember]
+		UIOrganizationManager = ManagePersonsInOrganization | ManageRoles | EditOrganizationSettings | InvitePersonsToOrganization,
 
 		[EnumMember]
 		UIAccountant = BillsPayment,
@@ -86,7 +89,7 @@ namespace Pyrus.ApiClient.Enums
 		UISupervisor = CanSeeAllTasks | EditOrganizationProjects,
 
 		[EnumMember]
-		UIConfigurationManager = DeleteOtherMembersTasks | ManageIntegrationsAndCatalogs,
+		UIConfigurationManager = CloseDeleteAnnouncements | DeleteOtherMembersTasks | ManageIntegrationsAndCatalogs,
 		#endregion
 	}
 }
