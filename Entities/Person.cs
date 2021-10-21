@@ -32,7 +32,7 @@ namespace PyrusApiClient
 		public string Email { get; set; }
 
 		[JsonProperty("rights")]
-		public PersonRights Rights { get; set; }
+		public PersonRights? Rights { get; set; }
 
 		[JsonProperty("type")]
 		public PersonType Type { get; set; }
