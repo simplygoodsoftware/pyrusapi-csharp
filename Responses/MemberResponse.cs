@@ -44,6 +44,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
+
 		public Person Person =>
 			new Person
 			{ 
@@ -58,6 +61,7 @@ namespace Pyrus.ApiClient.Responses
 				Position = Position,
 				Skype = Skype,
 				Phone = Phone,
+				LoginPhone = LoginPhone,
 			};
 
 	}
