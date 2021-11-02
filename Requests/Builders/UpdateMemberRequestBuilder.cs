@@ -44,6 +44,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 		
+		public UpdateMemberRequestBuilder LoginPhone(string phone)
+		{
+			_request.LoginPhone = phone;
+			return this;
+		}
+		
 		public UpdateMemberRequestBuilder Skype(string skype)
 		{
 			_request.Skype = skype;

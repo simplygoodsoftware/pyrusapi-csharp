@@ -31,5 +31,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
+
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
 	}
 }

@@ -31,5 +31,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "phone")]
 		public string Phone { get; set; }
+
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
 	}
 }
