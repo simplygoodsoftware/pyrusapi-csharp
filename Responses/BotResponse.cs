@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Responses
 {
 	public class BotResponse : ResponseBase
 	{
-
 		[JsonProperty("id")]
 		public int? Id { get; set; }
 
@@ -30,6 +30,8 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("login")]
 		public string Login { get; set; }
 
+		[JsonProperty("rights")]
+		public PersonRights Rights { get; set; }
 
 		public Bot Bot =>
 			new Bot
@@ -42,6 +44,7 @@ namespace Pyrus.ApiClient.Responses
 				BotSettings = BotSettings,
 				BotVersion = BotVersion,
 				Login = Login,
+				Rights = Rights,
 			};
 
 	}
