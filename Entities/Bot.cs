@@ -47,7 +47,7 @@ namespace PyrusApiClient
 		public string Login { get; set; }
 
 		[JsonProperty("rights")]
-		public PersonRights Rights { get; set; }
+		public PersonRights? Rights { get; set; }
 
 		public override string ToString() => Id?.ToString() ?? Name;
 	}
