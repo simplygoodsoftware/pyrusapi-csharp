@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 
 namespace PyrusApiClient
 {
@@ -29,6 +30,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
+
+		[JsonProperty("rights")]
+		public PersonRights? Rights { get; set; }
 
 		[JsonProperty("type")]
 		public PersonType Type { get; set; }

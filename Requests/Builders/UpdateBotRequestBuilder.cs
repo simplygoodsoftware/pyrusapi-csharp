@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pyrus.ApiClient.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public UpdateBotRequestBuilder ChangeDescription(string botDescription)
 		{
 			_request.BotDescription = botDescription;
+			return this;
+		}
+
+		public UpdateBotRequestBuilder ChangeRights(PersonRights rights)
+		{
+			_request.Rights = rights;
 			return this;
 		}
 

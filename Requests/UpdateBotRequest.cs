@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -18,5 +19,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "description")]
 		public string BotDescription { get; set; }
+
+		[JsonProperty(PropertyName = "rights")]
+		public PersonRights? Rights { get; set; }
 	}
 }
