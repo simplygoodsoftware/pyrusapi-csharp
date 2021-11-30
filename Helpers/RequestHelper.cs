@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,7 +13,7 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-	internal static class RequestHelper
+    internal static class RequestHelper
 	{
 		private static readonly TimeSpan _requestTimeout = TimeSpan.FromMinutes(2);
 		private static readonly TimeSpan _fileRequestTimeout = TimeSpan.FromMinutes(20);
@@ -133,7 +132,7 @@ namespace PyrusApiClient
 						result.Content = new MemoryStream();
 						await response.Content.CopyToAsync(result.Content);
 						result.Content.Position = 0;
-						result.FileName = !String.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
+						result.FileName = !string.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
 							? response.Content.Headers.ContentDisposition.FileNameStar
 							: response.Content.Headers.ContentDisposition.FileName;
 						result.FileName = result.FileName.TrimStart('"').TrimEnd('"');

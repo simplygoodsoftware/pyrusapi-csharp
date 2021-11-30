@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
@@ -12,7 +14,7 @@ namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
-		private readonly static TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
+		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
@@ -23,16 +25,33 @@ namespace Pyrus.ApiClient
 					if(i > 0)
                         await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-					var res = await action();
-					if (res == null)
-						continue;
-					
-					if (typeof(TResponse) == typeof(DownloadResponse))
-						return CreateDownloadResponse<TResponse>(res);
-					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
-						return new FormRegisterResponse { Csv = res.Message } as TResponse;
-					try
-					{
+                    MessageWithStatusCode res;
+                    try
+                    {
+                        res = await action();
+                        if (res == null)
+                            continue;
+
+                        if (typeof(TResponse) == typeof(DownloadResponse))
+                            return CreateDownloadResponse<TResponse>(res);
+                        if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
+                            return new FormRegisterResponse { Csv = res.Message } as TResponse;
+                    }
+                    catch (HttpRequestException)
+                    {
+                        if (i == client.ClientSettings.RetryCount - 1)
+                            throw;
+                        continue;
+                    }
+                    catch (WebException)
+                    {
+                        if (i == client.ClientSettings.RetryCount - 1)
+                            throw;
+                        continue;
+                    }
+
+					try 
+                    {
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
 					catch
@@ -68,7 +87,7 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-		private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
+        private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
 		{
 			var resp = new DownloadResponse
 			{
