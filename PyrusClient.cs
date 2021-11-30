@@ -48,7 +48,7 @@ namespace PyrusApiClient
 		internal const string TasksSuffix = "/tasks";
 
 		static PyrusClient()
-		{
+		{ 
             ServicePointManager.DnsRefreshTimeout = 0;
 			Settings = new Settings();
 		}
@@ -410,7 +410,7 @@ namespace PyrusApiClient
 		}
 
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
-        {
+        { 
             var url = $"{ClientSettings.Origin}{MembersEndpoint}";
 			Token = accessToken ?? Token;
 
