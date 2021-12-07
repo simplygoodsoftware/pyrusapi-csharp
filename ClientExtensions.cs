@@ -24,32 +24,16 @@ namespace Pyrus.ApiClient
 					if(i > 0)
                         await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-                    MessageWithStatusCode res;
-                    try
-                    {
-                        res = await action();
-                        if (res == null)
-                            continue;
-
-                        if (typeof(TResponse) == typeof(DownloadResponse))
-                            return CreateDownloadResponse<TResponse>(res);
-                        if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
-                            return new FormRegisterResponse { Csv = res.Message } as TResponse;
-                    }
-                    catch (HttpRequestException)
-                    {
-                        if (i == client.ClientSettings.RetryCount - 1)
-                            throw;
+                    var res = await action();
+                    if (res == null)
                         continue;
-                    }
-                    catch (WebException)
-                    {
-                        if (i == client.ClientSettings.RetryCount - 1)
-                            throw;
-                        continue;
-                    }
 
-					try 
+                    if (typeof(TResponse) == typeof(DownloadResponse))
+                        return CreateDownloadResponse<TResponse>(res);
+                    if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
+                        return new FormRegisterResponse { Csv = res.Message } as TResponse;
+
+                    try 
                     {
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}

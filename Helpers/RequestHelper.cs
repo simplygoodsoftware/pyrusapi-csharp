@@ -145,16 +145,39 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
-			{
-				SetHeaders(httpClient, token, UserAgent);
-				using (var response = await httpClient.GetAsync(url))
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
-				}
-			}
-		}
+            for (var i = 0; i < client.ClientSettings.RetryCount; i++)
+            {
+                try
+                {
+                    if (i > 0)
+                        await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+
+					using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+                    {
+                        SetHeaders(httpClient, token, UserAgent);
+                        using (var response = await httpClient.GetAsync(url))
+                        {
+                            var message = await response.Content.ReadAsStringAsync();
+                            return new MessageWithStatusCode
+                                { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+                        }
+                    }
+
+                }
+                catch (HttpRequestException)
+                {
+                    if (i == client.ClientSettings.RetryCount - 1)
+                        throw;
+                }
+                catch (WebException)
+                {
+                    if (i == client.ClientSettings.RetryCount - 1)
+                        throw;
+                }
+            }
+
+            return null;
+        }
 
 		private static void SetHeaders(HttpClient client, string token, string userAgent)
 		{
