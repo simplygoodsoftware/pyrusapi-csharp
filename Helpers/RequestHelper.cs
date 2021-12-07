@@ -15,8 +15,9 @@ namespace PyrusApiClient
 {
     internal static class RequestHelper
 	{
-		private static readonly TimeSpan _requestTimeout = TimeSpan.FromMinutes(2);
-		private static readonly TimeSpan _fileRequestTimeout = TimeSpan.FromMinutes(20);
+		private static readonly TimeSpan RequestTimeout = TimeSpan.FromMinutes(2);
+		private static readonly TimeSpan FileRequestTimeout = TimeSpan.FromMinutes(20);
+        private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 
 		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -33,7 +34,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
@@ -51,7 +52,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PutAsync(url,
@@ -68,7 +69,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.DeleteAsync(url))
@@ -81,7 +82,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var httpRequest = new HttpRequestMessage())
 			{
 				SetHeaders(httpClient, token, UserAgent);
@@ -100,7 +101,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
@@ -119,7 +120,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
@@ -152,7 +153,7 @@ namespace PyrusApiClient
                     if (i > 0)
                         await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-					using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+					using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
                     {
                         SetHeaders(httpClient, token, UserAgent);
                         using (var response = await httpClient.GetAsync(url))
@@ -175,7 +176,6 @@ namespace PyrusApiClient
                         throw;
                 }
             }
-
             return null;
         }
 
