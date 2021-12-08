@@ -19,7 +19,7 @@ namespace Pyrus.ApiClient
 			try
 			{
 				var result = default(TResponse);
-				for (var i = 0; i < client.ClientSettings.RetryCount; i++)
+				for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
 				{
 					if(i > 0)
                         await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
@@ -39,7 +39,7 @@ namespace Pyrus.ApiClient
 					}
 					catch
 					{
-						if (i == client.ClientSettings.RetryCount - 1)
+						if (i == client.ClientSettings.RetryCount)
 							throw;
 						continue;
 					}
@@ -49,7 +49,7 @@ namespace Pyrus.ApiClient
 
 					if (result.Error != null)
 					{
-						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount - 1)
+						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount)
 							continue;
 
 						var isValidParameters = await client.GetTokenAsync();
