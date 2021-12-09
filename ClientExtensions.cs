@@ -21,20 +21,20 @@ namespace Pyrus.ApiClient
 				var result = default(TResponse);
 				for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
 				{
-					if(i > 0)
-                        await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+					if (i > 0)
+						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-                    var res = await action();
-                    if (res == null)
-                        continue;
+					var res = await action();
+					if (res == null)
+						continue;
 
-                    if (typeof(TResponse) == typeof(DownloadResponse))
-                        return CreateDownloadResponse<TResponse>(res);
-                    if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
-                        return new FormRegisterResponse { Csv = res.Message } as TResponse;
+					if (typeof(TResponse) == typeof(DownloadResponse))
+						return CreateDownloadResponse<TResponse>(res);
+					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
+						return new FormRegisterResponse { Csv = res.Message } as TResponse;
 
-                    try 
-                    {
+					try
+					{
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
 					catch
@@ -70,7 +70,7 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-        private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
+		private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
 		{
 			var resp = new DownloadResponse
 			{
@@ -94,7 +94,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
 
-				var response = await RequestHelper.PostRequest(client, url, new AuthRequest(){Login = client.Login, SecurityKey = client.SecretKey });
+				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;

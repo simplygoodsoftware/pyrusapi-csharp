@@ -13,11 +13,11 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-    internal static class RequestHelper
+	internal static class RequestHelper
 	{
 		private static readonly TimeSpan RequestTimeout = TimeSpan.FromMinutes(2);
 		private static readonly TimeSpan FileRequestTimeout = TimeSpan.FromMinutes(20);
-        private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
+		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 
 		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -26,7 +26,7 @@ namespace PyrusApiClient
 			Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
 			ContractResolver = ShouldSerializeListContractResolver.Instance
 		};
-		
+
 		public static string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 		private static string UserAgent =>
@@ -109,7 +109,7 @@ namespace PyrusApiClient
 
 				var streamContent = new StreamContent(streamFactory.Create());
 
-				var multipart = new MultipartFormDataContent {{streamContent, "file", $"{fileName}"}};
+				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
 				using (var response = await httpClient.PostAsync(url, multipart))
 				{
 					var message = await response.Content.ReadAsStringAsync();
