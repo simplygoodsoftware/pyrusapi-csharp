@@ -19,43 +19,27 @@ namespace Pyrus.ApiClient
 			try
 			{
 				var result = default(TResponse);
-				for (var i = 0; i < client.ClientSettings.RetryCount; i++)
+				for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
 				{
-					if(i > 0)
-                        await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+					if (i > 0)
+						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-                    MessageWithStatusCode res;
-                    try
-                    {
-                        res = await action();
-                        if (res == null)
-                            continue;
+					var res = await action();
+					if (res == null)
+						continue;
 
-                        if (typeof(TResponse) == typeof(DownloadResponse))
-                            return CreateDownloadResponse<TResponse>(res);
-                        if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
-                            return new FormRegisterResponse { Csv = res.Message } as TResponse;
-                    }
-                    catch (HttpRequestException)
-                    {
-                        if (i == client.ClientSettings.RetryCount - 1)
-                            throw;
-                        continue;
-                    }
-                    catch (WebException)
-                    {
-                        if (i == client.ClientSettings.RetryCount - 1)
-                            throw;
-                        continue;
-                    }
+					if (typeof(TResponse) == typeof(DownloadResponse))
+						return CreateDownloadResponse<TResponse>(res);
+					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
+						return new FormRegisterResponse { Csv = res.Message } as TResponse;
 
-					try 
-                    {
+					try
+					{
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
 					catch
 					{
-						if (i == client.ClientSettings.RetryCount - 1)
+						if (i == client.ClientSettings.RetryCount)
 							throw;
 						continue;
 					}
@@ -65,7 +49,7 @@ namespace Pyrus.ApiClient
 
 					if (result.Error != null)
 					{
-						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount - 1)
+						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount)
 							continue;
 
 						var isValidParameters = await client.GetTokenAsync();
@@ -86,7 +70,7 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-        private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
+		private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase
 		{
 			var resp = new DownloadResponse
 			{
@@ -110,7 +94,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
 
-				var response = await RequestHelper.PostRequest(client, url, new AuthRequest(){Login = client.Login, SecurityKey = client.SecretKey });
+				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;

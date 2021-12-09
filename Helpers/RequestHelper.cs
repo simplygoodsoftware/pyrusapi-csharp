@@ -13,10 +13,11 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-    internal static class RequestHelper
+	internal static class RequestHelper
 	{
-		private static readonly TimeSpan _requestTimeout = TimeSpan.FromMinutes(2);
-		private static readonly TimeSpan _fileRequestTimeout = TimeSpan.FromMinutes(20);
+		private static readonly TimeSpan RequestTimeout = TimeSpan.FromMinutes(2);
+		private static readonly TimeSpan FileRequestTimeout = TimeSpan.FromMinutes(20);
+		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 
 		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -25,7 +26,7 @@ namespace PyrusApiClient
 			Converters = new List<JsonConverter> { new FormRegisterRequestJsonConverter() },
 			ContractResolver = ShouldSerializeListContractResolver.Instance
 		};
-		
+
 		public static string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 		private static string UserAgent =>
@@ -33,7 +34,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
@@ -51,7 +52,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PutAsync(url,
@@ -68,7 +69,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.DeleteAsync(url))
@@ -81,7 +82,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, object request, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var httpRequest = new HttpRequestMessage())
 			{
 				SetHeaders(httpClient, token, UserAgent);
@@ -100,7 +101,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
@@ -108,7 +109,7 @@ namespace PyrusApiClient
 
 				var streamContent = new StreamContent(streamFactory.Create());
 
-				var multipart = new MultipartFormDataContent {{streamContent, "file", $"{fileName}"}};
+				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
 				using (var response = await httpClient.PostAsync(url, multipart))
 				{
 					var message = await response.Content.ReadAsStringAsync();
@@ -119,7 +120,7 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_fileRequestTimeout))
+			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
 				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
@@ -145,15 +146,37 @@ namespace PyrusApiClient
 
 		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
 		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(_requestTimeout))
+			for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
 			{
-				SetHeaders(httpClient, token, UserAgent);
-				using (var response = await httpClient.GetAsync(url))
+				try
 				{
-					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					if (i > 0)
+						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+
+					using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+					{
+						SetHeaders(httpClient, token, UserAgent);
+						using (var response = await httpClient.GetAsync(url))
+						{
+							var message = await response.Content.ReadAsStringAsync();
+							return new MessageWithStatusCode
+							{ Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+						}
+					}
+
+				}
+				catch (HttpRequestException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+				catch (WebException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
 				}
 			}
+			return null;
 		}
 
 		private static void SetHeaders(HttpClient client, string token, string userAgent)
