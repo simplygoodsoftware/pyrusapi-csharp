@@ -175,11 +175,11 @@ namespace PyrusApiClient
 					if (i == client.ClientSettings.RetryCount)
 						throw;
 				}
-                catch (TaskCanceledException)
-                {
-                    if (i == client.ClientSettings.RetryCount)
-                        throw;
-                }
+				catch (TaskCanceledException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
 			}
 			return null;
 		}
