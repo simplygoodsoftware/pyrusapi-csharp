@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -48,8 +49,8 @@ namespace PyrusApiClient
 		internal const string TasksSuffix = "/tasks";
 
 		static PyrusClient()
-		{ 
-            ServicePointManager.DnsRefreshTimeout = 0;
+		{
+			ServicePointManager.DnsRefreshTimeout = 0;
 			Settings = new Settings();
 		}
 
@@ -65,7 +66,7 @@ namespace PyrusApiClient
 		public async Task<AuthResponse> Auth(string login, string securityKey)
 		{
 			var url = $"{ClientSettings.Origin}{AuthEndpoint}";
-			var response = await this.RunQuery<AuthResponse>(() 
+			var response = await this.RunQuery<AuthResponse>(()
 				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
 			Token = response.AccessToken;
 			return response;
@@ -86,14 +87,14 @@ namespace PyrusApiClient
 			var url = $"{ClientSettings.Origin}{FormsEndpoint}/{formId}";
 			if (accessToken != null)
 				Token = accessToken;
-			
+
 			var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
 		public async Task<FormRegisterResponse> GetRegistry(int formId, FormRegisterRequest request = null, string accessToken = null)
 		{
-            var url = $"{ClientSettings.Origin}{FormsEndpoint}/{formId}{RegisterSuffix}";
+			var url = $"{ClientSettings.Origin}{FormsEndpoint}/{formId}{RegisterSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -113,13 +114,13 @@ namespace PyrusApiClient
 			if (form == null)
 				return;
 
-			foreach (var requestFilter in requestFilters.Where(f=> !f.FieldId.HasValue))
+			foreach (var requestFilter in requestFilters.Where(f => !f.FieldId.HasValue))
 				requestFilter.FieldId = FormFilter.GetFieldIdByName(requestFilter.FieldName, form);
 		}
 
 		public async Task<TaskResponse> GetTask(int taskId, string accessToken = null)
-        {
-            var url = $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}";
+		{
+			var url = $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -129,7 +130,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
 		{
-            var url = $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}";
+			var url = $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -253,6 +254,8 @@ namespace PyrusApiClient
 
 		public async Task<DownloadResponse> DownloadFile(File file, string accessToken = null)
 		{
+			if (file == null)
+				throw new ArgumentNullException(nameof(file));
 			if (string.IsNullOrEmpty(file.Url) && file.Id == 0)
 				throw new ArgumentException("Url or Id must be filled");
 
@@ -410,8 +413,8 @@ namespace PyrusApiClient
 		}
 
 		public async Task<MembersResponse> GetMembers(string accessToken = null)
-        { 
-            var url = $"{ClientSettings.Origin}{MembersEndpoint}";
+		{
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
