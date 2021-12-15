@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -252,7 +253,9 @@ namespace PyrusApiClient
 		}
 
 		public async Task<DownloadResponse> DownloadFile(File file, string accessToken = null)
-		{
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
 			if (string.IsNullOrEmpty(file.Url) && file.Id == 0)
 				throw new ArgumentException("Url or Id must be filled");
 
