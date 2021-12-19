@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 using PyrusApiClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Responses
 {
 	public class MemberResponse : ResponseBase
 	{
-
 		[JsonProperty("id")]
 		public int? Id { get; set; }
 
@@ -22,6 +17,9 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
+
+		[JsonProperty("rights")]
+		public PersonRights Rights { get; set; }
 
 		[JsonProperty("type")]
 		public PersonType Type { get; set; }
@@ -44,6 +42,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
+
 		public Person Person =>
 			new Person
 			{ 
@@ -58,6 +59,7 @@ namespace Pyrus.ApiClient.Responses
 				Position = Position,
 				Skype = Skype,
 				Phone = Phone,
+				LoginPhone = LoginPhone,
 			};
 
 	}

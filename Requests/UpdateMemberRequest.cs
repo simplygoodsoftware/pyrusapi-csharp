@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Pyrus.ApiClient.Enums;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -21,6 +17,9 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "banned")]
 		public bool? Banned { get; set; }
 
+		[JsonProperty("rights")]
+		public PersonRights? Rights { get; set; }
+
 		[JsonProperty(PropertyName = "position")]
 		public string Position { get; set; }
 
@@ -32,5 +31,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "phone")]
 		public string Phone { get; set; }
+
+		[JsonProperty("login_phone")]
+		public string LoginPhone { get; set; }
 	}
 }

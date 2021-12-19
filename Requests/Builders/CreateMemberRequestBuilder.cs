@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pyrus.ApiClient.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,9 +44,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public CreateMemberRequestBuilder LoginPhone(string phone)
+		{
+			_request.LoginPhone = phone;
+			return this;
+		}
+
 		public CreateMemberRequestBuilder Skype(string skype)
 		{
 			_request.Skype = skype;
+			return this;
+		}
+
+		public CreateMemberRequestBuilder WithRights(PersonRights rights)
+		{
+			_request.Rights = rights;
 			return this;
 		}
 

@@ -38,7 +38,7 @@ namespace PyrusApiClient
 
 		public string FilesOrigin
 		{
-			get { return _filesOrigin; }
+			get => _filesOrigin;
 			set
 			{
 				if (value.EndsWith("/"))
@@ -58,11 +58,10 @@ namespace PyrusApiClient
 
 		public int RetryCount { get; set; }
 
-		internal readonly string DateFormat = "yyyy-MM-dd";
 
 		public HttpClient NewHttpClient(TimeSpan timeout)
-		{
-			return new HttpClient(GetHttpHandler())
+        {
+            return new HttpClient(GetHttpHandler())
 			{
 				Timeout = timeout
 			};

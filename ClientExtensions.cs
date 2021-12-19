@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
@@ -12,32 +13,33 @@ namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
-		private readonly static TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
+		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
 			{
 				var result = default(TResponse);
-				for (var i = 0; i < client.ClientSettings.RetryCount; i++)
+				for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
 				{
-					if(i > 0)
-                        await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+					if (i > 0)
+						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
 					var res = await action();
 					if (res == null)
 						continue;
-					
+
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
+
 					try
 					{
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
 					catch
 					{
-						if (i == client.ClientSettings.RetryCount - 1)
+						if (i == client.ClientSettings.RetryCount)
 							throw;
 						continue;
 					}
@@ -47,7 +49,7 @@ namespace Pyrus.ApiClient
 
 					if (result.Error != null)
 					{
-						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount - 1)
+						if (res.StatusCode != HttpStatusCode.Unauthorized || i == client.ClientSettings.RetryCount)
 							continue;
 
 						var isValidParameters = await client.GetTokenAsync();
@@ -92,7 +94,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
 
-				var response = await RequestHelper.PostRequest(client, url, new AuthRequest(){Login = client.Login, SecurityKey = client.SecretKey });
+				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;
