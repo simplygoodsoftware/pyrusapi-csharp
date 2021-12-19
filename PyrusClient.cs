@@ -46,6 +46,7 @@ namespace PyrusApiClient
 		internal const string RegisterSuffix = "/register";
 		internal const string CommentSuffix = "/comments";
 		internal const string TasksSuffix = "/tasks";
+		internal const string IntegrationCredentialsSuffix = "/integration";
 
 		static PyrusClient()
 		{ 
@@ -91,7 +92,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<FormRegisterResponse> GetRegistry(int formId, FormRegisterRequest request = null, string accessToken = null)
+		public async Task<IntegrationCredentialsResponse> GetFormIntegrationCredentials(int formId, int integrationType, string accessToken = null)
 		{
             var url = $"{ClientSettings.Origin}{FormsEndpoint}/{formId}{RegisterSuffix}";
 			if (accessToken != null)
@@ -100,7 +101,7 @@ namespace PyrusApiClient
 			if (request != null && request.Filters.Count != 0)
 				await ValidateFilter(request.Filters, formId);
 
-			var response = await this.RunQuery<FormRegisterResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			var response = await this.RunQuery<IntegrationCredentialsResponse>(() => RequestHelper.PostRequest(this, url, integrationType, Token));
 			return response;
 		}
 
