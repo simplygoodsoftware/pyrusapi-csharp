@@ -22,5 +22,19 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("organization_id")]
 		public int OrganizationId { get; internal set; }
+
+        [JsonProperty("organization")]
+		public Organization Organization { get; internal set; }
 	}
+    public class Organization
+    {
+        [JsonProperty("id")]
+		public int Id { get; internal set; }
+
+        [JsonProperty("name")]
+		public string Name { get; internal set; }
+
+        [JsonProperty("department_catalog_id")]
+		public int? DepartmentCatalogId { get; internal set; }
+    }
 }
