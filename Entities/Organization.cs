@@ -14,6 +14,10 @@ namespace PyrusApiClient
 		[JsonProperty("persons")]
 		public List<Person> Persons { get; set; } = new List<Person>();
 
+		[JsonProperty("roles")]
 		public List<Role> Roles { get; set; } = new List<Role>();
+
+		[JsonProperty("department_catalog_id")]
+		public int? DepartmentCatalogId { get; internal set; }
 	}
 }
