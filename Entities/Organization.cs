@@ -18,6 +18,6 @@ namespace PyrusApiClient
 		public List<Role> Roles { get; set; } = new List<Role>();
 
 		[JsonProperty("department_catalog_id")]
-		public int? DepartmentCatalogId { get; internal set; }
+		public int? DepartmentCatalogId { get; set; }
 	}
 }
