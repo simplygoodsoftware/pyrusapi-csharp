@@ -4,7 +4,7 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-    [JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
+	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum ChannelType
 	{
 		Unknown = 0,
@@ -55,7 +55,7 @@ namespace PyrusApiClient
 		Beeline = 15,
 
 		[EnumMember(Value = "api_telephony")]
-		ApiTelephony = 16,
+		ApiTeelphony = 16,
 
 		[EnumMember(Value = "zoom")]
 		Zoom = 17,
