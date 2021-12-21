@@ -55,7 +55,7 @@ namespace PyrusApiClient
 		Beeline = 15,
 
 		[EnumMember(Value = "api_telephony")]
-		ApiTeelphony = 16,
+		ApiTelephony = 16,
 
 		[EnumMember(Value = "zoom")]
 		Zoom = 17,
@@ -65,5 +65,8 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "whats_app")]
 		WhatsApp = 19,
+        
+        [EnumMember(Value = "custom")]
+        Custom = 20
 	}
 }

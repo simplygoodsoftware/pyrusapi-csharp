@@ -158,6 +158,15 @@ namespace PyrusApiClient.Builders
 			return this;
         }
 
+        public FormTaskCommentBuilder SendToCustomChannel()
+        {
+            Comment.Channel = new Channel
+            {
+                Type = ChannelType.Custom
+            };
+            return this;
+        }
+
 		public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 
 		public class FieldUpdatesBuilder
