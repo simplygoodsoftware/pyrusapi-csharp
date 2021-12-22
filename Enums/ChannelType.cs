@@ -65,5 +65,8 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "whats_app")]
 		WhatsApp = 19,
+
+		[EnumMember(Value = "custom")]
+		Custom = 20
 	}
 }
