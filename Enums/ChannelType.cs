@@ -68,8 +68,8 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "custom")]
 		Custom = 20,
-
-	   [EnumMember(Value = "sms")]
+		
+		[EnumMember(Value = "sms")]
 		Sms = 21
 	}
 }
