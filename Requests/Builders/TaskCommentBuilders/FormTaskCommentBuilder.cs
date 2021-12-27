@@ -167,6 +167,17 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder SendToSmsChannel(string phone)
+		{
+			Comment.Channel = new Channel
+			{
+				Phone = phone,
+				Type = ChannelType.Sms
+			};
+			return this;
+		}
+
+
 		public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 
 		public class FieldUpdatesBuilder
