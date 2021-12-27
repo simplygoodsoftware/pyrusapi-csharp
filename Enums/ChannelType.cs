@@ -55,7 +55,7 @@ namespace PyrusApiClient
 		Beeline = 15,
 
 		[EnumMember(Value = "api_telephony")]
-		ApiTeelphony = 16,
+		ApiTelephony = 16,
 
 		[EnumMember(Value = "zoom")]
 		Zoom = 17,
