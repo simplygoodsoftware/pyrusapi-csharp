@@ -59,7 +59,7 @@ namespace PyrusApiClient
 		public int RetryCount { get; set; }
 
 
-		public HttpClient NewHttpClient(TimeSpan timeout)
+		public virtual HttpClient NewHttpClient(TimeSpan timeout)
         {
             return new HttpClient(GetHttpHandler())
 			{
@@ -67,7 +67,7 @@ namespace PyrusApiClient
 			};
 		}
 
-		private HttpClientHandler GetHttpHandler()
+		protected HttpClientHandler GetHttpHandler()
 		{
 			if (String.IsNullOrWhiteSpace(ProxyIp))
 			{
