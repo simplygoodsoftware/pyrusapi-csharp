@@ -14,7 +14,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			_calendarTasksRequest.FilterMask = 0b0111;
 		}
 
-		public GetCalendarTasksBuilder WithLimit(int maxTasks)
+		public GetCalendarTasksBuilder WithMaxItems(int maxTasks)
 		{
 			_calendarTasksRequest.ItemCount = maxTasks;
 			return this;
