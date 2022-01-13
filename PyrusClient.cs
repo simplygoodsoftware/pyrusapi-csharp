@@ -42,6 +42,7 @@ namespace PyrusApiClient
 		internal const string MembersEndpoint = "/members";
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
+		internal const string CalendarEndpoint = "/calendar";
 
 		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
@@ -447,6 +448,23 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+		
+		public async Task<CalendarResponse> GetCalendarTasks(DateTime startDateTime, DateTime endDateTime,
+			int? tasksCount = 50, bool allAccessedTasks = false, int filterMask = 0b0111, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{InboxEndpoint}?" +
+			          $"start_date={startDateTime}" +
+			          $"&end_date={endDateTime}" +
+			          $"&item_count={tasksCount}" +
+			          $"&all_accessed_tasks={allAccessedTasks}" +
+			          $"&filter_mask={filterMask}";
+			
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 	}
