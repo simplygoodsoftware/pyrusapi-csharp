@@ -79,6 +79,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<ContactsResponse>();
 		}
 
+		public static OnePropertyBuilder<bool, ContactsResponse> GetContacts(bool withInactive)
+			=> new OnePropertyBuilder<bool, ContactsResponse>(withInactive);
+
 		public static EmptyBuilder<FormsResponse> GetForms()
 		{
 			return new EmptyBuilder<FormsResponse>();
@@ -164,10 +167,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<BotsResponse>();
 		}
 
-		public static EmptyBuilder<ProfileResponse> GetProfile()
-		{
-			return new EmptyBuilder<ProfileResponse>();
-		}
+		public static EmptyBuilder<ProfileResponse> GetProfile() 
+			=> new EmptyBuilder<ProfileResponse>();
+
+		public static OnePropertyBuilder<bool, ProfileResponse> GetProfile(bool withInactive)
+			=> new OnePropertyBuilder<bool, ProfileResponse>(withInactive);
 
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
 		{
