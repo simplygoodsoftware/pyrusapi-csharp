@@ -14,7 +14,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			_calendarTasksRequest.FilterMask = 0b0111;
 		}
 
-		public GetCalendarTasksBuilder WithLimit(int maxTasks)
+		public GetCalendarTasksBuilder WithMaxItems(int maxTasks)
 		{
 			_calendarTasksRequest.ItemCount = maxTasks;
 			return this;
@@ -30,9 +30,16 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public GetCalendarTasksBuilder WithReminded(bool val)
+		public GetCalendarTasksBuilder WithReminded(bool withReminded)
 		{
-			_calendarTasksRequest.FilterMask |= 0b1000;
+			if (withReminded)
+			{
+				_calendarTasksRequest.FilterMask |= 0b1000;
+			}
+			else
+			{
+				_calendarTasksRequest.FilterMask &= ~0b1000;
+			}
 			return this;
 		}
 

@@ -454,9 +454,9 @@ namespace PyrusApiClient
 		public async Task<CalendarResponse> GetCalendarTasks(DateTime startDateTime, DateTime endDateTime,
 			int? tasksCount = 50, bool allAccessedTasks = false, int filterMask = 0b0111, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{InboxEndpoint}?" +
-			          $"start_date={startDateTime}" +
-			          $"&end_date={endDateTime}" +
+			var url = $"{ClientSettings.Origin}{CalendarEndpoint}?" +
+			          $"start_date_utc={startDateTime}" +
+			          $"&end_date_utc={endDateTime}" +
 			          $"&item_count={tasksCount}" +
 			          $"&all_accessed_tasks={allAccessedTasks}" +
 			          $"&filter_mask={filterMask}";
