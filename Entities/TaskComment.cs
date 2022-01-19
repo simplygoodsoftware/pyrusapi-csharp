@@ -12,6 +12,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("text")]
 		public string Text { get; set; }
+		
+		[JsonProperty("mentions")]
+		public List<int> Mentions { get; set; } = new List<int>();
 
 		[JsonProperty("subject")]
 		public string Subject { get; set; }
