@@ -210,10 +210,15 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
+		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
+			=> await GetContacts(request?.WithInactive ?? false, accessToken);
 
-		public async Task<ContactsResponse> GetContacts(string accessToken = null)
+		public async Task<ContactsResponse> GetContacts(string accessToken)
+			=> await GetContacts(withInactive: false, accessToken);
+
+		public async Task<ContactsResponse> GetContacts(bool withInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ContactsEndpoint}";
+			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?withinactive={withInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -430,15 +435,22 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ProfileResponse> GetProfile(string accessToken = null)
+		public async Task<ProfileResponse> GetProfile(ProfileRequest request, string accessToken = null)
+			=> await GetProfile(request?.WithInactive ?? false, accessToken);
+
+		public async Task<ProfileResponse> GetProfile(string accessToken)
+			=> await GetProfile(withInactive: false, accessToken);
+
+		public async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ProfileEndpoint}";
+			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?withinactive={withInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
 			var response = await this.RunQuery<ProfileResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
+
 
 		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
 		{
