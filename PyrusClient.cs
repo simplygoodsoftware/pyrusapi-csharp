@@ -224,7 +224,7 @@ namespace PyrusApiClient
 		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
 			=> await GetContacts(request?.WithInactive ?? false, accessToken);
 
-		public async Task<ContactsResponse> GetContacts(string accessToken = null)
+		public async Task<ContactsResponse> GetContacts(string accessToken)
 			=> await GetContacts(withInactive: false, accessToken);
 
 		public async Task<ContactsResponse> GetContacts(bool withInactive = false, string accessToken = null)
@@ -449,7 +449,7 @@ namespace PyrusApiClient
 		public async Task<ProfileResponse> GetProfile(ProfileRequest request, string accessToken = null)
 			=> await GetProfile(request?.WithInactive ?? false, accessToken);
 
-		public async Task<ProfileResponse> GetProfile(string accessToken = null)
+		public async Task<ProfileResponse> GetProfile(string accessToken)
 			=> await GetProfile(withInactive: false, accessToken);
 
 		public async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
