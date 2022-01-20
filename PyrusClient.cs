@@ -222,9 +222,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ContactsResponse> GetContacts(string accessToken = null)
+		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ContactsEndpoint}";
+			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?withinactive={request?.WithInactive ?? false}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -441,9 +441,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ProfileResponse> GetProfile(string accessToken = null)
+		public async Task<ProfileResponse> GetProfile(ProfileRequest request, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ProfileEndpoint}";
+			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?withinactive={request?.WithInactive ?? false}";
 			if (accessToken != null)
 				Token = accessToken;
 
