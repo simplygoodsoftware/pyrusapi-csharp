@@ -328,6 +328,14 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetInbox(builder.Property);
 		}
 
+		public static async Task<CalendarResponse> Process(this GetCalendarTasksBuilder builder, PyrusClient client)
+		{
+			CalendarTasksRequest request = builder;
+			return await client.GetCalendarTasks(
+				request.StartDateUtc, request.EndDateUtc,
+				request.ItemCount, request.AllAccessedTasks, request.FilterMask ?? 0b0111);
+		}
+
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
 			var csvResult = await ProcessToCsv(builder, client, settings);
