@@ -442,7 +442,7 @@ namespace PyrusApiClient
 		public async Task<ProfileResponse> GetProfile(string accessToken)
 			=> await GetProfile(withInactive: false, accessToken);
 
-		public async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
+		private async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?withinactive={withInactive}";
 			if (accessToken != null)
