@@ -42,6 +42,7 @@ namespace PyrusApiClient
 		internal const string MembersEndpoint = "/members";
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
+		internal const string CalendarEndpoint = "/calendar";
 
 		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
@@ -452,7 +453,7 @@ namespace PyrusApiClient
 		public async Task<ProfileResponse> GetProfile(string accessToken)
 			=> await GetProfile(withInactive: false, accessToken);
 
-		public async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
+		private async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?withinactive={withInactive}";
 			if (accessToken != null)
@@ -463,6 +464,7 @@ namespace PyrusApiClient
 		}
 
 
+
 		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{InboxEndpoint}?item_count={tasksCount}";
@@ -470,6 +472,23 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+		
+		public async Task<CalendarResponse> GetCalendarTasks(DateTime startDateTime, DateTime endDateTime,
+			int? tasksCount = 50, bool allAccessedTasks = false, int filterMask = 0b0111, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{CalendarEndpoint}?" +
+			          $"start_date_utc={startDateTime}" +
+			          $"&end_date_utc={endDateTime}" +
+			          $"&item_count={tasksCount}" +
+			          $"&all_accessed_tasks={allAccessedTasks}" +
+			          $"&filter_mask={filterMask}";
+			
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 	}
