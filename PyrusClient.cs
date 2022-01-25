@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
@@ -15,6 +15,7 @@ namespace PyrusApiClient
 {
 	public class PyrusClient
 	{
+		internal static HttpClient CustomHttpClient { get; }
 		public string SecretKey { get; set; }
 
 		public string Login { get; set; }
@@ -55,13 +56,14 @@ namespace PyrusApiClient
 			Settings = new Settings();
 		}
 
-		public PyrusClient() : this(Settings)
+		public PyrusClient(HttpClient httpClient = null) : this(Settings, httpClient)
 		{
 		}
 
-		public PyrusClient(Settings settings)
+		public PyrusClient(Settings settings, HttpClient httpClient = null)
 		{
 			ClientSettings = settings ?? throw new ArgumentNullException(nameof(settings));
+			CustomHttpClient = httpClient;
 		}
 
 		public async Task<AuthResponse> Auth(string login, string securityKey)

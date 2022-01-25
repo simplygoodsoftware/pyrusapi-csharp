@@ -8,10 +8,12 @@ namespace PyrusApiClient
 	{
 		public const string PyrusOrigin = "https://api.pyrus.com/v4";
 		public const string PyrusFilesOrigin = "https://files.pyrus.com";
+		
 
 		public Settings()
 			: this(PyrusOrigin, PyrusFilesOrigin)
 		{
+
 		}
 
 		public Settings(string origin, string filesOrigin)
@@ -24,7 +26,7 @@ namespace PyrusApiClient
 		private string _origin;
 
 		public string Origin {
-			get { return _origin; } 
+			get => _origin; 
 			set
 			{
 				if (value.EndsWith("/"))
@@ -48,6 +50,8 @@ namespace PyrusApiClient
 			}
 		}
 
+		public HttpClient NewHttpClient() => new HttpClient(BuildHttpHandler());
+
 		public string ProxyIp { get; set; }
 
 		public string ProxyPort { get; set; }
@@ -59,15 +63,7 @@ namespace PyrusApiClient
 		public int RetryCount { get; set; }
 
 
-		public HttpClient NewHttpClient(TimeSpan timeout)
-        {
-            return new HttpClient(GetHttpHandler())
-			{
-				Timeout = timeout
-			};
-		}
-
-		private HttpClientHandler GetHttpHandler()
+		public HttpClientHandler BuildHttpHandler()
 		{
 			if (String.IsNullOrWhiteSpace(ProxyIp))
 			{
