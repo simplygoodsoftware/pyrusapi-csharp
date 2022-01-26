@@ -15,7 +15,7 @@ namespace PyrusApiClient
 {
 	public class PyrusClient
 	{
-		internal static HttpClient CustomHttpClient { get; }
+		internal static HttpClient CustomHttpClient { get; private set; }
 		public string SecretKey { get; set; }
 
 		public string Login { get; set; }
