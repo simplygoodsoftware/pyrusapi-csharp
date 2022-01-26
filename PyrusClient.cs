@@ -212,14 +212,14 @@ namespace PyrusApiClient
 			return response;
 		}
 		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
-			=> await GetContacts(request?.WithInactive ?? false, accessToken);
+			=> await GetContacts(request?.IncludeInactive ?? false, accessToken);
 
 		public async Task<ContactsResponse> GetContacts(string accessToken = null)
-			=> await GetContacts(withInactive: false, accessToken);
+			=> await GetContacts(includeInactive: false, accessToken);
 
-		private async Task<ContactsResponse> GetContacts(bool withInactive = false, string accessToken = null)
+		private async Task<ContactsResponse> GetContacts(bool includeInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?withinactive={withInactive}";
+			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?include_inactive={includeInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -437,14 +437,14 @@ namespace PyrusApiClient
 		}
 
 		public async Task<ProfileResponse> GetProfile(ProfileRequest request, string accessToken = null)
-			=> await GetProfile(request?.WithInactive ?? false, accessToken);
+			=> await GetProfile(request?.IncludeInactive ?? false, accessToken);
 
 		public async Task<ProfileResponse> GetProfile(string accessToken = null)
-			=> await GetProfile(withInactive: false, accessToken);
+			=> await GetProfile(includeInactive: false, accessToken);
 
-		private async Task<ProfileResponse> GetProfile(bool withInactive = false, string accessToken = null)
+		private async Task<ProfileResponse> GetProfile(bool includeInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?withinactive={withInactive}";
+			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?include_inactive={includeInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 

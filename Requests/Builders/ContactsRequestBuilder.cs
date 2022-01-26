@@ -4,16 +4,16 @@
 	{
 		private readonly ContactsRequest _request;
 
-		public ContactsRequestBuilder WithInactive()
+		public ContactsRequestBuilder IncludeInactive()
 		{
-			_request.WithInactive = true;
+			_request.IncludeInactive = true;
 			return this;
 		}
 		public ContactsRequestBuilder()
 		{
 			_request = new ContactsRequest
 			{
-				WithInactive = false
+				IncludeInactive = false
 			};
 		}
 		public static implicit operator ContactsRequest(ContactsRequestBuilder crb) => crb._request;
