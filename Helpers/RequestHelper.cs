@@ -39,38 +39,19 @@ namespace PyrusApiClient
 				httpClient.Timeout = RequestTimeout;
 				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
-					new StringContent(
-						JsonConvert.SerializeObject(request,
-							JsonSerializerSettings
-						),
-						Encoding.UTF8, "application/json")))
+					new StringContent(JsonConvert.SerializeObject(request, JsonSerializerSettings), Encoding.UTF8, "application/json"))) 
 				{
 					var message = await response.Content.ReadAsStringAsync();
 					return new MessageWithStatusCode
-						{ Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					{
+						Message = message, 
+						StatusCode = response.StatusCode, 
+						ResponseMessage = response
+					};
 				}
 			}, client);
 		}
 
-		/*internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient())
-			{
-				httpClient.Timeout = RequestTimeout;
-				SetHeaders(httpClient, token, UserAgent);
-				using (var response = await httpClient.PostAsync(url,
-					new StringContent(
-						JsonConvert.SerializeObject(request,
-							JsonSerializerSettings
-						),
-						Encoding.UTF8, "application/json")))
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
-				}
-			}
-		}
-		*/
 		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient())
