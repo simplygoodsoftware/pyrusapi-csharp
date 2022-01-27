@@ -3,7 +3,7 @@ namespace Pyrus.ApiClient.Requests
 {
 	public class ProfileRequest
 	{
-		[JsonProperty(PropertyName = "withinactive")]
-		public bool WithInactive { get; set; }
+		[JsonProperty(PropertyName = "include_inactive")]
+		public bool IncludeInactive { get; set; }
 	}
 }

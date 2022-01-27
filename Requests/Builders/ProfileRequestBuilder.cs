@@ -4,16 +4,16 @@
 	{
 		private readonly ProfileRequest _request;
 
-		public ProfileRequestBuilder WithInactive()
+		public ProfileRequestBuilder IncludeInactive()
 		{
-			_request.WithInactive = true;
+			_request.IncludeInactive = true;
 			return this;
 		}
 		public ProfileRequestBuilder()
 		{
 			_request = new ProfileRequest
 			{
-				WithInactive = false
+				IncludeInactive = false
 			};
 		}
 		public static implicit operator ProfileRequest(ProfileRequestBuilder prb) => prb._request;
