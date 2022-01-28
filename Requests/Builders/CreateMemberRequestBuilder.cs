@@ -1,13 +1,8 @@
 ﻿using Pyrus.ApiClient.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-	public  class CreateMemberRequestBuilder
+	public class CreateMemberRequestBuilder
 	{
 		private readonly CreateMemberRequest _request;
 

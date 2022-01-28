@@ -34,6 +34,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("multiple_choice")]
 		public bool? MultipleChoice { get; set; }
+
+		[JsonProperty("multiline")]
+		public bool? Multiline { get; set; }
 	}
 	public class ChoiceOption
 	{

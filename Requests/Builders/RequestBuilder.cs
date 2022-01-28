@@ -66,10 +66,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new OnePropertyBuilder<int, FormResponse>(formId);
 		}
 
-		public static EmptyBuilder<ContactsResponse> GetContacts()
-		{
-			return new EmptyBuilder<ContactsResponse>();
-		}
+		public static ContactsRequestBuilder GetContacts() => new ContactsRequestBuilder();
 
 		public static EmptyBuilder<FormsResponse> GetForms()
 		{
@@ -156,10 +153,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return new EmptyBuilder<BotsResponse>();
 		}
 
-		public static EmptyBuilder<ProfileResponse> GetProfile()
-		{
-			return new EmptyBuilder<ProfileResponse>();
-		}
+		public static ProfileRequestBuilder GetProfile() => new ProfileRequestBuilder();
 
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
 		{
@@ -234,11 +228,10 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetCatalog(builder.Property);
 		}
 
-		public static async Task<ContactsResponse> Process(this EmptyBuilder<ContactsResponse> builder, PyrusClient client)
-		{
-			return await client.GetContacts();
-		}
+		public static async Task<ContactsResponse> Process(this ContactsRequestBuilder builder, PyrusClient client)
+			=> await client.GetContacts(builder);
 
+		
 		public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
 		{
 			return await client.GetForm(builder.Property);
@@ -327,10 +320,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetBots();
 		}
 
-		public static async Task<ProfileResponse> Process(this EmptyBuilder<ProfileResponse> builder, PyrusClient client)
-		{
-			return await client.GetProfile();
-		}
+		public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client) 
+			=> await client.GetProfile(builder);
 
 		public static async Task<InboxResponse> Process(this OnePropertyBuilder<int, InboxResponse> builder, PyrusClient client)
 		{
