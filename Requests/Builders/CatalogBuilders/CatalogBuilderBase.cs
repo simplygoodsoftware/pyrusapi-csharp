@@ -23,6 +23,18 @@ namespace PyrusApiClient.Builders
 			return (T)this;
 		}
 
+		public T SetColumnSettings(IEnumerable<ColumnSettings> settings)
+		{
+			Request.ColumnSettings = settings.ToList();
+			return (T)this;
+		}
+
+		public T SetColumnSettings(params ColumnSettings[] settings)
+		{
+			Request.ColumnSettings = settings.ToList();
+			return (T)this;
+		}
+
 		public T AddHeader(string header)
 		{
 			Request.CatalogHeaders.Add(header);
