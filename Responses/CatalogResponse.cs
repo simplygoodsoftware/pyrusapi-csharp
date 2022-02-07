@@ -29,6 +29,9 @@ namespace PyrusApiClient
 		[JsonProperty("catalog_headers")]
 		public List<CatalogHeader> Headers { get; set; }
 
+		[JsonProperty("column_settings")]
+		public List<ColumnSettings> ColumnSettings { get; set; }
+
 		[JsonProperty("items")]
 		public List<CatalogItem> Items { get; set; }
 	}
