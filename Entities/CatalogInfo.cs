@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PyrusApiClient;
 using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Entities
@@ -25,5 +26,8 @@ namespace Pyrus.ApiClient.Entities
 
 		[JsonProperty("supervisors")]
 		public List<int> Supervisors { get; set; }
+
+		[JsonProperty("column_settings")]
+		public List<ColumnSettings> ColumnSettings { get; set; }
 	}
 }
