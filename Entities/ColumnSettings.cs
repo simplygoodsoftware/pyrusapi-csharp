@@ -4,8 +4,8 @@ namespace PyrusApiClient
 {
 	public class ColumnSettings
 	{
-		[JsonProperty("original_pos")]
-		public int ColumnOriginalPos { get; set; }
+		[JsonProperty("original_position")]
+		public int ColumnOriginalPosition { get; set; }
 
 		[JsonProperty("sort_order")]
 		public int? SortOrder { get; set; }
