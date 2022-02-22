@@ -37,6 +37,18 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormRegisterRequestBuilder FilterByTaskIds(IEnumerable<int> tasks)
+		{
+			_formRegisterRequest.TaskIds = tasks.ToList();
+			return this;
+		}
+
+		public FormRegisterRequestBuilder FilterByTaskIds(params int[] tasks)
+		{
+			_formRegisterRequest.TaskIds = tasks.ToList();
+			return this;
+		}
+
 		public FormRegisterRequestBuilder IncludingArchived()
 		{
 			_formRegisterRequest.IncludeArchived = true;

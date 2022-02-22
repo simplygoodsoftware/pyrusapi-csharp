@@ -47,5 +47,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("field_ids")]
 		public List<int> FieldIds { get; set; }
+		
+		[JsonProperty("task_ids")]
+		public List<int> TaskIds { get; set; } = new List<int>();
 	}
 }
