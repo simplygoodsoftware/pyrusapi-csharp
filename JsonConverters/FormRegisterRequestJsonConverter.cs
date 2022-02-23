@@ -42,6 +42,13 @@ namespace Pyrus.ApiClient.JsonConverters
 				serializer.Serialize(writer, steps);
 			}
 
+			if (request.TaskIds?.Count > 0)
+			{
+				var taskIds = string.Join(",", request.TaskIds);
+				writer.WritePropertyName(JsonNames[nameof(request.TaskIds)]);
+				serializer.Serialize(writer, taskIds);
+			}
+
 			if (request.Filters != null && request.Filters.Count != 0)
 				WriteFilters(writer, serializer, request);
 
