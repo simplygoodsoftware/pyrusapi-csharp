@@ -297,53 +297,63 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ListsResponse> CreateList(CreateListRequest request, string accessToken = null)
+		public async Task<PlainListsResponse> CreateList(CreateListRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<ListsResponse> CreateList(CreateListRequest[] request, string accessToken = null)
+		public async Task<PlainListsResponse> CreateList(CreateListRequest[] request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<ListsResponse> UpdateList(int listId, UpdateListRequest request, string accessToken = null)
+		public async Task<PlainListsResponse> UpdateList(int listId, UpdateListRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<ListsResponse> UpdateLists(UpdateListRequest[] request, string accessToken = null)
+		public async Task<PlainListsResponse> UpdateLists(UpdateListRequest[] request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
-		public async Task<ListsResponse> DeleteLists(DeleteListRequest[] request, string accessToken = null)
+		public async Task<ResponseBase> DeleteList(int listId, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteLists(DeleteListRequest[] request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<ListsResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
 			return response;
 		}
 
