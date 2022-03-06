@@ -20,10 +20,10 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("is_private")]
 		public bool IsPrivate { get; set; }
 
-		[JsonProperty("supervisors")]
+		[JsonProperty("supervisor_ids")]
 		public int[] SupervisorIds { get; set; }
 
-		[JsonProperty("members")]
+		[JsonProperty("member_ids")]
 		public int[] MemberIds { get; set; }
 
 		[JsonProperty("external_version")]
