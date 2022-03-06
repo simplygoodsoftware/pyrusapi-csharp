@@ -19,11 +19,14 @@ namespace PyrusApiClient
 		[JsonProperty("is_private")]
 		public bool IsPrivate { get; set; }
 
-		[JsonProperty("supervisors")]
+		[JsonProperty("supervisor_ids")]
 		public int[] SupervisorIds { get; set; }
 
-		[JsonProperty("members")]
+		[JsonProperty("member_ids")]
 		public int[] MemberIds { get; set; }
+
+		[JsonProperty("version")]
+		public long Version { get; set; }
 
 		[JsonProperty("external_version")]
 		public long? ExternalVersion { get; set; }
