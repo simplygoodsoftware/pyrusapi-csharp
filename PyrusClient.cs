@@ -307,7 +307,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<PlainListsResponse> CreateList(CreateListRequest[] request, string accessToken = null)
+		public async Task<PlainListsResponse> CreateLists(CreateListRequest[] request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
 			if (accessToken != null)
