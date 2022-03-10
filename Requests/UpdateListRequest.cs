@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -13,14 +14,14 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty("color")]
 		public string Color { get; set; }
 
-		[JsonProperty("is_private")]
-		public bool? IsPrivate { get; set; }
+		[JsonProperty("list_type")]
+		public ListType? ListType { get; set; }
 
-		[JsonProperty("added_supervisors")]
-		public int[] AddedSupervisorIds { get; set; }
+		[JsonProperty("added_managers")]
+		public int[] AddedManagerIds { get; set; }
 
-		[JsonProperty("removed_supervisors")]
-		public int[] RemovedSupervisorIds { get; set; }
+		[JsonProperty("removed_managers")]
+		public int[] RemovedManagerIds { get; set; }
 
 		[JsonProperty("added_members")]
 		public int[] AddedMemberIds { get; set; }

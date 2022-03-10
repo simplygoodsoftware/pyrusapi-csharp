@@ -17,14 +17,17 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("color")]
 		public string Color { get; set; }
 
-		[JsonProperty("is_private")]
-		public bool IsPrivate { get; set; }
+		[JsonProperty("list_type")]
+		public ListType? ListType { get; set; }
 
-		[JsonProperty("supervisor_ids")]
-		public int[] SupervisorIds { get; set; }
+		[JsonProperty("manager_ids")]
+		public int[] ManagerIds { get; set; }
 
 		[JsonProperty("member_ids")]
 		public int[] MemberIds { get; set; }
+
+		[JsonProperty("version")]
+		public long Version { get; set; }
 
 		[JsonProperty("external_version")]
 		public long? ExternalVersion { get; set; }
@@ -38,9 +41,9 @@ namespace Pyrus.ApiClient.Responses
 				Id = Id,
 				Name = Name,
 				ParentId = ParentId,
-				IsPrivate = IsPrivate,
+				ListType = ListType,
 				Color = Color,
-				SupervisorIds = SupervisorIds,
+				ManagerIds = ManagerIds,
 				MemberIds = MemberIds,
 				ExternalId = ExternalId,
 				ExternalVersion = ExternalVersion

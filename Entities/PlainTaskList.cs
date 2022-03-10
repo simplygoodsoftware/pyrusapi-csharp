@@ -16,11 +16,11 @@ namespace PyrusApiClient
 		[JsonProperty("color")]
 		public string Color { get; set; }
 
-		[JsonProperty("is_private")]
-		public bool IsPrivate { get; set; }
+		[JsonProperty("list_type")]
+		public ListType? ListType { get; set; }
 
-		[JsonProperty("supervisor_ids")]
-		public int[] SupervisorIds { get; set; }
+		[JsonProperty("manager_ids")]
+		public int[] ManagerIds { get; set; }
 
 		[JsonProperty("member_ids")]
 		public int[] MemberIds { get; set; }
