@@ -3,14 +3,8 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-	public class TaskList
+	public class TaskList : PlainTaskList
 	{
-		[JsonProperty("id")]
-		public int Id { get; set; }
-
-		[JsonProperty("name")]
-		public string Name { get; set; }
-
 		[JsonProperty("children")]
 		public List<TaskList> Children { get; set; } = new List<TaskList>();
 	}

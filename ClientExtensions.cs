@@ -44,6 +44,11 @@ namespace Pyrus.ApiClient
 						continue;
 					}
 
+					if (typeof(TResponse) == typeof(ResponseBase)
+						&& result is null
+						&& res.StatusCode == HttpStatusCode.OK)
+						return result;
+
 					if (result is null)
 						continue;
 
