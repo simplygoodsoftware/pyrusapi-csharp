@@ -297,6 +297,66 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<PlainListResponse> CreateList(CreateListRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<PlainListResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<PlainListsResponse> CreateLists(CreateListRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<PlainListResponse> UpdateList(int listId, UpdateListRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<PlainListResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<PlainListsResponse> UpdateLists(UpdateListRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<PlainListsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteList(int listId, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteLists(DeleteListRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+			return response;
+		}
+
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
 			var includeArchivedSuffix = includeArchived ? "&include_archived=y" : "";
