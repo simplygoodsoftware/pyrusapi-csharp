@@ -539,5 +539,52 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
+
+
+		public async Task<TResponse> ProcessGetRequest<TRequest, TResponse>(string path)
+			where TResponse : ResponseBase
+		{
+			if (path == null)
+				throw new ArgumentNullException(nameof(path));
+
+			var url = $"{ClientSettings.Origin}{path}";
+			return await this.RunQuery<TResponse>(() => RequestHelper.GetRequest(this, url, Token));
+		}
+
+		public async Task<TResponse> ProcessPostRequest<TRequest, TResponse>(string path, TRequest request)
+			where TResponse : ResponseBase
+		{
+			if (path == null)
+				throw new ArgumentNullException(nameof(path));
+			if (request == null)
+				throw new ArgumentNullException(nameof(request));
+
+			var url = $"{ClientSettings.Origin}{path}";
+			return await this.RunQuery<TResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+		}
+
+		public async Task<TResponse> ProcessPutRequest<TRequest, TResponse>(string path, TRequest request)
+			where TResponse : ResponseBase
+		{
+			if (path == null)
+				throw new ArgumentNullException(nameof(path));
+			if (request == null)
+				throw new ArgumentNullException(nameof(request));
+
+			var url = $"{ClientSettings.Origin}{path}";
+			return await this.RunQuery<TResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+		}
+
+		public async Task<TResponse> ProcessDeleteRequest<TRequest, TResponse>(string path, TRequest request)
+			where TResponse : ResponseBase
+		{
+			if (path == null)
+				throw new ArgumentNullException(nameof(path));
+			if (request == null)
+				throw new ArgumentNullException(nameof(request));
+
+			var url = $"{ClientSettings.Origin}{path}";
+			return await this.RunQuery<TResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+		}
 	}
 }
