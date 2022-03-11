@@ -541,7 +541,7 @@ namespace PyrusApiClient
 		}
 
 
-		public async Task<TResponse> ProcessGetRequest<TRequest, TResponse>(string path)
+		public async Task<TResponse> ProcessGetRequest<TResponse>(string path)
 			where TResponse : ResponseBase
 		{
 			if (path == null)
