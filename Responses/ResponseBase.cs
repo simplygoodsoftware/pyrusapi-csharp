@@ -9,5 +9,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("error_code")]
 		public ErrorCodeType? ErrorCode { get; set; }
+
+		[JsonProperty(PropertyName = "error_message")]
+		public string ErrorMessage { get; set; }
 	}
 }
