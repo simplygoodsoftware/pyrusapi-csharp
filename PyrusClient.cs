@@ -272,9 +272,13 @@ namespace PyrusApiClient
 			return await DownloadFile(url, accessToken);
 		}
 
-		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null)
+		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null, int? previewId = null)
 		{
 			var url = $"{ClientSettings.FilesOrigin}{DownloadFilesEndpoint}?Id={attachmentId}";
+
+			if (previewId != null)
+				url += $"&ispreview={previewId}";
+
 			return await DownloadFile(url, accessToken);
 		}
 
