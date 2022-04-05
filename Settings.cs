@@ -50,7 +50,7 @@ namespace PyrusApiClient
 			}
 		}
 
-		public HttpClient NewHttpClient() => new HttpClient(BuildHttpHandler());
+		internal HttpClient NewHttpClient() => new HttpClient(BuildHttpHandler());
 
 		public string ProxyIp { get; set; }
 
@@ -63,7 +63,7 @@ namespace PyrusApiClient
 		public int RetryCount { get; set; }
 
 
-		public HttpClientHandler BuildHttpHandler()
+		private HttpClientHandler BuildHttpHandler()
 		{
 			if (String.IsNullOrWhiteSpace(ProxyIp))
 			{

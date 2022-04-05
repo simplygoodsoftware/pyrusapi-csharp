@@ -27,17 +27,15 @@ namespace PyrusApiClient
 			ContractResolver = ShouldSerializeListContractResolver.Instance
 		};
 		
-		public static string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		private static string CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-		private static string UserAgent =>
+		public static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
 		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
 		{
 			return await HttpClientWrapper(async httpClient =>
 			{
-				httpClient.Timeout = RequestTimeout;
-				SetHeaders(httpClient, token, UserAgent);
 				using (var response = await httpClient.PostAsync(url,
 					new StringContent(JsonConvert.SerializeObject(request, JsonSerializerSettings), Encoding.UTF8, "application/json"))) 
 				{
@@ -49,7 +47,7 @@ namespace PyrusApiClient
 						ResponseMessage = response
 					};
 				}
-			}, client);
+			}, client, token);
 		}
 
 		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
@@ -202,13 +200,17 @@ namespace PyrusApiClient
 			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
 		}
 
-		private static async Task<T> HttpClientWrapper<T>(Func<HttpClient, Task<T>> action, PyrusClient client)
+		private static async Task<T> HttpClientWrapper<T>(Func<HttpClient, Task<T>> action, PyrusClient client, string token)
 		{
 			if (PyrusClient.CustomHttpClient != null)
 				return await action(PyrusClient.CustomHttpClient);
 
 			using (var httpClient = client.ClientSettings.NewHttpClient())
+			{
+				httpClient.Timeout = RequestTimeout;
+				SetHeaders(httpClient, token, UserAgent);
 				return await action(httpClient);
+			}
 		}
 	}
 	internal class MessageWithStatusCode
