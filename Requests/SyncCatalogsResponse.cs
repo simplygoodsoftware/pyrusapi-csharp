@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Pyrus.ApiClient.Entities;
 using PyrusApiClient;
 using System.Collections.Generic;
 
