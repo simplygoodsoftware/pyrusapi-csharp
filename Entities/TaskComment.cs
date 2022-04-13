@@ -40,6 +40,9 @@ namespace PyrusApiClient
 		[JsonProperty("reset_to_step")]
 		public int? ResetToStep { get; set; }
 
+		[JsonProperty("reply_note_id")]
+		public int? ReplyNoteId { get; set; }
+
 		[JsonProperty("approvals_added")]
 		public List<List<Approval>> ApprovalsAdded { get; set; } = new List<List<Approval>>();
 
