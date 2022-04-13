@@ -36,6 +36,12 @@ namespace PyrusApiClient.Builders
 			return (T) this;
 		}
 
+		public T WithFormattedText(string text)
+		{
+			Comment.FormattedText = text;
+			return (T) this;
+		}
+
 		public T WithAction(ActivityAction action)
 		{
 			Comment.Action = action;
