@@ -11,6 +11,9 @@ namespace PyrusApiClient
 		[JsonProperty("text")]
 		public string Text { get; set; }
 
+		[JsonProperty("formatted_text")]
+		public string FormattedText { get; set; }
+
 		[JsonProperty("create_date")]
 		public DateTime CreateDate { get; set; }
 

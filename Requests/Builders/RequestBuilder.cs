@@ -13,12 +13,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 	{
 		public static FormTaskBuilder CreateFormTask(int formId)
 		{
-			return new FormTaskBuilder(new TaskRequest {FormId = formId});
+			return new FormTaskBuilder(new TaskRequest { FormId = formId });
 		}
 
-		public static SimpleTaskBuilder CreateSimpleTask(string text)
+		public static SimpleTaskBuilder CreateSimpleTask(string text = null)
 		{
-			return new SimpleTaskBuilder(new TaskRequest{Text = text});
+			return new SimpleTaskBuilder(new TaskRequest { Text = text });
 		}
 
 		public static FormTaskCommentBuilder CommentFormTask(int taskId)
