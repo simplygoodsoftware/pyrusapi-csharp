@@ -28,5 +28,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("responsible")]
 		public Person Responsible { get; set; }
+
+		[JsonProperty("due_date")]
+		public DateTime? DueDate { get; set; }
 	}
 }
