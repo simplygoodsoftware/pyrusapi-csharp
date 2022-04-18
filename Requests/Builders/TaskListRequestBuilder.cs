@@ -9,9 +9,10 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		internal TaskListRequestBuilder(int listId, int maxItemCount, bool includeArchived)
 		{
+			_taskListRequest = new TaskListRequest();
 			ListId = listId;
 			_taskListRequest.MaxItemCount = maxItemCount;
-			_taskListRequest.IncludeArchived = includeArchived ? "y": "";
+			_taskListRequest.IncludeArchived = includeArchived ? "y": string.Empty;
 		}
 
 		public static implicit operator TaskListRequest(TaskListRequestBuilder tlrb) => tlrb._taskListRequest;
@@ -19,6 +20,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		internal TaskListRequestBuilder(TaskListRequest taskListRequest, int listId)
 		{
 			_taskListRequest = taskListRequest;
+			taskListRequest.IncludeArchived = string.Empty;
 			ListId = listId;
 		}
 
@@ -42,6 +44,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public TaskListRequestBuilder MaxItemCount(int maxItemCount)
 		{
+			if (maxItemCount <= 0)
+				throw new ArgumentOutOfRangeException(nameof(maxItemCount));
 			_taskListRequest.MaxItemCount = maxItemCount;
 			return this;
 		}

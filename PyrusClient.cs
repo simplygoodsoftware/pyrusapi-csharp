@@ -362,12 +362,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
-			var request = new TaskListRequest()
-			{
-				MaxItemCount = itemCount,
-				IncludeArchived = includeArchived ? "y" : "",
-			};
-			
+			var request = new Pyrus.ApiClient.Requests.Builders.TaskListRequestBuilder(listId, itemCount, includeArchived);
 			return await GetTaskList(listId, request, accessToken);
 		}
 
