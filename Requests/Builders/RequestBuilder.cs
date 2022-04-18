@@ -12,153 +12,96 @@ namespace Pyrus.ApiClient.Requests.Builders
 	public static class RequestBuilder
 	{
 		public static FormTaskBuilder CreateFormTask(int formId)
-		{
-			return new FormTaskBuilder(new TaskRequest { FormId = formId });
-		}
+		=> new FormTaskBuilder(new TaskRequest { FormId = formId });
 
 		public static SimpleTaskBuilder CreateSimpleTask(string text = null)
-		{
-			return new SimpleTaskBuilder(new TaskRequest { Text = text });
-		}
+		=> new SimpleTaskBuilder(new TaskRequest { Text = text });
 
 		public static FormTaskCommentBuilder CommentFormTask(int taskId)
-		{
-			return new FormTaskCommentBuilder(new TaskCommentRequest(), taskId);
-		}
+		=> new FormTaskCommentBuilder(new TaskCommentRequest(), taskId);
 
 		public static SimpleTaskCommentBuilder CommentSimpleTask(int taskId)
-		{
-			return new SimpleTaskCommentBuilder(new TaskCommentRequest(), taskId);
-		}
+		=> new SimpleTaskCommentBuilder(new TaskCommentRequest(), taskId);
 
 		public static FormRegisterRequestBuilder GetRegistry(int formId)
-		{
-			return new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
-		}
+		=> new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
 
 		public static OnePropertyBuilder<int, TaskResponse> GetTask(int taskId)
-		{
-			return new OnePropertyBuilder<int, TaskResponse>(taskId);
-		}
+		=> new OnePropertyBuilder<int, TaskResponse>(taskId);
 
 		public static OnePropertyBuilder<int, DownloadResponse> DownloadFile(int fileId)
-		{
-			return new OnePropertyBuilder<int, DownloadResponse>(fileId);
-		}
+		=> new OnePropertyBuilder<int, DownloadResponse>(fileId);
 
 		public static OnePropertyBuilder<File, DownloadResponse> DownloadFile(File file)
-		{
-			return new OnePropertyBuilder<File, DownloadResponse>(file);
-		}
+		=> new OnePropertyBuilder<File, DownloadResponse>(file);
 
 		public static AuthRequestBuilder Auth(string login, string secretKey)
-		{
-			return new AuthRequestBuilder(login, secretKey);
-		}
+		=> new AuthRequestBuilder(login, secretKey);
 
 		public static OnePropertyBuilder<int, CatalogResponse> GetCatalog(int catalogId)
-		{
-			return new OnePropertyBuilder<int, CatalogResponse>(catalogId);
-		}
+		=> new OnePropertyBuilder<int, CatalogResponse>(catalogId);
 
 		public static OnePropertyBuilder<int, FormResponse> GetForm(int formId)
-		{
-			return new OnePropertyBuilder<int, FormResponse>(formId);
-		}
+		=> new OnePropertyBuilder<int, FormResponse>(formId);
 
 		public static ContactsRequestBuilder GetContacts() => new ContactsRequestBuilder();
 
 		public static EmptyBuilder<FormsResponse> GetForms()
-		{
-			return new EmptyBuilder<FormsResponse>();
-		}
+		=> new EmptyBuilder<FormsResponse>();
 
-		public static EmptyBuilder<ListsResponse> GetLists()
-		{
-			return new EmptyBuilder<ListsResponse>();
-		}
+		public static EmptyBuilder<ListsResponse> GetLists() => new EmptyBuilder<ListsResponse>();
 
 		public static TaskListRequestBuilder GetTaskList(int listId, int maxItemCount = 200, bool includeArchived = false)
-		{
-			return new TaskListRequestBuilder(listId, maxItemCount, includeArchived);
-		}
+		=> new TaskListRequestBuilder(listId, maxItemCount, includeArchived);
+
+		public static TaskListRequestBuilder GetTaskList(int listId) => new TaskListRequestBuilder(new TaskListRequest(), listId);
 
 		public static UploadRequestBuilder UploadFile(string path)
-		{
-			return new UploadRequestBuilder(path);
-		}
+		=> new UploadRequestBuilder(path);
 
 		public static UploadRequestBuilder UploadFile(Stream fileStream, string fileName)
-		{
-			return new UploadRequestBuilder(fileStream, fileName);
-		}
+		=> new UploadRequestBuilder(fileStream, fileName);
 
 		public static SyncCatalogRequestBuilder SyncCatalog(int catalogId)
-		{
-			return new SyncCatalogRequestBuilder(catalogId);
-		}
+		=> new SyncCatalogRequestBuilder(catalogId);
 
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
-		{
-			return new CreateCatalogRequestBuilder(name);
-		}
+		=> new CreateCatalogRequestBuilder(name);
 
 		public static CreateRoleRequestBuilder CreateRole(string name)
-		{
-			return new CreateRoleRequestBuilder(name);
-		}
+		=> new CreateRoleRequestBuilder(name);
 
 		public static UpdateRoleRequestBuilder UpdateRole(int roleId)
-		{
-			return new UpdateRoleRequestBuilder(roleId);
-		}
+		=> new UpdateRoleRequestBuilder(roleId);
 
 		public static EmptyBuilder<RolesResponse> GetRoles()
-		{
-			return new EmptyBuilder<RolesResponse>();
-		}
+		=> new EmptyBuilder<RolesResponse>();
 
 		public static CreateMemberRequestBuilder CreateMember(string email)
-		{
-			return new CreateMemberRequestBuilder(email);
-		}
+		=> new CreateMemberRequestBuilder(email);
 
 		public static UpdateMemberRequestBuilder UpdateMember(int memberId)
-		{
-			return new UpdateMemberRequestBuilder(memberId);
-		}
+		=> new UpdateMemberRequestBuilder(memberId);
 		
 		public static DeleteMemberRequestBuilder DeleteMember(int memberId)
-		{
-			return new DeleteMemberRequestBuilder(memberId);
-		}
+		=> new DeleteMemberRequestBuilder(memberId);
 
 		public static EmptyBuilder<MembersResponse> GetMembers()
-		{
-			return new EmptyBuilder<MembersResponse>();
-		}
+		=> new EmptyBuilder<MembersResponse>();
 
 		public static CreateBotRequestBuilder CreateBot(string name)
-		{
-			return new CreateBotRequestBuilder(name);
-		}
+		=> new CreateBotRequestBuilder(name);
 
 		public static UpdateBotRequestBuilder UpdateBot(int botId)
-		{
-			return new UpdateBotRequestBuilder(botId);
-		}
+		=> new UpdateBotRequestBuilder(botId);
 
 		public static EmptyBuilder<BotsResponse> GetBots()
-		{
-			return new EmptyBuilder<BotsResponse>();
-		}
+		=> new EmptyBuilder<BotsResponse>();
 
 		public static ProfileRequestBuilder GetProfile() => new ProfileRequestBuilder();
 
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
-		{
-			return new OnePropertyBuilder<int, InboxResponse>(tasksCount);
-		}
+		=> new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
 		#region Process
 
@@ -248,9 +191,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<TaskListResponse> Process(this TaskListRequestBuilder builder, PyrusClient client)
-		{
-			return await client.GetTaskList(builder.ListId, builder.MaxItemCount, builder.IncludeArchived);
-		}
+			=> await client.GetTaskList(builder.ListId, builder);
 
 		public static async Task<UploadResponse> Process(this UploadRequestBuilder builder, PyrusClient client)
 		{

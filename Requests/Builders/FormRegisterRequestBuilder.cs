@@ -9,12 +9,11 @@ namespace PyrusApiClient.Builders
 		private readonly FormRegisterRequest _formRegisterRequest;
 		public int FormId { get; }
 
-		public FormRegisterRequestBuilder(FormRegisterRequest formRegisterRequest)
+		internal FormRegisterRequestBuilder(FormRegisterRequest formRegisterRequest)
 		{
 			_formRegisterRequest = formRegisterRequest;
 		}
-
-		public FormRegisterRequestBuilder(FormRegisterRequest formRegisterRequest, int formId)
+		internal FormRegisterRequestBuilder(FormRegisterRequest formRegisterRequest, int formId)
 		{
 			_formRegisterRequest = formRegisterRequest;
 			FormId = formId;
