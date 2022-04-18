@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Requests;
+using Pyrus.ApiClient.Requests.Builders;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
@@ -362,7 +363,7 @@ namespace PyrusApiClient
 
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
-			var request = new Pyrus.ApiClient.Requests.Builders.TaskListRequestBuilder(listId, itemCount, includeArchived);
+			var request = RequestBuilder.GetTaskList(listId).MaxItemCount(itemCount).IncludeArchived(includeArchived);
 			return await GetTaskList(listId, request, accessToken);
 		}
 

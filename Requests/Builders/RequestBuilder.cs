@@ -52,7 +52,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static EmptyBuilder<ListsResponse> GetLists() => new EmptyBuilder<ListsResponse>();
 
 		public static TaskListRequestBuilder GetTaskList(int listId, int maxItemCount = 200, bool includeArchived = false)
-		=> new TaskListRequestBuilder(listId, maxItemCount, includeArchived);
+		=> GetTaskList(listId).MaxItemCount(maxItemCount).IncludeArchived(includeArchived);
 
 		public static TaskListRequestBuilder GetTaskList(int listId) => new TaskListRequestBuilder(new TaskListRequest(), listId);
 
