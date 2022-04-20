@@ -262,6 +262,35 @@ namespace PyrusApiClient
 		[EnumMember(Value = "validation_error")]
 		ValidationError = 276,
 
+		[EnumMember(Value = "unrecognized_account_id")]
+		UnrecognizedAccountId = 277,
+		
+		[EnumMember(Value = "webhook_is_disabled")]
+		WebhookIsDisabled = 278,
+		
+		[EnumMember(Value = "too_large_message_text")]
+		TooLargeMessageText = 279,
+		
+		[EnumMember(Value = "unrecognized_message_type")]
+		UnrecognizedMessageType = 280,
+		
+		[EnumMember(Value = "invalid_field_mapping_code")]
+		InvalidFieldMappingCode = 281,
+		
+		[EnumMember(Value = "too_many_attachments")]
+		TooManyAttachments = 282,
+		
+		[EnumMember(Value = "unrecognized_call_id")]
+		UnrecognizedCallId = 283,
+		
+		[EnumMember(Value = "unsupported_record_file_format")]
+		UnsupportedRecordFileFormat = 284,
+		
+		[EnumMember(Value = "unrecognized_integration_guid")]
+		UnrecognizedIntegrationGuid = 285,
+		
+		
+
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
@@ -299,6 +328,8 @@ namespace PyrusApiClient
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]
 		TooManyRequests = 400,
+		
+		
 
 		UnknownError = 999,
 	}

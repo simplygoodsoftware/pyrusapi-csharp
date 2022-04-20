@@ -64,6 +64,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("current_step")]
 		public int? CurrentStep { get; set; }
+		
+		[JsonProperty("is_closed")]
+		public bool IsClosed { get; set; }
 
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsListByTask(Fields);

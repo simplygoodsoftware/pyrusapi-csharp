@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Requests;
@@ -33,6 +35,7 @@ namespace PyrusApiClient
 		internal const string FormsEndpoint = "/forms";
 		internal const string ListsEndpoint = "/lists";
 		internal const string TasksEndpoint = "/tasks";
+		internal const string TasksByApproverEndpoint = "/tasksbyapprover";
 		internal const string CatalogsEndpoint = "/catalogs";
 		internal const string UploadFilesEndpoint = "/files/upload";
 		internal const string ContactsEndpoint = "/contacts";
@@ -43,6 +46,17 @@ namespace PyrusApiClient
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 		internal const string CalendarEndpoint = "/calendar";
+		internal const string GetMessageEndpoint = "/integrations/getmessage";
+		internal const string CallEndpoint = "/integrations/call";
+		internal const string AttachCallRecordEndpoint = "/integrations/attachcallrecord";
+		internal const string CallsEndpoint = "/calls";
+		internal const string HandlingTimeEndpoint = "/handlingtime";
+		internal const string EventHistoryEndpoint = "/eventhistory";
+		internal const string FileAccessHistoryEndpoint = "/fileaccesshistory";
+		internal const string RegistryAccessHistoryEndpoint = "/registryaccesshistory";
+		internal const string RegistryDownloadHistoryEndpoint = "/registrydownloadhistory";
+		internal const string TaskAccessHistoryEndpoint = "/taskaccesshistory";
+		internal const string PersonLastActionEndpoint = "/personlastaction";
 
 		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
@@ -129,6 +143,16 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<TaskListResponse> GetTasksByApproverAsync(int id, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{TasksByApproverEndpoint}/{id}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
 		public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}";
@@ -136,6 +160,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, comment, Token));
+			return response;
+		}
+
+		public async Task<MultipleTasksChangeResponse> CommentMultipleTasksInOneTransaction(MultipleTasksChangeRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{TasksEndpoint}/{CommentSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<MultipleTasksChangeResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
@@ -548,7 +582,139 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
+		
+		public async Task<ResponseBase> RegisterMessageAsync(GetMessageRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{GetMessageEndpoint}";
+			Token = accessToken ?? Token;
+			
+			return await this.RunQuery<ResponseBase>(() => RequestHelper.PostRequest(this, url, request, Token));
+		}
 
+		public async Task<CallResponse> RegisterCallAsync(CallRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{CallEndpoint}";
+			Token = accessToken ?? Token;
+			
+			return await this.RunQuery<CallResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+		}
+		
+		public async Task<ResponseBase> AttachCallRecordAsync(AttachCallRecordRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{AttachCallRecordEndpoint}";
+			Token = accessToken ?? Token;
+			
+			return await this.RunQuery<ResponseBase>(() => RequestHelper.PostRequest(this, url, request, Token));
+		}
+
+		public async Task<DownloadResponse> GetHandlingTimeAsync(string sd = null, 
+			string ed = null, 
+			int? formId = null, 
+			string tz = null, 
+			string accessToken = null)
+		{
+			var url = $"{ClientSettings.FilesOrigin}{HandlingTimeEndpoint}";
+
+			var parameters = new NameValueCollection();
+			if (!string.IsNullOrEmpty(ed))
+				parameters.Add("ed", ed);
+			if (formId != null)
+				parameters.Add("formId", formId.Value.ToString());
+			if (!string.IsNullOrEmpty(tz))
+				parameters.Add("tz", tz);
+			var parametersString = ToQueryString(parameters);
+			
+			if (!string.IsNullOrEmpty(parametersString))
+				url = $"{url}{parametersString}";
+			
+			return await DownloadFile(url, accessToken);
+		}
+
+		public async Task<DownloadResponse> GetPersonLastActionReportAsync(string accessToken = null)
+		{
+			var url = $"{ClientSettings.FilesOrigin}{PersonLastActionEndpoint}";
+			return await DownloadFile(url, accessToken);
+		}
+
+		public Task<DownloadResponse> GetSessionEventHistoryAsync(long after, int count, string accessToken = null)
+		{
+			return GetHistoryAsync(after, count, EventHistoryEndpoint, accessToken);
+		}
+
+		public Task<DownloadResponse> GetFileAccessHistoryAsync(long after, int count, string accessToken = null)
+		{
+			return GetHistoryAsync(after, count, FileAccessHistoryEndpoint, accessToken);
+		}
+
+		public Task<DownloadResponse> GetRegistryAccessEventHistoryAsync(long after, int count, string accessToken = null)
+		{
+			return GetHistoryAsync(after, count, RegistryAccessHistoryEndpoint, accessToken);
+		}
+
+		public Task<DownloadResponse> GetRegistryDownloadEventHistoryAsync(long after, int count, string accessToken = null)
+		{
+			return GetHistoryAsync(after, count, RegistryDownloadHistoryEndpoint, accessToken);
+		}
+
+		public Task<DownloadResponse> GetTaskAccessHistoryAsync(long after, int count, string accessToken = null)
+		{
+			return GetHistoryAsync(after, count, TaskAccessHistoryEndpoint, accessToken);
+		}
+		
+		public async Task<CreateCallResponse> CreateCallAsync(
+			CreateCallRequest request,
+			string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{PyrusClient.CallsEndpoint}";
+			Token = accessToken ?? Token;
+
+			return await this.RunQuery<CreateCallResponse>(() =>
+				RequestHelper.PostRequest(this, url, request, Token));
+		}
+
+		public async Task<ResponseBase> UpdateCallAsync(
+			Guid callGuid,
+			UpdateCallRequest request,
+			string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{CallsEndpoint}/{callGuid:D}";
+			Token = accessToken ?? Token;
+
+			return await this.RunQuery<ResponseBase>(() =>
+				RequestHelper.PutRequest(this, url, request, Token));
+		}
+
+		public async Task<ResponseBase> RegisterCallEventAsync(
+			Guid callGuid,
+			CallEventRequest request,
+			string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{CallsEndpoint}/{callGuid:D}/event";
+			Token = accessToken ?? Token;
+
+			return await this.RunQuery<ResponseBase>(() =>
+				RequestHelper.PostRequest(this, url, request, Token));
+		}
+
+		private Task<DownloadResponse> GetHistoryAsync(long after, int count, string endpoint, string accessToken)
+		{
+			var parameters = new NameValueCollection
+			{
+				{ "after", after.ToString() },
+				{ "count", count.ToString() }
+			};
+
+			var url = $"{ClientSettings.FilesOrigin}{endpoint}{ToQueryString(parameters)}";
+			
+			return DownloadFile(url, accessToken);
+		}
+		
+		private string ToQueryString(NameValueCollection nvc)
+		{
+			var array = (nvc.AllKeys.SelectMany(nvc.GetValues,
+				(key, value) => $"{Uri.EscapeDataString(key)}={Uri.EscapeDataString(value)}")).ToArray();
+			return "?" + string.Join("&", array);
+		}
 
 		public async Task<TResponse> ProcessGetRequest<TResponse>(string path)
 			where TResponse : ResponseBase

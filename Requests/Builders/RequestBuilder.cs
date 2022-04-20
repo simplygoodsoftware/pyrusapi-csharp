@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -23,11 +24,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static SimpleTaskCommentBuilder CommentSimpleTask(int taskId)
 		=> new SimpleTaskCommentBuilder(new TaskCommentRequest(), taskId);
 
+		public static MultipleTasksChangeBuilder CommentMultipleTasksInOneTransaction(bool noTasksInResponse = true)
+		{
+			return new MultipleTasksChangeBuilder(noTasksInResponse);
+		}
+
 		public static FormRegisterRequestBuilder GetRegistry(int formId)
 		=> new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
 
 		public static OnePropertyBuilder<int, TaskResponse> GetTask(int taskId)
 		=> new OnePropertyBuilder<int, TaskResponse>(taskId);
+
+		public static OnePropertyBuilder<int, TaskListResponse> GetTasksByApprover(int id)
+		{
+			return new OnePropertyBuilder<int, TaskListResponse>(id);
+		}
 
 		public static OnePropertyBuilder<int, DownloadResponse> DownloadFile(int fileId)
 		=> new OnePropertyBuilder<int, DownloadResponse>(fileId);
@@ -103,6 +114,36 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
 		=> new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
+		public static GetMessageBuilder RegisterMessage()
+		{
+			return new GetMessageBuilder();
+		}
+
+		public static CallBuilder RegisterCall()
+		{
+			return new CallBuilder();
+		}
+		
+		public static AttachCallRecordBuilder AttachCallRecord(string recordFile)
+		{
+			return new AttachCallRecordBuilder(recordFile);
+		}
+		
+		public static CreateCallBuilder CreateCall(Guid integrationGuid)
+		{
+			return new CreateCallBuilder(integrationGuid);
+		}
+		
+		public static UpdateCallBuilder UpdateCall(Guid callGuid)
+		{
+			return new UpdateCallBuilder(callGuid);
+		}
+
+		public static CallEventBuilder RegisterCallEvent(Guid callGuid)
+		{
+			return new CallEventBuilder(callGuid);
+		}
+
 		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
@@ -133,6 +174,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<TaskResponse> Process(this FormTaskCommentBuilder.FieldUpdatesBuilder builder, PyrusClient client)
 		{
 			return await client.CommentTask(builder.TaskId, builder);
+		}
+
+		public static async Task<MultipleTasksChangeResponse> Process(this MultipleTasksChangeBuilder builder, PyrusClient client)
+		{
+			return await client.CommentMultipleTasksInOneTransaction(builder);
 		}
 
 		public static async Task<FormRegisterResponse> Process(this FormRegisterRequestBuilder builder, PyrusClient client)
@@ -178,6 +224,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
 		{
 			return await client.GetForm(builder.Property);
+		}
+		
+		public static async Task<TaskListResponse> Process(this OnePropertyBuilder<int, TaskListResponse> builder, PyrusClient client)
+		{
+			return await client.GetTasksByApproverAsync(builder.Property);
 		}
 
 		public static async Task<FormsResponse> Process(this EmptyBuilder<FormsResponse> builder, PyrusClient client)
@@ -275,6 +326,36 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.GetCalendarTasks(
 				request.StartDateUtc, request.EndDateUtc,
 				request.ItemCount, request.AllAccessedTasks, request.FilterMask ?? 0b0111);
+		}
+
+		public static async Task<ResponseBase> Process(this GetMessageBuilder builder, PyrusClient client)
+		{
+			return await client.RegisterMessageAsync(builder);
+		}
+
+		public static async Task<ResponseBase> Process(this CallBuilder builder, PyrusClient client)
+		{
+			return await client.RegisterCallAsync(builder);
+		}
+
+		public static async Task<ResponseBase> Process(this AttachCallRecordBuilder builder, PyrusClient client)
+		{
+			return await client.AttachCallRecordAsync(builder);
+		}
+		
+		public static async Task<CreateCallResponse> Process(this CreateCallBuilder builder, PyrusClient client)
+		{
+			return await client.CreateCallAsync(builder);
+		}
+
+		public static async Task<ResponseBase> Process(this UpdateCallBuilder builder, PyrusClient client)
+		{
+			return await client.UpdateCallAsync(builder.CallGuid, builder);
+		}
+
+		public static async Task<ResponseBase> Process(this CallEventBuilder builder, PyrusClient client)
+		{
+			return await client.RegisterCallEventAsync(builder.CallGuid, builder);
 		}
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
