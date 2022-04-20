@@ -12,7 +12,10 @@ namespace PyrusApiClient
 
 		[JsonProperty("text")]
 		public string Text { get; set; }
-		
+
+		[JsonProperty("formatted_text")]
+		public string FormattedText { get; set; }
+
 		[JsonProperty("mentions")]
 		public List<int> Mentions { get; set; } = new List<int>();
 
@@ -36,6 +39,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("reset_to_step")]
 		public int? ResetToStep { get; set; }
+
+		[JsonProperty("reply_note_id")]
+		public int? ReplyNoteId { get; set; }
 
 		[JsonProperty("approvals_added")]
 		public List<List<Approval>> ApprovalsAdded { get; set; } = new List<List<Approval>>();

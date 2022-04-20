@@ -10,6 +10,9 @@ namespace PyrusApiClient
 		[JsonProperty("text")]
 		public string Text { get; set; }
 
+		[JsonProperty("formatted_text")]
+		public string FormattedText { get; set; }
+
 		[JsonProperty("subject")]
 		public string Subject { get; set; }
 

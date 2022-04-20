@@ -9,6 +9,7 @@ using System.Web;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Requests;
+using Pyrus.ApiClient.Requests.Builders;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
 
@@ -305,9 +306,13 @@ namespace PyrusApiClient
 			return await DownloadFile(url, accessToken);
 		}
 
-		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null)
+		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null, int? previewId = null)
 		{
 			var url = $"{ClientSettings.FilesOrigin}{DownloadFilesEndpoint}?Id={attachmentId}";
+
+			if (previewId != null)
+				url += $"&ispreview={previewId}";
+
 			return await DownloadFile(url, accessToken);
 		}
 
@@ -392,12 +397,17 @@ namespace PyrusApiClient
 
 		public async Task<TaskListResponse> GetTaskList(int listId, int itemCount = 200, bool includeArchived = false, string accessToken = null)
 		{
-			var includeArchivedSuffix = includeArchived ? "&include_archived=y" : "";
-			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}{TasksSuffix}?item_count={itemCount}{includeArchivedSuffix}";
+			var request = RequestBuilder.GetTaskList(listId).MaxItemCount(itemCount).IncludeArchived(includeArchived);
+			return await GetTaskList(listId, request, accessToken);
+		}
+
+		internal async Task<TaskListResponse> GetTaskList(int listId, TaskListRequest request = null, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}/{listId}{TasksSuffix}";
 			if (accessToken != null)
 				Token = accessToken;
 
-			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			var response = await this.RunQuery<TaskListResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
 			return response;
 		}
 
