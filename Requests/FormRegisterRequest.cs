@@ -50,5 +50,8 @@ namespace PyrusApiClient
 		
 		[JsonProperty("task_ids")]
 		public List<int> TaskIds { get; set; } = new List<int>();
+
+		[JsonProperty("due_filter")]
+		public DueFilter DueFilter { get; set; }
 	}
 }
