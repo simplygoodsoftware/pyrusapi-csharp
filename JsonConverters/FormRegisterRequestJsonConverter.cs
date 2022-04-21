@@ -49,6 +49,20 @@ namespace Pyrus.ApiClient.JsonConverters
 				serializer.Serialize(writer, taskIds);
 			}
 
+			if (request.DueFilter != null) 
+			{
+				if (request.DueFilter.Type != DueFilterType.Unknown)
+				{
+					writer.WritePropertyName(JsonNames[nameof(request.DueFilter)]);
+					serializer.Serialize(writer, request.DueFilter.Type);
+				}
+				else if (request.DueFilter.OverdueSteps != null) 
+				{
+					writer.WritePropertyName(JsonNames[nameof(request.DueFilter)]);
+					serializer.Serialize(writer, request.DueFilter);
+				}
+			}
+
 			if (request.Filters != null && request.Filters.Count != 0)
 				WriteFilters(writer, serializer, request);
 
