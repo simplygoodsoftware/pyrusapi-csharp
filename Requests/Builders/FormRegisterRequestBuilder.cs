@@ -52,6 +52,12 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormRegisterRequestBuilder FilterByDue(DueFilter due)
+		{
+			_formRegisterRequest.DueFilter = due ?? throw new ArgumentNullException(nameof(due));
+			return this;
+		}
+
 		public FormRegisterRequestBuilder IncludingArchived()
 		{
 			_formRegisterRequest.IncludeArchived = true;
