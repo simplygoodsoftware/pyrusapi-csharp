@@ -1,4 +1,5 @@
 ﻿using Pyrus.ApiClient.Enums;
+using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
