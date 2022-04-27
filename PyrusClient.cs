@@ -1,22 +1,20 @@
-﻿using System;
+﻿using Pyrus.ApiClient;
+using Pyrus.ApiClient.Helpers;
+using Pyrus.ApiClient.Requests;
+using Pyrus.ApiClient.Requests.Builders;
+using Pyrus.ApiClient.Responses;
+using PyrusApiClient.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using Newtonsoft.Json.Linq;
-using Pyrus.ApiClient;
-using Pyrus.ApiClient.Helpers;
-using Pyrus.ApiClient.Requests;
-using Pyrus.ApiClient.Requests.Builders;
-using Pyrus.ApiClient.Responses;
-using PyrusApiClient.Exceptions;
 
 namespace PyrusApiClient
 {
-	public class PyrusClient
+    public class PyrusClient
 	{
 		public string SecretKey { get; set; }
 
@@ -466,16 +464,12 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null, Action<string, JObject> onlyForTest = null)
+		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}";
 			Token = accessToken ?? Token;
 
-			var response = await this.RunQuery<MemberResponse>(() =>
-			{
-				var resp= RequestHelper.PutRequest(this, url, request, Token);
-				return resp;
-				}, onlyForTest);
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
 			return response;
 		}
 

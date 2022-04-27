@@ -45,6 +45,12 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
 
+		[JsonProperty("mobile_session_settings")]
+		public SessionLifespan MobileSessionSettings { get; set; }
+
+		[JsonProperty("web_session_settings")]
+		public SessionLifespan WebSessionSettings { get; set; }
+
 		public Person Person =>
 			new Person
 			{ 
@@ -60,6 +66,8 @@ namespace Pyrus.ApiClient.Responses
 				Skype = Skype,
 				Phone = Phone,
 				LoginPhone = LoginPhone,
+				MobileSessionSettings = MobileSessionSettings,
+				WebSessionSettings = WebSessionSettings
 			};
 
 	}

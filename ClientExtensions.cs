@@ -1,21 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Exceptions;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
 		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
-		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action, Action<string, JObject> onlyForTest = null) where TResponse : ResponseBase
+		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
 			{
@@ -24,22 +22,20 @@ namespace Pyrus.ApiClient
 				{
 					if (i > 0)
 						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
-					onlyForTest?.Invoke("1", null);
+
 					var res = await action();
 					if (res == null)
 						continue;
-					onlyForTest?.Invoke("2", null);
+
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
-					onlyForTest?.Invoke("3", null);
+
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
-					onlyForTest?.Invoke("4", null);
+
 					try
 					{
-						onlyForTest?.Invoke(res.Message, null);
-						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter(onlyForTest));
-						onlyForTest?.Invoke(res.Message, JObject.FromObject(result));
+						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
 					catch
 					{
