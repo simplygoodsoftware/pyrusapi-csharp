@@ -24,19 +24,22 @@ namespace Pyrus.ApiClient
 				{
 					if (i > 0)
 						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
-
+					onlyForTest("1", null);
 					var res = await action();
 					if (res == null)
 						continue;
-
+					onlyForTest("2", null);
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
+					onlyForTest("3", null);
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
-
+					onlyForTest("4", null);
 					try
 					{
+						onlyForTest(res.Message, null);
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter(onlyForTest));
+						onlyForTest(res.Message, JObject.FromObject(result));
 					}
 					catch
 					{
