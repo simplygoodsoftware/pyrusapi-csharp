@@ -19,7 +19,7 @@ namespace PyrusApiClient
 		[JsonProperty("disable")]
 		public bool? Disable { get; set; }
 
-		[JsonProperty("disable")]
+		[JsonProperty("drop")]
 		public bool Drop { get; set; }
 	}
 }
