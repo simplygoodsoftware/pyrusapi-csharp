@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using File = PyrusApiClient.File;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-	public static class RequestBuilder
+    public static class RequestBuilder
 	{
 		public static FormTaskBuilder CreateFormTask(int formId)
 		=> new FormTaskBuilder(new TaskRequest { FormId = formId });
@@ -283,9 +282,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.CreateMember(builder);
 		}
 
-		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client, Action<string, JObject> onlyForTest = null)
+		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
 		{
-			return await client.UpdateMember(builder.MemberId, builder, onlyForTest: onlyForTest);
+			return await client.UpdateMember(builder.MemberId, builder);
 		}
 
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
