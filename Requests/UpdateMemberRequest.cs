@@ -35,10 +35,10 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
 
-		[JsonProperty("web_session_settings")]
-		public SessionLifespan WebSessionSettings { get; set; }
-
 		[JsonProperty("mobile_session_settings")]
 		public SessionLifespan MobileSessionSettings { get; set; }
+
+		[JsonProperty("web_session_settings")]
+		public SessionLifespan WebSessionSettings { get; set; }
 	}
 }
