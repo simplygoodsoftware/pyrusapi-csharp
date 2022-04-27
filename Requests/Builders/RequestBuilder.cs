@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
@@ -282,7 +283,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.CreateMember(builder);
 		}
 
-		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client, Action<string> onlyForTest = null)
+		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client, Action<string, JObject> onlyForTest = null)
 		{
 			return await client.UpdateMember(builder.MemberId, builder, onlyForTest: onlyForTest);
 		}

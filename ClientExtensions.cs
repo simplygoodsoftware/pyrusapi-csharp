@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pyrus.ApiClient.JsonConverters;
 using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
@@ -14,7 +15,7 @@ namespace Pyrus.ApiClient
 	internal static class ClientExtensions
 	{
 		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
-		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
+		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action, Action<string, JObject> onlyForTest = null) where TResponse : ResponseBase
 		{
 			try
 			{
@@ -35,7 +36,7 @@ namespace Pyrus.ApiClient
 
 					try
 					{
-						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
+						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter(onlyForTest));
 					}
 					catch
 					{

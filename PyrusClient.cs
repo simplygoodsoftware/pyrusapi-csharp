@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using Newtonsoft.Json.Linq;
 using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Requests;
@@ -465,7 +466,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null, Action<string> onlyForTest = null)
+		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null, Action<string, JObject> onlyForTest = null)
 		{
 			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}";
 			Token = accessToken ?? Token;
@@ -473,9 +474,8 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<MemberResponse>(() =>
 			{
 				var resp= RequestHelper.PutRequest(this, url, request, Token);
-				onlyForTest(resp.Result.Message);
 				return resp;
-				});
+				}, onlyForTest);
 			return response;
 		}
 
