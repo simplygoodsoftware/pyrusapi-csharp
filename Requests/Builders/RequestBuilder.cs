@@ -282,9 +282,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return await client.CreateMember(builder);
 		}
 
-		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
+		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client, Action<string> onlyForTest = null)
 		{
-			return await client.UpdateMember(builder.MemberId, builder);
+			return await client.UpdateMember(builder.MemberId, builder, onlyForTest: onlyForTest);
 		}
 
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)

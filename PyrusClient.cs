@@ -465,12 +465,17 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
+		public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null, Action<string> onlyForTest = null)
 		{
 			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}";
 			Token = accessToken ?? Token;
 
-			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			var response = await this.RunQuery<MemberResponse>(() =>
+			{
+				var resp= RequestHelper.PutRequest(this, url, request, Token);
+				onlyForTest(resp.Result.Message);
+				return resp;
+				});
 			return response;
 		}
 
