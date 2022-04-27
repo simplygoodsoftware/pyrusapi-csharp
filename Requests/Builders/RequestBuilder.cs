@@ -10,7 +10,7 @@ using File = PyrusApiClient.File;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
-    public static class RequestBuilder
+	public static class RequestBuilder
 	{
 		public static FormTaskBuilder CreateFormTask(int formId)
 		=> new FormTaskBuilder(new TaskRequest { FormId = formId });

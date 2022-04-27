@@ -4,7 +4,7 @@ using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Requests
 {
-    public class UpdateMemberRequest
+	public class UpdateMemberRequest
 	{
 		[JsonProperty(PropertyName = "first_name")]
 		public string FirstName { get; set; }

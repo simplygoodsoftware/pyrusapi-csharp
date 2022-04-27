@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PyrusApiClient
 {
-    public class PyrusClient
+	public class PyrusClient
 	{
 		public string SecretKey { get; set; }
 

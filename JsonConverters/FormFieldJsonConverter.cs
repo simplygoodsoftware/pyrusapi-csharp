@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 
 namespace Pyrus.ApiClient.JsonConverters
 {
-    public class FormFieldJsonConverter : JsonConverter
+	public class FormFieldJsonConverter : JsonConverter
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
