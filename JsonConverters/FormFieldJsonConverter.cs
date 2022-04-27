@@ -9,6 +9,19 @@ namespace Pyrus.ApiClient.JsonConverters
 {
 	public class FormFieldJsonConverter : JsonConverter
 	{
+		Action<string, JObject> _onlyForTest;
+
+		public FormFieldJsonConverter()
+        {
+
+        }
+
+        public FormFieldJsonConverter(Action<string, JObject> onlyForTest)
+        {
+			_onlyForTest = onlyForTest;
+
+		}
+
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
 			throw new NotImplementedException();
@@ -21,6 +34,8 @@ namespace Pyrus.ApiClient.JsonConverters
 				return null;
 
 			var formFieldType = obj[typeof(FormField).GetPropertyAttribute<JsonPropertyAttribute>(nameof(FormField.Type)).PropertyName].ToString();
+
+			_onlyForTest?.Invoke(formFieldType, obj);
 
 			if (formFieldType == FormFieldType.Text.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldText>();
