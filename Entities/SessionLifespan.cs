@@ -8,7 +8,7 @@ namespace PyrusApiClient
 		public int? LifespanHours { get; set; }
 
 		[JsonProperty("disable")]
-		public bool? Disable { get; set; }
+		public bool Disable { get; set; }
 	}
 
 	public class SessionLifespanUpdate
