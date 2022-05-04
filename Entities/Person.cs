@@ -61,6 +61,12 @@ namespace PyrusApiClient
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
 
+		[JsonProperty("mobile_session_settings")]
+		public SessionLifespan MobileSessionSettings { get; set; }
+
+		[JsonProperty("web_session_settings")]
+		public SessionLifespan WebSessionSettings { get; set; }
+
 		public override string ToString() => Id?.ToString() ?? Email;
 	}
 }

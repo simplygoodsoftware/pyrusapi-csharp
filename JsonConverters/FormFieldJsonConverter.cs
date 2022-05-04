@@ -1,9 +1,9 @@
-﻿using System;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PyrusApiClient;
 using PyrusApiClient.Extensions;
+using System;
+using System.Runtime.Serialization;
 
 namespace Pyrus.ApiClient.JsonConverters
 {

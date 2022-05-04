@@ -1,17 +1,16 @@
-﻿using System;
+﻿using Pyrus.ApiClient;
+using Pyrus.ApiClient.Helpers;
+using Pyrus.ApiClient.Requests;
+using Pyrus.ApiClient.Requests.Builders;
+using Pyrus.ApiClient.Responses;
+using PyrusApiClient.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using Pyrus.ApiClient;
-using Pyrus.ApiClient.Helpers;
-using Pyrus.ApiClient.Requests;
-using Pyrus.ApiClient.Requests.Builders;
-using Pyrus.ApiClient.Responses;
-using PyrusApiClient.Exceptions;
 
 namespace PyrusApiClient
 {
