@@ -147,89 +147,70 @@ namespace Pyrus.ApiClient.Requests.Builders
 		#region Process
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
-		{
-			return await client.CreateTask(builder);
-		}
+			=> await client.CreateTask(builder);
 
 		public static async Task<TaskResponse> Process(this FormTaskBuilder.FormFieldsBuilder builder, PyrusClient client)
-		{
-			return await client.CreateTask(builder);
-		}
+			=> await client.CreateTask(builder);
 
 		public static async Task<TaskResponse> Process(this SimpleTaskBuilder builder, PyrusClient client)
-		{
-			return await client.CreateTask(builder);
-		}
+			=> await client.CreateTask(builder);
 
 		public static async Task<TaskResponse> Process(this SimpleTaskCommentBuilder builder, PyrusClient client)
-		{
-			return await client.CommentTask(builder.TaskId, builder);
-		}
+			=> await client.CommentTask(builder.TaskId, builder);
+
 
 		public static async Task<TaskResponse> Process(this FormTaskCommentBuilder builder, PyrusClient client)
-		{
-			return await client.CommentTask(builder.TaskId, builder);
-		}
+			=> await client.CommentTask(builder.TaskId, builder);
 
 		public static async Task<TaskResponse> Process(this FormTaskCommentBuilder.FieldUpdatesBuilder builder, PyrusClient client)
-		{
-			return await client.CommentTask(builder.TaskId, builder);
-		}
+			=> await client.CommentTask(builder.TaskId, builder);
 
 		public static async Task<MultipleTasksChangeResponse> Process(this MultipleTasksChangeBuilder builder, PyrusClient client)
-		{
-			return await client.CommentMultipleTasksInOneTransaction(builder);
-		}
+			=> await client.CommentMultipleTasksInOneTransaction(builder);
+
+
+		public static async Task<AnnouncementResponse> Process(this AnnouncementBuilder builder, PyrusClient client)
+			=> await client.CreateAnnouncement(builder);
+
+		public static async Task<AnnouncementResponse> Process(this AnnouncementCommentBuilder builder, PyrusClient client)
+			=> await client.CommentAnnouncement(builder.AnnouncementId, builder);
+
 
 		public static async Task<FormRegisterResponse> Process(this FormRegisterRequestBuilder builder, PyrusClient client)
-		{
-			return await client.GetRegistry(builder.FormId, builder);
-		}
+			=>	await client.GetRegistry(builder.FormId, builder);
+		
 
 		public static async Task<FormRegisterResponse> Process(this FormRegisterRequestBuilder.FormRegisterFilterBuilder builder, PyrusClient client)
-		{
-			return await client.GetRegistry(builder.FormId, builder);
-		}
+			=> await client.GetRegistry(builder.FormId, builder);
 
 		public static async Task<TaskResponse> Process(this OnePropertyBuilder<int, TaskResponse> builder, PyrusClient client)
-		{
-			return await client.GetTask(builder.Property);
-		}
+			=> await client.GetTask(builder.Property);
+
+		public static async Task<AnnouncementResponse> Process(this OnePropertyBuilder<int, AnnouncementResponse> builder, PyrusClient client)
+			=> await client.GetAnnouncement(builder.Property);
 
 		public static async Task<DownloadResponse> Process(this OnePropertyBuilder<int, DownloadResponse> builder, PyrusClient client)
-		{
-			return await client.DownloadFile(builder.Property);
-		}
+			=> await client.DownloadFile(builder.Property);
 
 		public static async Task<DownloadResponse> Process(this OnePropertyBuilder<File, DownloadResponse> builder, PyrusClient client)
-		{
-			return await client.DownloadFile(builder.Property);
-		}
+			=> await client.DownloadFile(builder.Property);
 
 
 		public static async Task<AuthResponse> Process(this AuthRequestBuilder builder, PyrusClient client)
-		{
-			return await client.Auth(builder.Login, builder.SecretKey);
-		}
+			=> await client.Auth(builder.Login, builder.SecretKey);
 
 		public static async Task<CatalogResponse> Process(this OnePropertyBuilder<int, CatalogResponse> builder, PyrusClient client)
-		{
-			return await client.GetCatalog(builder.Property);
-		}
+			=> await client.GetCatalog(builder.Property);
 
 		public static async Task<ContactsResponse> Process(this ContactsRequestBuilder builder, PyrusClient client)
 			=> await client.GetContacts(builder);
 
 		
 		public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
-		{
-			return await client.GetForm(builder.Property);
-		}
+			=> await client.GetForm(builder.Property);
 		
 		public static async Task<TaskListResponse> Process(this OnePropertyBuilder<int, TaskListResponse> builder, PyrusClient client)
-		{
-			return await client.GetTasksByApproverAsync(builder.Property);
-		}
+			=> await client.GetTasksByApproverAsync(builder.Property);
 
 		public static async Task<FormsResponse> Process(this EmptyBuilder<FormsResponse> builder, PyrusClient client)
 		{
@@ -253,9 +234,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<SyncCatalogResponse> Process(this SyncCatalogRequestBuilder builder, PyrusClient client)
-		{
-			return await client.SyncCatalog(builder.CatalogId, builder);
-		}
+		=> await client.SyncCatalog(builder.CatalogId, builder);
 
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
 		{
@@ -268,9 +247,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<RoleResponse> Process(this UpdateRoleRequestBuilder builder, PyrusClient client)
-		{
-			return await client.UpdateRole(builder.RoleId, builder);
-		}
+		=> await client.UpdateRole(builder.RoleId, builder);
 
 		public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
 		{
@@ -283,14 +260,10 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
-		{
-			return await client.UpdateMember(builder.MemberId, builder);
-		}
+		=> await client.UpdateMember(builder.MemberId, builder);
 
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
-		{
-			return await client.DeleteMember(builder.MemberId);
-		}
+		=> await client.DeleteMember(builder.MemberId);
 
 		public static async Task<MembersResponse> Process(this EmptyBuilder<MembersResponse> builder, PyrusClient client)
 		{
@@ -303,9 +276,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<BotResponse> Process(this UpdateBotRequestBuilder builder, PyrusClient client)
-		{
-			return await client.UpdateBot(builder.BotId, builder);
-		}
+		=> await client.UpdateBot(builder.BotId, builder);
 
 		public static async Task<BotsResponse> Process(this EmptyBuilder<BotsResponse> builder, PyrusClient client)
 		{
@@ -316,9 +287,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> await client.GetProfile(builder);
 
 		public static async Task<InboxResponse> Process(this OnePropertyBuilder<int, InboxResponse> builder, PyrusClient client)
-		{
-			return await client.GetInbox(builder.Property);
-		}
+			=> await client.GetInbox(builder.Property);
 
 		public static async Task<CalendarResponse> Process(this GetCalendarTasksBuilder builder, PyrusClient client)
 		{
@@ -349,14 +318,10 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<ResponseBase> Process(this UpdateCallBuilder builder, PyrusClient client)
-		{
-			return await client.UpdateCallAsync(builder.CallGuid, builder);
-		}
+		=> await client.UpdateCallAsync(builder.CallGuid, builder);
 
 		public static async Task<ResponseBase> Process(this CallEventBuilder builder, PyrusClient client)
-		{
-			return await client.RegisterCallEventAsync(builder.CallGuid, builder);
-		}
+		=> await client.RegisterCallEventAsync(builder.CallGuid, builder);
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
