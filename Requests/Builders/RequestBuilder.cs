@@ -13,27 +13,31 @@ namespace Pyrus.ApiClient.Requests.Builders
 	public static class RequestBuilder
 	{
 		public static FormTaskBuilder CreateFormTask(int formId)
-		=> new FormTaskBuilder(new TaskRequest { FormId = formId });
+			=> new FormTaskBuilder(new TaskRequest { FormId = formId });
 
 		public static SimpleTaskBuilder CreateSimpleTask(string text = null)
-		=> new SimpleTaskBuilder(new TaskRequest { Text = text });
+			=> new SimpleTaskBuilder(new TaskRequest { Text = text });
+
+		public static AnnouncementBuilder CreateAnnouncement(string text = null)
+			=> new AnnouncementBuilder(new AnnouncementRequest { Text = text });
+
+		public static AnnouncementCommentBuilder CommentAnnouncement(int announcementId)
+			=> new AnnouncementCommentBuilder(new AnnouncementCommentRequest(), announcementId);
 
 		public static FormTaskCommentBuilder CommentFormTask(int taskId)
-		=> new FormTaskCommentBuilder(new TaskCommentRequest(), taskId);
+			=> new FormTaskCommentBuilder(new TaskCommentRequest(), taskId);
 
 		public static SimpleTaskCommentBuilder CommentSimpleTask(int taskId)
-		=> new SimpleTaskCommentBuilder(new TaskCommentRequest(), taskId);
+			=> new SimpleTaskCommentBuilder(new TaskCommentRequest(), taskId);
 
 		public static MultipleTasksChangeBuilder CommentMultipleTasksInOneTransaction(bool noTasksInResponse = true)
-		{
-			return new MultipleTasksChangeBuilder(noTasksInResponse);
-		}
+			=> new MultipleTasksChangeBuilder(noTasksInResponse);
 
 		public static FormRegisterRequestBuilder GetRegistry(int formId)
-		=> new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
+			=> new FormRegisterRequestBuilder(new FormRegisterRequest(), formId);
 
 		public static OnePropertyBuilder<int, TaskResponse> GetTask(int taskId)
-		=> new OnePropertyBuilder<int, TaskResponse>(taskId);
+			=> new OnePropertyBuilder<int, TaskResponse>(taskId);
 
 		public static OnePropertyBuilder<int, TaskListResponse> GetTasksByApprover(int id)
 		{

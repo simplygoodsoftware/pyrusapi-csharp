@@ -8,7 +8,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		private readonly AnnouncementCommentRequest Announcement;
 		internal int AnnouncementId { get; }
 
-		protected AnnouncementCommentBuilder(AnnouncementCommentRequest announcement, int announcementId)
+		public AnnouncementCommentBuilder(AnnouncementCommentRequest announcement, int announcementId)
 		{
 			Announcement = announcement;
 			AnnouncementId = announcementId;

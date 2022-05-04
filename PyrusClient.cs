@@ -172,7 +172,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<AnnouncementResponse> CommentAnnouncement(int announcementId, AnnouncementCommentRequest comment, string accessToken = null)
+		internal async Task<AnnouncementResponse> CommentAnnouncement(int announcementId, AnnouncementCommentRequest comment, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}/{announcementId}{CommentSuffix}";
 			if (accessToken != null)
@@ -201,7 +201,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<AnnouncementResponse> CreateAnnouncement(AnnouncementRequest announcement, string accessToken = null)
+		internal async Task<AnnouncementResponse> CreateAnnouncement(AnnouncementRequest announcement, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}";
 			if (accessToken != null)

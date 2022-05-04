@@ -7,7 +7,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 	{
 		private readonly AnnouncementRequest Announcement;
 
-		protected AnnouncementBuilder(AnnouncementRequest announcement)
+		public AnnouncementBuilder(AnnouncementRequest announcement)
 		{
 			Announcement = announcement;
 		}
@@ -24,12 +24,6 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public AnnouncementBuilder AddAttachments(IEnumerable<NewFile> attachments)
 		{
 			Announcement.Attachments.AddRange(attachments);
-			return this;
-		}
-
-		public AnnouncementBuilder WithText(string text)
-		{
-			Announcement.Text = text;
 			return this;
 		}
 
