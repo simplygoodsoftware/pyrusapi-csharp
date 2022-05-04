@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
+using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Requests
 {
@@ -34,5 +35,11 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
+
+		[JsonProperty("mobile_session_settings")]
+		public SessionLifespanUpdate MobileSessionSettings { get; set; }
+
+		[JsonProperty("web_session_settings")]
+		public SessionLifespanUpdate WebSessionSettings { get; set; }
 	}
 }

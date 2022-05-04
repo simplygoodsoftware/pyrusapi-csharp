@@ -1,4 +1,5 @@
 ﻿using Pyrus.ApiClient.Enums;
+using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
@@ -71,6 +72,62 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public UpdateMemberRequestBuilder WithRights(PersonRights rights)
 		{
 			_request.Rights = rights;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder WithMobileSessionLifespan(int hours)
+		{
+			_request.MobileSessionSettings = _request.MobileSessionSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionSettings.LifespanHours = hours;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropMobileSessionLifespan()
+		{
+			_request.MobileSessionSettings = _request.MobileSessionSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableMobileSessionLifespan()
+		{
+			_request.MobileSessionSettings = _request.MobileSessionSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableMobileSessionLifespan()
+		{
+			_request.MobileSessionSettings = _request.MobileSessionSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionSettings.Disable = false;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder WithWebSessionLifespan(int hours)
+		{
+			_request.WebSessionSettings = _request.WebSessionSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionSettings.LifespanHours = hours;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropWebSessionLifespan()
+		{
+			_request.WebSessionSettings = _request.WebSessionSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableWebSessionLifespan()
+		{
+			_request.WebSessionSettings = _request.WebSessionSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableWebSessionLifespan()
+		{
+			_request.WebSessionSettings = _request.WebSessionSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionSettings.Disable = false;
 			return this;
 		}
 

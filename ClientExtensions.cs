@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Exceptions;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
 {
@@ -29,6 +29,7 @@ namespace Pyrus.ApiClient
 
 					if (typeof(TResponse) == typeof(DownloadResponse))
 						return CreateDownloadResponse<TResponse>(res);
+
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
 

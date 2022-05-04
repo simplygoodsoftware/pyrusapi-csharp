@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using File = PyrusApiClient.File;
 
 namespace Pyrus.ApiClient.Requests.Builders
