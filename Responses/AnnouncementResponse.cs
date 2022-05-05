@@ -5,6 +5,6 @@ namespace PyrusApiClient
 	public class AnnouncementResponse : ResponseBase
 	{
 		[JsonProperty("announcement")]
-		public AnnouncementWithComments Announcement { get; }
+		public AnnouncementWithComments Announcement { get; set }
 	}
 }
