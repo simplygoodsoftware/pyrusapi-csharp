@@ -39,35 +39,35 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static OnePropertyBuilder<int, TaskResponse> GetTask(int taskId)
 			=> new OnePropertyBuilder<int, TaskResponse>(taskId);
 
+		public static OnePropertyBuilder<int, AnnouncementResponse> GetAnnouncement(int announcementId)
+			=>new OnePropertyBuilder<int, AnnouncementResponse>(announcementId);
+
 		public static OnePropertyBuilder<int, TaskListResponse> GetTasksByApprover(int id)
-		{
-			return new OnePropertyBuilder<int, TaskListResponse>(id);
-		}
+			=> new OnePropertyBuilder<int, TaskListResponse>(id);
 
 		public static OnePropertyBuilder<int, DownloadResponse> DownloadFile(int fileId)
-		=> new OnePropertyBuilder<int, DownloadResponse>(fileId);
+			=> new OnePropertyBuilder<int, DownloadResponse>(fileId);
 
 		public static OnePropertyBuilder<File, DownloadResponse> DownloadFile(File file)
-		=> new OnePropertyBuilder<File, DownloadResponse>(file);
+			=> new OnePropertyBuilder<File, DownloadResponse>(file);
 
 		public static AuthRequestBuilder Auth(string login, string secretKey)
-		=> new AuthRequestBuilder(login, secretKey);
+			=> new AuthRequestBuilder(login, secretKey);
 
 		public static OnePropertyBuilder<int, CatalogResponse> GetCatalog(int catalogId)
-		=> new OnePropertyBuilder<int, CatalogResponse>(catalogId);
+			=> new OnePropertyBuilder<int, CatalogResponse>(catalogId);
 
 		public static OnePropertyBuilder<int, FormResponse> GetForm(int formId)
-		=> new OnePropertyBuilder<int, FormResponse>(formId);
+			=> new OnePropertyBuilder<int, FormResponse>(formId);
 
 		public static ContactsRequestBuilder GetContacts() => new ContactsRequestBuilder();
 
-		public static EmptyBuilder<FormsResponse> GetForms()
-		=> new EmptyBuilder<FormsResponse>();
+		public static EmptyBuilder<FormsResponse> GetForms() => new EmptyBuilder<FormsResponse>();
 
 		public static EmptyBuilder<ListsResponse> GetLists() => new EmptyBuilder<ListsResponse>();
 
 		public static TaskListRequestBuilder GetTaskList(int listId, int maxItemCount = 200, bool includeArchived = false)
-		=> GetTaskList(listId).MaxItemCount(maxItemCount).IncludeArchived(includeArchived);
+			=> GetTaskList(listId).MaxItemCount(maxItemCount).IncludeArchived(includeArchived);
 
 		public static TaskListRequestBuilder GetTaskList(int listId) => new TaskListRequestBuilder(new TaskListRequest(), listId);
 
