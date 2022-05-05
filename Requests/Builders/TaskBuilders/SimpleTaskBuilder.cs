@@ -12,12 +12,14 @@ namespace PyrusApiClient.Builders
 
 		public SimpleTaskBuilder WithText(string text)
 		{
+			Task.FormattedText = null;
 			Task.Text = text;
 			return this;
 		}
 
 		public SimpleTaskBuilder WithFormattedText(string text)
 		{
+			Task.Text = null;
 			Task.FormattedText = text;
 			return this;
 		}

@@ -15,6 +15,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static implicit operator AnnouncementRequest(AnnouncementBuilder builder)
 			=> builder.Announcement;
 
+		public AnnouncementBuilder WithText(string text)
+		{
+			Announcement.FormattedText = null;
+			Announcement.Text = text;
+			return this;
+		}
 		public AnnouncementBuilder AddAttachment(NewFile attachment)
 		{
 			Announcement.Attachments.Add(attachment);
@@ -29,6 +35,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public AnnouncementBuilder WithFormattedText(string text)
 		{
+			Announcement.Text = null;
 			Announcement.FormattedText = text;
 			return this;
 		}

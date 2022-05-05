@@ -7,27 +7,27 @@ namespace PyrusApiClient
 	public class AnnouncementWithComments
 	{
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public int Id { get; }
 
 		[JsonProperty("text")]
-		public string Text { get; set; }
+		public string Text { get; }
 
 		[JsonProperty("formatted_text")]
-		public string FormattedText { get; set; }
+		public string FormattedText { get; }
 
 		[JsonProperty("create_date")]
-		public DateTime CreateDate { get; set; }
+		public DateTime CreateDate { get; }
 
 		[JsonProperty("last_modified_date")]
-		public DateTime LastModifiedDate { get; set; }
+		public DateTime LastModifiedDate { get; }
 
 		[JsonProperty("author")]
-		public Person Author { get; set; }
+		public Person Author { get; }
 
 		[JsonProperty("attachments")]
-		public List<File> Attachments { get; set; } = new List<File>();
+		public List<File> Attachments { get; } = new List<File>();
 		
 		[JsonProperty("comments")]
-		public List<AnnouncementComment> Comments { get; set; } = new List<AnnouncementComment>();
+		public List<AnnouncementComment> Comments { get; } = new List<AnnouncementComment>();
 	}
 }

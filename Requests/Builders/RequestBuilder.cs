@@ -72,81 +72,64 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static TaskListRequestBuilder GetTaskList(int listId) => new TaskListRequestBuilder(new TaskListRequest(), listId);
 
 		public static UploadRequestBuilder UploadFile(string path)
-		=> new UploadRequestBuilder(path);
+			=> new UploadRequestBuilder(path);
 
 		public static UploadRequestBuilder UploadFile(Stream fileStream, string fileName)
-		=> new UploadRequestBuilder(fileStream, fileName);
+			=> new UploadRequestBuilder(fileStream, fileName);
 
 		public static SyncCatalogRequestBuilder SyncCatalog(int catalogId)
-		=> new SyncCatalogRequestBuilder(catalogId);
+			=> new SyncCatalogRequestBuilder(catalogId);
 
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
-		=> new CreateCatalogRequestBuilder(name);
+			=> new CreateCatalogRequestBuilder(name);
 
 		public static CreateRoleRequestBuilder CreateRole(string name)
-		=> new CreateRoleRequestBuilder(name);
+			=> new CreateRoleRequestBuilder(name);
 
 		public static UpdateRoleRequestBuilder UpdateRole(int roleId)
-		=> new UpdateRoleRequestBuilder(roleId);
+			=> new UpdateRoleRequestBuilder(roleId);
 
 		public static EmptyBuilder<RolesResponse> GetRoles()
-		=> new EmptyBuilder<RolesResponse>();
+			=> new EmptyBuilder<RolesResponse>();
 
 		public static CreateMemberRequestBuilder CreateMember(string email)
-		=> new CreateMemberRequestBuilder(email);
+			=> new CreateMemberRequestBuilder(email);
 
 		public static UpdateMemberRequestBuilder UpdateMember(int memberId)
-		=> new UpdateMemberRequestBuilder(memberId);
+			=> new UpdateMemberRequestBuilder(memberId);
 		
 		public static DeleteMemberRequestBuilder DeleteMember(int memberId)
-		=> new DeleteMemberRequestBuilder(memberId);
+			=> new DeleteMemberRequestBuilder(memberId);
 
 		public static EmptyBuilder<MembersResponse> GetMembers()
-		=> new EmptyBuilder<MembersResponse>();
+			=> new EmptyBuilder<MembersResponse>();
 
 		public static CreateBotRequestBuilder CreateBot(string name)
-		=> new CreateBotRequestBuilder(name);
+			=> new CreateBotRequestBuilder(name);
 
 		public static UpdateBotRequestBuilder UpdateBot(int botId)
-		=> new UpdateBotRequestBuilder(botId);
+			=> new UpdateBotRequestBuilder(botId);
 
 		public static EmptyBuilder<BotsResponse> GetBots()
-		=> new EmptyBuilder<BotsResponse>();
+			=> new EmptyBuilder<BotsResponse>();
 
 		public static ProfileRequestBuilder GetProfile() => new ProfileRequestBuilder();
 
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
-		=> new OnePropertyBuilder<int, InboxResponse>(tasksCount);
+			=> new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
-		public static GetMessageBuilder RegisterMessage()
-		{
-			return new GetMessageBuilder();
-		}
+		public static GetMessageBuilder RegisterMessage() => new GetMessageBuilder();
+		
+		public static CallBuilder RegisterCall() => new CallBuilder();
+		
+		public static AttachCallRecordBuilder AttachCallRecord(string recordFile) 
+			=> new AttachCallRecordBuilder(recordFile);
+		
+		public static CreateCallBuilder CreateCall(Guid integrationGuid) => new CreateCallBuilder(integrationGuid);
+		
+		public static UpdateCallBuilder UpdateCall(Guid callGuid) => new UpdateCallBuilder(callGuid);
 
-		public static CallBuilder RegisterCall()
-		{
-			return new CallBuilder();
-		}
-		
-		public static AttachCallRecordBuilder AttachCallRecord(string recordFile)
-		{
-			return new AttachCallRecordBuilder(recordFile);
-		}
-		
-		public static CreateCallBuilder CreateCall(Guid integrationGuid)
-		{
-			return new CreateCallBuilder(integrationGuid);
-		}
-		
-		public static UpdateCallBuilder UpdateCall(Guid callGuid)
-		{
-			return new UpdateCallBuilder(callGuid);
-		}
-
-		public static CallEventBuilder RegisterCallEvent(Guid callGuid)
-		{
-			return new CallEventBuilder(callGuid);
-		}
+		public static CallEventBuilder RegisterCallEvent(Guid callGuid) => new CallEventBuilder(callGuid);
 
 		#region Process
 
@@ -209,7 +192,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<ContactsResponse> Process(this ContactsRequestBuilder builder, PyrusClient client)
 			=> await client.GetContacts(builder);
 
-		
+
 		public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
 			=> await client.GetForm(builder.Property);
 		
@@ -217,75 +200,57 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> await client.GetTasksByApproverAsync(builder.Property);
 
 		public static async Task<FormsResponse> Process(this EmptyBuilder<FormsResponse> builder, PyrusClient client)
-		{
-			return await client.GetForms();
-		}
+			=> await client.GetForms();
 
 		public static async Task<ListsResponse> Process(this EmptyBuilder<ListsResponse> builder, PyrusClient client)
-		{
-			return await client.GetLists();
-		}
+			=> await client.GetLists();
 
 		public static async Task<TaskListResponse> Process(this TaskListRequestBuilder builder, PyrusClient client)
 			=> await client.GetTaskList(builder.ListId, builder);
 
 		public static async Task<UploadResponse> Process(this UploadRequestBuilder builder, PyrusClient client)
 		{
-			if (builder.FileStream != null)
-				return await client.UploadFile(builder.FileStream, builder.FileName);
-
-			return await client.UploadFile(builder.FilePath);
+			return builder.FileStream != null
+				? await client.UploadFile(builder.FileStream, builder.FileName)
+				: await client.UploadFile(builder.FilePath);
 		}
 
 		public static async Task<SyncCatalogResponse> Process(this SyncCatalogRequestBuilder builder, PyrusClient client)
-		=> await client.SyncCatalog(builder.CatalogId, builder);
+			=> await client.SyncCatalog(builder.CatalogId, builder);
 
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
-		{
-			return await client.CreateCatalog(builder);
-		}
+			=> await client.CreateCatalog(builder);
 
 		public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
-		{
-			return await client.CreateRole(builder);
-		}
+			=> await client.CreateRole(builder);
 
 		public static async Task<RoleResponse> Process(this UpdateRoleRequestBuilder builder, PyrusClient client)
-		=> await client.UpdateRole(builder.RoleId, builder);
+			=> await client.UpdateRole(builder.RoleId, builder);
 
 		public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
-		{
-			return await client.GetRoles();
-		}
+			=> await client.GetRoles();
 
 		public static async Task<MemberResponse> Process(this CreateMemberRequestBuilder builder, PyrusClient client)
-		{
-			return await client.CreateMember(builder);
-		}
+			=> await client.CreateMember(builder);
 
 		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
-		=> await client.UpdateMember(builder.MemberId, builder);
+			=> await client.UpdateMember(builder.MemberId, builder);
 
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
-		=> await client.DeleteMember(builder.MemberId);
+			=> await client.DeleteMember(builder.MemberId);
 
 		public static async Task<MembersResponse> Process(this EmptyBuilder<MembersResponse> builder, PyrusClient client)
-		{
-			return await client.GetMembers();
-		}
+			=> await client.GetMembers();
 
 		public static async Task<BotResponse> Process(this CreateBotRequestBuilder builder, PyrusClient client)
-		{
-			return await client.CreateBot(builder);
-		}
+			=> await client.CreateBot(builder);
 
 		public static async Task<BotResponse> Process(this UpdateBotRequestBuilder builder, PyrusClient client)
-		=> await client.UpdateBot(builder.BotId, builder);
+			=> await client.UpdateBot(builder.BotId, builder);
 
 		public static async Task<BotsResponse> Process(this EmptyBuilder<BotsResponse> builder, PyrusClient client)
-		{
-			return await client.GetBots();
-		}
+			=> await client.GetBots();
+
 
 		public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client) 
 			=> await client.GetProfile(builder);
@@ -302,30 +267,22 @@ namespace Pyrus.ApiClient.Requests.Builders
 		}
 
 		public static async Task<ResponseBase> Process(this GetMessageBuilder builder, PyrusClient client)
-		{
-			return await client.RegisterMessageAsync(builder);
-		}
+			=> await client.RegisterMessageAsync(builder);
 
 		public static async Task<ResponseBase> Process(this CallBuilder builder, PyrusClient client)
-		{
-			return await client.RegisterCallAsync(builder);
-		}
+			=> await client.RegisterCallAsync(builder);
 
 		public static async Task<ResponseBase> Process(this AttachCallRecordBuilder builder, PyrusClient client)
-		{
-			return await client.AttachCallRecordAsync(builder);
-		}
+			=> await client.AttachCallRecordAsync(builder);
 		
 		public static async Task<CreateCallResponse> Process(this CreateCallBuilder builder, PyrusClient client)
-		{
-			return await client.CreateCallAsync(builder);
-		}
+			=> await client.CreateCallAsync(builder);
 
 		public static async Task<ResponseBase> Process(this UpdateCallBuilder builder, PyrusClient client)
-		=> await client.UpdateCallAsync(builder.CallGuid, builder);
+			=> await client.UpdateCallAsync(builder.CallGuid, builder);
 
 		public static async Task<ResponseBase> Process(this CallEventBuilder builder, PyrusClient client)
-		=> await client.RegisterCallEventAsync(builder.CallGuid, builder);
+			=> await client.RegisterCallEventAsync(builder.CallGuid, builder);
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
