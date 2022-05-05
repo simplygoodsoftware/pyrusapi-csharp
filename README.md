@@ -209,3 +209,29 @@ var profileResponse = await RequestBuilder.GetProfile().Process(pyrusClient);
 ```csharp
 var inboxResponse = await RequestBuilder.GetInbox(10).Process(pyrusClient);
 ```
+
+## Announcements
+
+* Get announcement with all comments
+
+```csharp
+var announcementResponse = await RequestBuilder.GetAnnouncement(15353).Process(pyrusClient);;
+var announcement = announcementResponse.Announcement;
+```
+
+* Add announcement comment
+
+```csharp
+var announcementResponse = await RequestBuilder
+	.CommentAnnouncement(15353)
+	.WithText("SomeText")
+	.Process(pyrusClient);
+```
+
+* Create an announcement
+  
+```csharp
+var announcementResponse = await RequestBuilder
+	.CreateAnnouncement("New announcement")
+	.Process(pyrusClient);
+```
