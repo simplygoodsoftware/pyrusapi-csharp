@@ -56,6 +56,7 @@ namespace PyrusApiClient
 		internal const string RegistryDownloadHistoryEndpoint = "/registrydownloadhistory";
 		internal const string TaskAccessHistoryEndpoint = "/taskaccesshistory";
 		internal const string PersonLastActionEndpoint = "/personlastaction";
+		internal const string OrgChartEndpoint = "/orgchart";
 
 		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
@@ -554,6 +555,76 @@ namespace PyrusApiClient
 			return response;
 		}
 
+
+		public async Task<DepartmentsResponse> GetOrgChart(string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DepartmentsResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<DepartmentResponse> CreateDepartment(CreateDepartmentRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DepartmentResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<DepartmentsResponse> CreateDepartments(CreateDepartmentRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DepartmentsResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<DepartmentResponse> UpdateDepartment(int departmentId, UpdateDepartmentRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}/{departmentId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DepartmentResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<DepartmentsResponse> UpdateDepartments(UpdateDepartmentRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DepartmentsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteDepartment(int departmentId, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}/{departmentId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<ResponseBase> DeleteDepartments(DeleteDepartmentRequest[] request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}{BulkSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+			return response;
+		}
 
 		public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
 		{
