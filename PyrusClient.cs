@@ -34,6 +34,7 @@ namespace PyrusApiClient
 		internal const string FormsEndpoint = "/forms";
 		internal const string ListsEndpoint = "/lists";
 		internal const string TasksEndpoint = "/tasks";
+		internal const string AnnouncementsEndpoint = "/announcements";
 		internal const string TasksByApproverEndpoint = "/tasksbyapprover";
 		internal const string CatalogsEndpoint = "/catalogs";
 		internal const string UploadFilesEndpoint = "/files/upload";
@@ -143,6 +144,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<AnnouncementResponse> GetAnnouncement(int announcementId, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}/{announcementId}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			return await this.RunQuery<AnnouncementResponse>(() => RequestHelper.GetRequest(this, url, Token));
+		}
+
 		public async Task<TaskListResponse> GetTasksByApproverAsync(int id, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{TasksByApproverEndpoint}/{id}";
@@ -163,6 +173,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		internal async Task<AnnouncementResponse> CommentAnnouncement(int announcementId, AnnouncementCommentRequest comment, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}/{announcementId}{CommentSuffix}";
+			if (accessToken != null)
+				Token = accessToken;
+			
+			return await this.RunQuery<AnnouncementResponse>(() => RequestHelper.PostRequest(this, url, comment, Token));
+		}
+
 		public async Task<MultipleTasksChangeResponse> CommentMultipleTasksInOneTransaction(MultipleTasksChangeRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{TasksEndpoint}/{CommentSuffix}";
@@ -180,6 +199,16 @@ namespace PyrusApiClient
 				Token = accessToken;
 
 			var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, url, task, Token));
+			return response;
+		}
+
+		internal async Task<AnnouncementResponse> CreateAnnouncement(AnnouncementRequest announcement, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<AnnouncementResponse>(() => RequestHelper.PostRequest(this, url, announcement, Token));
 			return response;
 		}
 

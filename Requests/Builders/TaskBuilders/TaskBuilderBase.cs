@@ -14,6 +14,20 @@ namespace PyrusApiClient.Builders
 			Task = task;
 		}
 
+		public T WithText(string text)
+		{
+			Task.FormattedText = null;
+			Task.Text = text;
+			return (T)this;
+		}
+
+		public T WithFormattedText(string text)
+		{
+			Task.Text = null;
+			Task.FormattedText = text;
+			return (T)this;
+		}
+
 		public static implicit operator TaskRequest(TaskBuilderBase<T> tb)
 		{
 			if (tb.Approvals.Count != 0)
