@@ -6,7 +6,7 @@ namespace Pyrus.ApiClient.Responses
 	public class DepartmentResponse : ResponseBase
 	{
 		[JsonProperty("id")]
-		public int? Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("parent_id")]
 		public long? ParentId { get; set; }
