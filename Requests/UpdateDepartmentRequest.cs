@@ -7,8 +7,8 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty("id")]
 		public long Id { get; set; }
 
-		[JsonProperty("remove_head")]
-		public bool RemoveHead { get; set; }
+		[JsonProperty("remove_manager")]
+		public bool RemoveManager { get; set; }
 
 		[JsonProperty("parent_id")]
 		public long? ParentId { get; set; }

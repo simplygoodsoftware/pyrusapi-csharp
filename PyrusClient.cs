@@ -615,7 +615,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<DepartmentResponse> UpdateDepartment(int departmentId, UpdateDepartmentRequest request, string accessToken = null)
+		public async Task<DepartmentResponse> UpdateDepartment(long departmentId, UpdateDepartmentRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}/{departmentId}";
 			if (accessToken != null)
@@ -635,7 +635,7 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ResponseBase> DeleteDepartment(int departmentId, string accessToken = null)
+		public async Task<ResponseBase> DeleteDepartment(long departmentId, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{OrgChartEndpoint}/{departmentId}";
 			if (accessToken != null)
