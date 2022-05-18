@@ -10,5 +10,8 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "security_key")]
 		internal string SecurityKey { get; set; }
 
+		[JsonProperty(PropertyName = "person_id")]
+		internal int? PersonId { get; set; }
+
 	}
 }
