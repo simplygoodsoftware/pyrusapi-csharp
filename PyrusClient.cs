@@ -22,7 +22,7 @@ namespace PyrusApiClient
 
 		public string Token { get; set; }
 
-        public int? PersonId { get; set; }
+		public int? PersonId { get; set; }
 
         public static Settings Settings { get; set; }
 
