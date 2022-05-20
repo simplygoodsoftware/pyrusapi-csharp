@@ -24,7 +24,7 @@ namespace PyrusApiClient
 
 		public int? PersonId { get; set; }
 
-        public static Settings Settings { get; set; }
+		public static Settings Settings { get; set; }
 
 		/// <summary>
 		/// Returns custom settings if they were specified in <see cref="PyrusClient"/> constructor.
