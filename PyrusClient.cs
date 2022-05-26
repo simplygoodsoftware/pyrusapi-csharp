@@ -22,6 +22,8 @@ namespace PyrusApiClient
 
 		public string Token { get; set; }
 
+		public int? PersonId { get; set; }
+
 		public static Settings Settings { get; set; }
 
 		/// <summary>
@@ -79,11 +81,11 @@ namespace PyrusApiClient
 			ClientSettings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
 
-		public async Task<AuthResponse> Auth(string login, string securityKey)
+		public async Task<AuthResponse> Auth(string login, string securityKey, int? personId = null)
 		{
 			var url = $"{ClientSettings.Origin}{AuthEndpoint}";
 			var response = await this.RunQuery<AuthResponse>(()
-				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey }));
+				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey, PersonId = personId }));
 			Token = response.AccessToken;
 			return response;
 		}

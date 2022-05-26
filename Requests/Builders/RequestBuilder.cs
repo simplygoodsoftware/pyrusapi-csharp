@@ -54,6 +54,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static AuthRequestBuilder Auth(string login, string secretKey)
 			=> new AuthRequestBuilder(login, secretKey);
 
+		public static AuthRequestBuilder Auth(string login, string secretKey, int personId)
+			=> new AuthRequestBuilder(login, secretKey, personId);
+
 		public static OnePropertyBuilder<int, CatalogResponse> GetCatalog(int catalogId)
 			=> new OnePropertyBuilder<int, CatalogResponse>(catalogId);
 
