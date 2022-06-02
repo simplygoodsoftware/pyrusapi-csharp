@@ -120,6 +120,13 @@ namespace PyrusApiClient.Builders
 			_formRegisterRequest.FieldIds = fieldIds.ToList();
 			return this;
 		}
+		public FormRegisterRequestBuilder MaxItemCount(int itemCount)
+		{
+			if (itemCount <= 0)
+				throw new ArgumentOutOfRangeException(nameof(itemCount));
+			_formRegisterRequest.MaxItemCount = itemCount;
+			return this;
+		}
 
 		public FormRegisterFilterBuilder FilteredBy => new FormRegisterFilterBuilder(this, FormId);
 
