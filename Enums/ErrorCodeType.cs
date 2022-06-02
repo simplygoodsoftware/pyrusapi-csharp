@@ -288,8 +288,19 @@ namespace PyrusApiClient
 		
 		[EnumMember(Value = "unrecognized_integration_guid")]
 		UnrecognizedIntegrationGuid = 285,
-		
-		
+
+		[EnumMember(Value = "attachment_too_big")]
+		AttachmentTooBig = 289,
+
+		[EnumMember(Value = "private_channel_access_denied")]
+		PrivateChannelAccessDenied = 291,
+
+		[EnumMember(Value = "private_comment_has_forbidden_changes")]
+		PrivateCommentHasForbiddenChanges = 292,
+
+		[EnumMember(Value = "items_count_value_out_of_range")]
+		ItemsCountValueOutOfRange = 293,
+
 
 		//Forbidden (403)
 		[EnumMember(Value = "access_denied_project")]
