@@ -298,8 +298,8 @@ namespace PyrusApiClient
 		[EnumMember(Value = "private_comment_has_forbidden_changes")]
 		PrivateCommentHasForbiddenChanges = 292,
 
-		[EnumMember(Value = "items_count_value_out_of_range")]
-		ItemsCountValueOutOfRange = 293,
+		[EnumMember(Value = "items_count_out_of_range")]
+		ItemsCountOutOfRange = 293,
 
 
 		//Forbidden (403)
