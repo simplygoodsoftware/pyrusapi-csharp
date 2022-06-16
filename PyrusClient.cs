@@ -155,6 +155,16 @@ namespace PyrusApiClient
 			return await this.RunQuery<AnnouncementResponse>(() => RequestHelper.GetRequest(this, url, Token));
 		}
 
+		public async Task<AnnouncementsResponse> GetAnnouncements(string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{AnnouncementsEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			return await this.RunQuery<AnnouncementsResponse>(() => RequestHelper.GetRequest(this, url, Token));
+		}
+
+
 		public async Task<TaskListResponse> GetTasksByApproverAsync(int id, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{TasksByApproverEndpoint}/{id}";
