@@ -562,9 +562,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MembersResponse> GetMembers(string accessToken = null)
+		public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeInactive = false)
 		{
-			var url = $"{ClientSettings.Origin}{MembersEndpoint}";
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}?include_inactive={includeInactive}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));

@@ -46,6 +46,9 @@ namespace PyrusApiClient
 		[JsonProperty("banned")]
 		public bool? Banned { get; set; }
 
+		[JsonProperty("fired")]
+		public bool? Fired { get; set; }
+
 		[JsonProperty("position")]
 		public string Position { get; set; }
 
