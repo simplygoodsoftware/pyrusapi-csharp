@@ -552,9 +552,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<RolesResponse> GetRoles(string accessToken = null)
+		public async Task<RolesResponse> GetRoles(string accessToken = null, bool includeInactive = false)
 		{
-			var url = $"{ClientSettings.Origin}{RolesEndpoint}";
+			var url = $"{ClientSettings.Origin}{RolesEndpoint}?include_inactive={includeInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -571,9 +571,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<BotsResponse> GetBots(string accessToken = null)
+		public async Task<BotsResponse> GetBots(string accessToken = null, bool includeInactive = false)
 		{
-			var url = $"{ClientSettings.Origin}{BotsEndpoint}";
+			var url = $"{ClientSettings.Origin}{BotsEndpoint}?include_inactive={includeInactive}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));

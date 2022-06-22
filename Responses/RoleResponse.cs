@@ -17,6 +17,9 @@ namespace PyrusApiClient
 		[JsonProperty("banned")]
 		public bool Banned { get; set; }
 
+		[JsonProperty("fired")]
+		public bool Fired { get; set; }
+
 		[JsonProperty("member_ids")]
 		public List<int> MemberIds { get; set; } = new List<int>();
 

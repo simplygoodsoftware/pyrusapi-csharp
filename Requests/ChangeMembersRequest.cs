@@ -8,6 +8,5 @@ namespace Pyrus.ApiClient.Requests
 		public List<Person> AddMembers { get; set; }
 		public List<Person> ChangeMembers { get; set; }
 		public List<Person> BanMembers { get; set; }
-		public List<Person> FireMembers { get; set; }
 	}
 }
