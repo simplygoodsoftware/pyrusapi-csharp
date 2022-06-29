@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>Pyrus.ApiClient</id>
-		<version>2.20.1.0</version>
+		<version>2.20.1.1</version>
 		<title>Pyrus API Client</title>
 		<authors>Pyrus</authors>
 		<owners>Pyrus</owners>
@@ -14,10 +14,10 @@
 		<tags>pyrus pyrus.api api pyrus.com</tags>
 		<dependencies>
 			<group targetFramework=".NETFramework4.5">
-				<dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
+				<dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
 			</group>
 			<group targetFramework=".NETStandard2.0">
-				<dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
+				<dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
 			</group>
 		</dependencies>
 		<frameworkAssemblies>
