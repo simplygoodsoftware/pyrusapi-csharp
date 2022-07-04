@@ -224,9 +224,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null, bool showDeleted = false)
+		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}?show_deleted={showDeleted}";
+			var url = $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
@@ -294,7 +294,7 @@ namespace PyrusApiClient
 
 		private async Task<ContactsResponse> GetContacts(bool includeInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?include_fired={includeInactive}";
+			var url = $"{ClientSettings.Origin}{ContactsEndpoint}/?include_inactive={includeInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -561,9 +561,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<RolesResponse> GetRoles(string accessToken = null, bool includeInactive = false)
+		public async Task<RolesResponse> GetRoles(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{RolesEndpoint}?include_fired={includeInactive}";
+			var url = $"{ClientSettings.Origin}{RolesEndpoint}?include_fired={includeFired}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -571,9 +571,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeInactive = false)
+		public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{MembersEndpoint}?include_fired={includeInactive}";
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}?include_fired={includeFired}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
@@ -597,7 +597,7 @@ namespace PyrusApiClient
 
 		private async Task<ProfileResponse> GetProfile(bool includeInactive = false, string accessToken = null)
 		{
-			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?include_fired={includeInactive}";
+			var url = $"{ClientSettings.Origin}{ProfileEndpoint}/?include_inactive={includeInactive}";
 			if (accessToken != null)
 				Token = accessToken;
 
