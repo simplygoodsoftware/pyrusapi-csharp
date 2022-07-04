@@ -95,8 +95,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static UpdateRoleRequestBuilder UpdateRole(int roleId)
 			=> new UpdateRoleRequestBuilder(roleId);
 
-		public static EmptyBuilder<RolesResponse> GetRoles()
-			=> new EmptyBuilder<RolesResponse>();
+		public static GetRolesRequestBuilder GetRoles()
+			=> new GetRolesRequestBuilder();
 
 		public static CreateMemberRequestBuilder CreateMember(string email)
 			=> new CreateMemberRequestBuilder(email);
@@ -116,8 +116,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static UpdateBotRequestBuilder UpdateBot(int botId)
 			=> new UpdateBotRequestBuilder(botId);
 
-		public static EmptyBuilder<BotsResponse> GetBots()
-			=> new EmptyBuilder<BotsResponse>();
+		public static DeleteBotRequestBuilder DeleteBot(int botId, int taskReceiverId)
+			=> new DeleteBotRequestBuilder(botId, taskReceiverId);
+
+		public static GetBotsRequestBuilder GetBots()
+			=> new GetBotsRequestBuilder();
 
 		public static ProfileRequestBuilder GetProfile() => new ProfileRequestBuilder();
 
@@ -235,8 +238,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<RoleResponse> Process(this UpdateRoleRequestBuilder builder, PyrusClient client)
 			=> await client.UpdateRole(builder.RoleId, builder);
 
-		public static async Task<RolesResponse> Process(this EmptyBuilder<RolesResponse> builder, PyrusClient client)
-			=> await client.GetRoles();
+		public static async Task<RolesResponse> Process(this GetRolesRequestBuilder builder, PyrusClient client)
+			=> await client.GetRoles(includeFired: builder.IncludeFiredRoles);
 
 		public static async Task<MemberResponse> Process(this CreateMemberRequestBuilder builder, PyrusClient client)
 			=> await client.CreateMember(builder);
@@ -247,8 +250,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
 			=> await client.DeleteMember(builder.MemberId);
 
-		public static async Task<MembersResponse> Process(this EmptyBuilder<MembersResponse> builder, PyrusClient client)
-			=> await client.GetMembers();
+		public static async Task<MembersResponse> Process(this GetMembersRequestBuilder builder, PyrusClient client)
+			=> await client.GetMembers(includeFired: builder.IncludeFiredMembers);
 
 		public static async Task<BotResponse> Process(this CreateBotRequestBuilder builder, PyrusClient client)
 			=> await client.CreateBot(builder);
@@ -256,8 +259,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<BotResponse> Process(this UpdateBotRequestBuilder builder, PyrusClient client)
 			=> await client.UpdateBot(builder.BotId, builder);
 
-		public static async Task<BotsResponse> Process(this EmptyBuilder<BotsResponse> builder, PyrusClient client)
-			=> await client.GetBots();
+		public static async Task<BotResponse> Process(this DeleteBotRequestBuilder builder, PyrusClient client)
+			=> await client.DeleteBot(builder.BotId, builder);
+
+		public static async Task<BotsResponse> Process(this GetBotsRequestBuilder builder, PyrusClient client)
+			=> await client.GetBots(includeDeleted: builder.IncludeDeletedBots);
 
 
 		public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client) 
