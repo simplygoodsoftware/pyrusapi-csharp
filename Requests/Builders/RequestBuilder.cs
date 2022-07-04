@@ -107,8 +107,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static DeleteMemberRequestBuilder DeleteMember(int memberId)
 			=> new DeleteMemberRequestBuilder(memberId);
 
-		public static EmptyBuilder<MembersResponse> GetMembers()
-			=> new EmptyBuilder<MembersResponse>();
+		public static GetMembersRequestBuilder GetMembers()
+			=> new GetMembersRequestBuilder();
 
 		public static CreateBotRequestBuilder CreateBot(string name)
 			=> new CreateBotRequestBuilder(name);
