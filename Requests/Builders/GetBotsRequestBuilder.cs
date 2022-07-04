@@ -2,16 +2,16 @@
 {
 	public class GetBotsRequestBuilder
 	{
-		public bool IncludeDeletedBots { get; private set; }
+		public bool IncludeFiredBots { get; private set; }
 
 
 		public GetBotsRequestBuilder()
 		{
 		}
 
-		public GetBotsRequestBuilder IncludeDeleted()
+		public GetBotsRequestBuilder IncludeFired()
 		{
-			IncludeDeletedBots = true;
+			IncludeFiredBots = true;
 			return this;
 		}
 	}

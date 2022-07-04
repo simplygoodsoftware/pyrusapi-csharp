@@ -580,9 +580,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<BotsResponse> GetBots(string accessToken = null, bool includeDeleted = false)
+		public async Task<BotsResponse> GetBots(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{BotsEndpoint}?include_deleted={includeDeleted}";
+			var url = $"{ClientSettings.Origin}{BotsEndpoint}?include_fired={includeFired}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));

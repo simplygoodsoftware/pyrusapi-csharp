@@ -263,7 +263,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> await client.DeleteBot(builder.BotId, builder);
 
 		public static async Task<BotsResponse> Process(this GetBotsRequestBuilder builder, PyrusClient client)
-			=> await client.GetBots(includeDeleted: builder.IncludeDeletedBots);
+			=> await client.GetBots(includeFired: builder.IncludeFiredBots);
 
 
 		public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client) 
