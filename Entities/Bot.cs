@@ -28,6 +28,9 @@ namespace PyrusApiClient
 		[JsonProperty("is_enabled")]
 		public bool? IsEnabled { get; set; }
 
+		[JsonProperty("fired")]
+		public bool Fired { get; set; }
+
 		[JsonProperty("hook_url")]
 		public string HookUrl { get; set; }
 

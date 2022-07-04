@@ -542,6 +542,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<BotResponse> DeleteBot(int botId, DeleteBotRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{BotsEndpoint}/{botId}";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<BotResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+			return response;
+		}
+
 		public async Task<MemberResponse> DeleteMember(int memberId, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}";
@@ -552,9 +561,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<RolesResponse> GetRoles(string accessToken = null)
+		public async Task<RolesResponse> GetRoles(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{RolesEndpoint}";
+			var url = $"{ClientSettings.Origin}{RolesEndpoint}?include_fired={includeFired}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -562,18 +571,18 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<MembersResponse> GetMembers(string accessToken = null)
+		public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{MembersEndpoint}";
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}?include_fired={includeFired}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
-		public async Task<BotsResponse> GetBots(string accessToken = null)
+		public async Task<BotsResponse> GetBots(string accessToken = null, bool includeFired = false)
 		{
-			var url = $"{ClientSettings.Origin}{BotsEndpoint}";
+			var url = $"{ClientSettings.Origin}{BotsEndpoint}?include_fired={includeFired}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, url, Token));
