@@ -57,8 +57,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static AuthRequestBuilder Auth(string login, string secretKey, int personId)
 			=> new AuthRequestBuilder(login, secretKey, personId);
 
-		public static GetCatalogRequestBuilder GetCatalog(int catalogId)
+		public static GetCatalogRequestBuilder GetCatalogWithItems(int catalogId)
 			=> new GetCatalogRequestBuilder(catalogId);
+
+		public static OnePropertyBuilder<int, CatalogResponse> GetCatalog(int catalogId)
+			=> new OnePropertyBuilder<int, CatalogResponse>(catalogId);
 
 		public static OnePropertyBuilder<int, FormResponse> GetForm(int formId)
 			=> new OnePropertyBuilder<int, FormResponse>(formId);
@@ -199,6 +202,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public static async Task<CatalogResponse> Process(this GetCatalogRequestBuilder builder, PyrusClient client)
 			=> await client.GetCatalog(builder.CatalogId, includeDeleted: builder.IncludeDeletedItems);
+
+		public static async Task<CatalogResponse> Process(this OnePropertyBuilder<int, CatalogResponse> builder, PyrusClient client)
+			=> await client.GetCatalog(builder.Property);
 
 		public static async Task<ContactsResponse> Process(this ContactsRequestBuilder builder, PyrusClient client)
 			=> await client.GetContacts(builder);
