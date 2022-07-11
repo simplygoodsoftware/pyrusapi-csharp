@@ -224,9 +224,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null)
+		public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null, bool showDeleted = false)
 		{
-			var url = $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}";
+			var url = $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}?show_deleted={showDeleted}";
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, url, Token));
