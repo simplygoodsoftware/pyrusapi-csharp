@@ -10,5 +10,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("values")]
 		public List<string> Values { get; set; } = new List<string>();
+
+		[JsonProperty("deleted")]
+		public bool Deleted { get; set; }
 	}
 }
