@@ -159,28 +159,28 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public UpdateMemberRequestBuilder WithWebSessionLifespanInactivePeriod(int hours)
+		public UpdateMemberRequestBuilder WithWebSessionInactivePeriod(int hours)
 		{
 			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
 			_request.WebSessionInactiveSettings.LifespanHours = hours;
 			return this;
 		}
 
-		public UpdateMemberRequestBuilder DropWebSessionLifespanInactivePeriod()
+		public UpdateMemberRequestBuilder DropWebSessionInactivePeriod()
 		{
 			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
 			_request.WebSessionInactiveSettings.Drop = true;
 			return this;
 		}
 
-		public UpdateMemberRequestBuilder DisableWebSessionLifespanInactivePeriod()
+		public UpdateMemberRequestBuilder DisableWebSessionInactivePeriod()
 		{
 			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
 			_request.WebSessionInactiveSettings.Disable = true;
 			return this;
 		}
 
-		public UpdateMemberRequestBuilder EnableWebSessionLifespanInactivePeriod()
+		public UpdateMemberRequestBuilder EnableWebSessionInactivePeriod()
 		{
 			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
 			_request.WebSessionInactiveSettings.Disable = false;
