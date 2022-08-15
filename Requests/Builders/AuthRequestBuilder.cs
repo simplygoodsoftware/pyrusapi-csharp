@@ -6,10 +6,14 @@
 
 		internal string SecretKey { get; set; }
 
-		internal AuthRequestBuilder(string login, string secretKey)
+		internal int? PersonId { get; set; }
+
+		internal AuthRequestBuilder(string login, string secretKey) : this(login, secretKey, null) { }
+		internal AuthRequestBuilder(string login, string secretKey, int? personId)
 		{
 			Login = login;
 			SecretKey = secretKey;
+			PersonId = personId;
 		}
 	}
 }

@@ -78,6 +78,8 @@ namespace Pyrus.ApiClient.JsonConverters
 				WriteDate(writer, nameof(request.ClosedBefore), request.ClosedBefore.Value);
 			if (request.ClosedAfter.HasValue)
 				WriteDate(writer, nameof(request.ClosedAfter), request.ClosedAfter.Value);
+			if (request.MaxItemCount.HasValue)
+				WriteInt(writer, nameof(request.MaxItemCount), request.MaxItemCount.Value);
 
 			if (request.ResponseFormat == ResponseFormat.Csv)
 			{
@@ -111,6 +113,11 @@ namespace Pyrus.ApiClient.JsonConverters
 		}
 
 		private static void WriteString(JsonWriter writer, string propertyName, string propertyValue)
+		{
+			writer.WritePropertyName(JsonNames[propertyName]);
+			writer.WriteValue(propertyValue);
+		}
+		private static void WriteInt(JsonWriter writer, string propertyName, int propertyValue)
 		{
 			writer.WritePropertyName(JsonNames[propertyName]);
 			writer.WriteValue(propertyValue);

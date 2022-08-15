@@ -99,7 +99,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
 
-				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey });
+				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;

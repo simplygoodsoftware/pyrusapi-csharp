@@ -53,5 +53,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("due_filter")]
 		public DueFilter DueFilter { get; set; }
+
+		[JsonProperty("item_count")]
+		public int? MaxItemCount { get; set; }
 	}
 }

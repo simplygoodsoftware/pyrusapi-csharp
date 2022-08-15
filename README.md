@@ -215,8 +215,15 @@ var inboxResponse = await RequestBuilder.GetInbox(10).Process(pyrusClient);
 * Get announcement with all comments
 
 ```csharp
-var announcementResponse = await RequestBuilder.GetAnnouncement(15353).Process(pyrusClient);;
+var announcementResponse = await RequestBuilder.GetAnnouncement(15353).Process(pyrusClient);
 var announcement = announcementResponse.Announcement;
+```
+
+* Get announcements with all comments
+
+```csharp
+var announcementsResponse = await RequestBuilder.GetAnnouncements().Process(pyrusClient);
+var announcements = announcementsResponse.Announcements;
 ```
 
 * Add announcement comment
