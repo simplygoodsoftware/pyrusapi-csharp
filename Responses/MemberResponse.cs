@@ -51,6 +51,12 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("web_session_settings")]
 		public SessionLifespan WebSessionSettings { get; set; }
 
+		[JsonProperty("mobile_session_inactive_settings")]
+		public SessionLifespan MobileSessionInactiveSettings { get; set; }
+
+		[JsonProperty("web_session_inactive_settings")]
+		public SessionLifespan WebSessionInactiveSettings { get; set; }
+
 		public Person Person =>
 			new Person
 			{ 
@@ -67,7 +73,9 @@ namespace Pyrus.ApiClient.Responses
 				Phone = Phone,
 				LoginPhone = LoginPhone,
 				MobileSessionSettings = MobileSessionSettings,
-				WebSessionSettings = WebSessionSettings
+				WebSessionSettings = WebSessionSettings,
+				MobileSessionInactiveSettings = MobileSessionInactiveSettings,
+				WebSessionInactiveSettings = WebSessionInactiveSettings
 			};
 
 	}
