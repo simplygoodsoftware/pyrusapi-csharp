@@ -131,6 +131,62 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public UpdateMemberRequestBuilder WithMobileSessionInactivePeriod(int hours)
+		{
+			_request.MobileSessionInactiveSettings = _request.MobileSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionInactiveSettings.LifespanHours = hours;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropMobileSessionInactivePeriod()
+		{
+			_request.MobileSessionInactiveSettings = _request.MobileSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionInactiveSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableMobileSessionInactivePeriod()
+		{
+			_request.MobileSessionInactiveSettings = _request.MobileSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionInactiveSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableMobileSessionInactivePeriod()
+		{
+			_request.MobileSessionInactiveSettings = _request.MobileSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.MobileSessionInactiveSettings.Disable = false;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder WithWebSessionInactivePeriod(int hours)
+		{
+			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionInactiveSettings.LifespanHours = hours;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropWebSessionInactivePeriod()
+		{
+			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionInactiveSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableWebSessionInactivePeriod()
+		{
+			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionInactiveSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableWebSessionInactivePeriod()
+		{
+			_request.WebSessionInactiveSettings = _request.WebSessionInactiveSettings ?? new SessionLifespanUpdate();
+			_request.WebSessionInactiveSettings.Disable = false;
+			return this;
+		}
+
 		public static implicit operator UpdateMemberRequest(UpdateMemberRequestBuilder cmrb)
 		{
 			return cmrb._request;

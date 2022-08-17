@@ -41,5 +41,11 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("web_session_settings")]
 		public SessionLifespanUpdate WebSessionSettings { get; set; }
+
+		[JsonProperty("mobile_session_inactive_settings")]
+		public SessionLifespanUpdate MobileSessionInactiveSettings { get; set; }
+
+		[JsonProperty("web_session_inactive_settings")]
+		public SessionLifespanUpdate WebSessionInactiveSettings { get; set; }
 	}
 }

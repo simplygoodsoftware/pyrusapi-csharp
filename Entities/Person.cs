@@ -70,6 +70,12 @@ namespace PyrusApiClient
 		[JsonProperty("web_session_settings")]
 		public SessionLifespan WebSessionSettings { get; set; }
 
+		[JsonProperty("mobile_session_inactive_settings")]
+		public SessionLifespan MobileSessionInactiveSettings { get; set; }
+
+		[JsonProperty("web_session_inactive_settings")]
+		public SessionLifespan WebSessionInactiveSettings { get; set; }
+
 		public override string ToString() => Id?.ToString() ?? Email;
 	}
 }
