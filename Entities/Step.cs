@@ -2,8 +2,8 @@
 
 namespace Pyrus.ApiClient.Entities
 {
-    public class Step
-    {
+	public class Step
+	{
 		[JsonProperty("step")]
 		public int StepNumber { get; set; }
 
