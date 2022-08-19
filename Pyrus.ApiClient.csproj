@@ -30,7 +30,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Pyrus.ApiClient</PackageId>
-    <Version>2.23.0.0</Version>
+    <Version>2.24.0.0</Version>
     <Title>Pyrus API Client</Title>
 	<Authors>Pyrus</Authors>
     <Owners>Pyrus</Owners>
