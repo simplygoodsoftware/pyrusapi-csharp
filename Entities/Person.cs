@@ -49,6 +49,9 @@ namespace PyrusApiClient
 		[JsonProperty("fired")]
 		public bool Fired { get; set; }
 
+		[JsonProperty("task_receiver")]
+		public int? TaskReceiver { get; set; }
+
 		[JsonProperty("position")]
 		public string Position { get; set; }
 
