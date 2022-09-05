@@ -11,6 +11,9 @@ namespace PyrusApiClient
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
+		[JsonProperty("name")]
+		public string CatalogName { get; set; }
+
 		[JsonProperty("external_version")]
 		public long ExternalVersion { get; set; }
 
