@@ -38,7 +38,7 @@ namespace PyrusApiClient
 		public PersonType Type { get; set; }
 
 		[JsonProperty("department_id")]
-		public int? DepartmentId { get; set; }
+		public long? DepartmentId { get; set; }
 
 		[JsonProperty("department_name")]
 		public string DepartmentName { get; set; }

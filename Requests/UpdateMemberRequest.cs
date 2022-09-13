@@ -25,7 +25,10 @@ namespace Pyrus.ApiClient.Requests
 		public string Position { get; set; }
 
 		[JsonProperty(PropertyName = "department_id")]
-		public int? DepartmentId { get; set; }
+		public long? DepartmentId { get; set; }
+
+		[JsonProperty(PropertyName = "drop_department")]
+		public bool? DropDepartment { get; set; }
 
 		[JsonProperty(PropertyName = "skype")]
 		public string Skype { get; set; }
