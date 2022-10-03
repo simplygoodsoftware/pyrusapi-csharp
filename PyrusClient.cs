@@ -40,6 +40,7 @@ namespace PyrusApiClient
 		internal const string TasksByApproverEndpoint = "/tasksbyapprover";
 		internal const string CatalogsEndpoint = "/catalogs";
 		internal const string UploadFilesEndpoint = "/files/upload";
+		internal const string UploadFileServiceEndpoint = "/v4/files/upload";
 		internal const string ContactsEndpoint = "/contacts";
 		internal const string ProfileEndpoint = "/profile";
 		internal const string DownloadFilesEndpoint = "/services/attachment";
@@ -318,9 +319,11 @@ namespace PyrusApiClient
 			}
 		}
 
-		public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null)
+		public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null, bool useFileService = false)
 		{
-			var url = $"{ClientSettings.Origin}{UploadFilesEndpoint}";
+			var url = useFileService
+				? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
+				: $"{ClientSettings.Origin}{UploadFilesEndpoint}";
 			if (accessToken != null)
 				Token = accessToken;
 
