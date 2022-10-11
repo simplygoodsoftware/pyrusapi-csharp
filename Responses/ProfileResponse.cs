@@ -25,5 +25,8 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("organization")]
 		public Organization Organization { get; internal set; }
-	}
+
+        [JsonProperty("timezone_offset")]
+        public int? TimeZoneOffset { get; internal set; }
+    }
 }
