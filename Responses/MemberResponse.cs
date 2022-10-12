@@ -15,6 +15,12 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("last_name")]
 		public string LastName { get; set; }
 
+		[JsonProperty("native_first_name")]
+		public string NativeFirstName { get; set; }
+
+		[JsonProperty("native_last_name")]
+		public string NativeLastName { get; set; }
+
 		[JsonProperty("email")]
 		public string Email { get; set; }
 
@@ -57,12 +63,32 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("web_session_inactive_settings")]
 		public SessionLifespan WebSessionInactiveSettings { get; set; }
 
+		[JsonProperty("export_localized_registry_forbidden")]
+		public bool? ForbidLocalizedRegistryExport { get; set; }
+
+		[JsonProperty("export_not_localized_registry_forbidden")]
+		public bool? ForbidNotLocalizedRegistryExport { get; set; }
+
+		[JsonProperty("localized_registry_access_forbbidden")]
+		public bool? ForbidLocalizedRegistryAccess { get; set; }
+
+		[JsonProperty("not_localized_registry_access_forbbidden")]
+		public bool? ForbidNotLocalizedRegistryAccess { get; set; }
+
+		[JsonProperty("add_external_users_to_tasks_forbidden")]
+		public bool? ForbidAddExternalUsersToTasks { get; set; }
+
+		[JsonProperty("add_external_users_to_projects_forbidden")]
+		public bool? ForbidAddExternalUsersToProjects { get; set; }
+
 		public Person Person =>
 			new Person
 			{ 
 				Id = Id,
 				FirstName = FirstName,
 				LastName = LastName,
+				NativeFirstName = NativeFirstName,
+				NativeLastName = NativeLastName,
 				Email = Email,
 				Type = Type,
 				DepartmentId = DepartmentId,
@@ -75,7 +101,13 @@ namespace Pyrus.ApiClient.Responses
 				MobileSessionSettings = MobileSessionSettings,
 				WebSessionSettings = WebSessionSettings,
 				MobileSessionInactiveSettings = MobileSessionInactiveSettings,
-				WebSessionInactiveSettings = WebSessionInactiveSettings
+				WebSessionInactiveSettings = WebSessionInactiveSettings,
+				ForbidAddExternalUsersToProjects = ForbidAddExternalUsersToProjects,
+				ForbidAddExternalUsersToTasks = ForbidAddExternalUsersToTasks,
+				ForbidLocalizedRegistryAccess = ForbidLocalizedRegistryAccess,
+				ForbidNotLocalizedRegistryAccess = ForbidNotLocalizedRegistryAccess,
+				ForbidLocalizedRegistryExport = ForbidLocalizedRegistryExport,
+				ForbidNotLocalizedRegistryExport = ForbidNotLocalizedRegistryExport,
 			};
 
 	}

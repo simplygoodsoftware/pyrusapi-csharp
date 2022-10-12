@@ -36,6 +36,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("rights")]
 		public PersonRights? Rights { get; set; }
 
+		[JsonProperty("send_only_last_comment")]
+		public bool? SendOnlyLastComment { get; set; }
+
 		public Bot Bot =>
 			new Bot
 			{
@@ -48,6 +51,7 @@ namespace Pyrus.ApiClient.Responses
 				BotVersion = BotVersion,
 				Login = Login,
 				Rights = Rights,
+				SendOnlyLastComment = SendOnlyLastComment,
 			};
 
 	}

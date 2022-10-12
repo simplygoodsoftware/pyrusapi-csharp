@@ -52,6 +52,9 @@ namespace PyrusApiClient
 		[JsonProperty("rights")]
 		public PersonRights? Rights { get; set; }
 
+		[JsonProperty("send_only_last_comment")]
+		public bool? SendOnlyLastComment { get; set; }
+
 		public override string ToString() => Id?.ToString() ?? Name;
 	}
 }

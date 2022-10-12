@@ -22,5 +22,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "rights")]
 		public PersonRights? Rights { get; set; }
+
+		[JsonProperty("send_only_last_comment")]
+		public bool? SendOnlyLastComment { get; set; }
 	}
 }
