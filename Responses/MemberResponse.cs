@@ -63,23 +63,23 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("web_session_inactive_settings")]
 		public SessionLifespan WebSessionInactiveSettings { get; set; }
 
-		[JsonProperty("export_localized_registry_forbidden")]
-		public bool? ForbidLocalizedRegistryExport { get; set; }
+		[JsonProperty("cant_view_restricted_form_registry")]
+		public bool? CantViewRestrictedFormRegistry { get; set; }
 
-		[JsonProperty("export_not_localized_registry_forbidden")]
-		public bool? ForbidNotLocalizedRegistryExport { get; set; }
+		[JsonProperty("cant_view_form_registry")]
+		public bool? CantViewFormRegistry { get; set; }
 
-		[JsonProperty("localized_registry_access_forbbidden")]
-		public bool? ForbidLocalizedRegistryAccess { get; set; }
+		[JsonProperty("cant_export_restricted_form_registry")]
+		public bool? CantExportRestrictedFormRegistry { get; set; }
 
-		[JsonProperty("not_localized_registry_access_forbbidden")]
-		public bool? ForbidNotLocalizedRegistryAccess { get; set; }
+		[JsonProperty("cant_export_form_registry")]
+		public bool? CantExportFormRegistry { get; set; }
 
-		[JsonProperty("add_external_users_to_tasks_forbidden")]
-		public bool? ForbidAddExternalUsersToTasks { get; set; }
+		[JsonProperty("cant_add_external_users_to_tasks")]
+		public bool? CantAddExternalUsersToTasks { get; set; }
 
-		[JsonProperty("add_external_users_to_projects_forbidden")]
-		public bool? ForbidAddExternalUsersToProjects { get; set; }
+		[JsonProperty("cant_add_external_users_to_lists")]
+		public bool? CantAddExternalUsersToLists { get; set; }
 
 		public Person Person =>
 			new Person
@@ -102,12 +102,12 @@ namespace Pyrus.ApiClient.Responses
 				WebSessionSettings = WebSessionSettings,
 				MobileSessionInactiveSettings = MobileSessionInactiveSettings,
 				WebSessionInactiveSettings = WebSessionInactiveSettings,
-				ForbidAddExternalUsersToProjects = ForbidAddExternalUsersToProjects,
-				ForbidAddExternalUsersToTasks = ForbidAddExternalUsersToTasks,
-				ForbidLocalizedRegistryAccess = ForbidLocalizedRegistryAccess,
-				ForbidNotLocalizedRegistryAccess = ForbidNotLocalizedRegistryAccess,
-				ForbidLocalizedRegistryExport = ForbidLocalizedRegistryExport,
-				ForbidNotLocalizedRegistryExport = ForbidNotLocalizedRegistryExport,
+				CantAddExternalUsersToLists = CantAddExternalUsersToLists,
+				CantAddExternalUsersToTasks = CantAddExternalUsersToTasks,
+				CantExportRestrictedFormRegistry = CantExportRestrictedFormRegistry,
+				CantExportFormRegistry = CantExportFormRegistry,
+				CantViewFormRegistry = CantViewFormRegistry,
+				CantViewRestrictedFormRegistry = CantViewRestrictedFormRegistry,
 			};
 
 	}

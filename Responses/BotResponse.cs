@@ -39,6 +39,12 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("send_only_last_comment")]
 		public bool? SendOnlyLastComment { get; set; }
 
+		[JsonProperty("locale")]
+		public string Locale { get; set; }
+
+		[JsonProperty("time_zone_offset")]
+		public int? TimeZoneOffset { get; set; }
+
 		public Bot Bot =>
 			new Bot
 			{
@@ -52,6 +58,8 @@ namespace Pyrus.ApiClient.Responses
 				Login = Login,
 				Rights = Rights,
 				SendOnlyLastComment = SendOnlyLastComment,
+				Locale = Locale,
+				TimeZoneOffset = TimeZoneOffset
 			};
 
 	}
