@@ -52,6 +52,15 @@ namespace PyrusApiClient
 		[JsonProperty("rights")]
 		public PersonRights? Rights { get; set; }
 
+		[JsonProperty("send_only_last_comment")]
+		public bool? SendOnlyLastComment { get; set; }
+
+		[JsonProperty("locale")]
+		public string Locale { get; set; }
+
+		[JsonProperty("time_zone_offset")]
+		public int? TimeZoneOffset { get; set; }
+
 		public override string ToString() => Id?.ToString() ?? Name;
 	}
 }

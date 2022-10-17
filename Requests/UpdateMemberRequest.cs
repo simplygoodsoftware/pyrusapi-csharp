@@ -12,6 +12,12 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "last_name")]
 		public string LastName { get; set; }
 
+		[JsonProperty("native_first_name")]
+		public string NativeFirstName { get; set; }
+
+		[JsonProperty("native_last_name")]
+		public string NativeLastName { get; set; }
+
 		[JsonProperty(PropertyName = "email")]
 		public string Email { get; set; }
 
@@ -50,5 +56,23 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("web_session_inactive_settings")]
 		public SessionLifespanUpdate WebSessionInactiveSettings { get; set; }
+
+		[JsonProperty("cant_view_restricted_form_registry")]
+		public bool? CantViewRestrictedFormRegistry { get; set; }
+
+		[JsonProperty("cant_view_form_registry")]
+		public bool? CantViewFormRegistry { get; set; }
+
+		[JsonProperty("cant_export_restricted_form_registry")]
+		public bool? CantExportRestrictedFormRegistry { get; set; }
+
+		[JsonProperty("cant_export_form_registry")]
+		public bool? CantExportFormRegistry { get; set; }
+
+		[JsonProperty("cant_add_external_users_to_tasks")]
+		public bool? CantAddExternalUsersToTasks { get; set; }
+
+		[JsonProperty("cant_add_external_users_to_lists")]
+		public bool? CantAddExternalUsersToLists { get; set; }
 	}
 }
