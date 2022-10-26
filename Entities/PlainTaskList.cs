@@ -19,8 +19,8 @@ namespace PyrusApiClient
 		[JsonProperty("list_type")]
 		public ListType? ListType { get; set; }
 
-		[JsonProperty("with_form")]
-		public bool WithForm { get; set; }
+		[JsonProperty("has_form")]
+		public bool HasForm { get; set; }
 
 		[JsonProperty("manager_ids")]
 		public int[] ManagerIds { get; set; }
