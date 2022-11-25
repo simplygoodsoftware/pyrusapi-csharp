@@ -68,8 +68,11 @@ namespace PyrusApiClient
 
 		[JsonProperty("duration")]
 		public int? Duration { get; set; }
-		
-		[JsonProperty("scheduled_date")]
+
+        [JsonProperty("cancel_due")]
+        public bool? CancelDue { get; set; }
+
+        [JsonProperty("scheduled_date")]
 		[JsonConverter(typeof(DateTimeJsonConverter), Constants.DateFormat)]
 		public DateTime? ScheduledDate { get; set; }
 

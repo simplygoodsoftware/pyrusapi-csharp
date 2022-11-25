@@ -109,6 +109,15 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public SimpleTaskCommentBuilder CancelDue()
+		{
+			Comment.Due = null;
+			Comment.Duration = null;
+			Comment.DueDate = null;
+			Comment.CancelDue = true;
+			return this;
+		}
+
 		public SimpleTaskCommentBuilder SetSubject(string subject)
 		{
 			Comment.Subject = subject;
