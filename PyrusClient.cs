@@ -369,9 +369,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false)
+		public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false, bool withDeleted = false)
 		{
-			var url = $"{ClientSettings.Origin}{ListsEndpoint}?with_forms={withForms}";
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}?with_forms={withForms}&with_deleted={withDeleted}";
 			if (accessToken != null)
 				Token = accessToken;
 
