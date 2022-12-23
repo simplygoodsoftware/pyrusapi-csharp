@@ -583,6 +583,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<MemberResponse> GetMember(int id, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{id}";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
 		public async Task<BotsResponse> GetBots(string accessToken = null, bool includeFired = false)
 		{
 			var url = $"{ClientSettings.Origin}{BotsEndpoint}?include_fired={includeFired}";
