@@ -16,6 +16,9 @@ namespace PyrusApiClient
 		[JsonProperty("color")]
 		public string Color { get; set; }
 
+		[JsonProperty("deleted")]
+		public bool IsDeleted { get; set; }
+
 		[JsonProperty("list_type")]
 		public ListType? ListType { get; set; }
 
