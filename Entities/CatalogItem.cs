@@ -8,9 +8,6 @@ namespace PyrusApiClient
 		[JsonProperty("item_id")]
 		public long Id { get; set; }
 
-		[JsonProperty("external_id")]
-		public long? ExternalId { get; set; }
-
 		[JsonProperty("values")]
 		public List<string> Values { get; set; } = new List<string>();
 
