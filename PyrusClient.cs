@@ -828,6 +828,24 @@ namespace PyrusApiClient
 				RequestHelper.PostRequest(this, url, request, Token));
 		}
 
+		public async Task<PermissionsResponse> GetFormPermissions(int id, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{FormsEndpoint}/{id}/permissions";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<PermissionsResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<PermissionsResponse> ChangeFormPermissions(int id, ChangePermissionsRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{FormsEndpoint}/{id}/permissions";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<PermissionsResponse>(() => RequestHelper.PostRequest(this, url, request, Token));
+			return response;
+		}
+
 		private Task<DownloadResponse> GetHistoryAsync(long after, int count, string endpoint, string accessToken)
 		{
 			var parameters = new NameValueCollection
