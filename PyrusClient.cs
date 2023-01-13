@@ -369,9 +369,9 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false)
+		public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false, bool withDeleted = false)
 		{
-			var url = $"{ClientSettings.Origin}{ListsEndpoint}?with_forms={withForms}";
+			var url = $"{ClientSettings.Origin}{ListsEndpoint}?with_forms={withForms}&with_deleted={withDeleted}";
 			if (accessToken != null)
 				Token = accessToken;
 
@@ -580,6 +580,15 @@ namespace PyrusApiClient
 			Token = accessToken ?? Token;
 
 			var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
+		public async Task<MemberResponse> GetMember(int id, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{id}";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.GetRequest(this, url, Token));
 			return response;
 		}
 
