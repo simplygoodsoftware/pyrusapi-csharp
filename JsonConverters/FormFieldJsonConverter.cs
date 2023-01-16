@@ -94,7 +94,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (formFieldType == FormFieldType.FormLink.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldFormLink>(serializer);
 
-			return null;
+			return obj.ToObject<FormField>(serializer); ;
 		}
 		
 		public override bool CanConvert(Type objectType)
