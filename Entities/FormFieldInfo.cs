@@ -24,7 +24,7 @@ namespace PyrusApiClient
 		public List<FormField> Fields { get; set; } = new List<FormField>();
 
 		[JsonProperty("form_id")]
-		public int FormId { get; set; }
+		public int? FormId { get; set; }
 
 		[JsonProperty("code")]
 		public string Code { get; set; }
