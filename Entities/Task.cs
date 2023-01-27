@@ -36,6 +36,7 @@ namespace PyrusApiClient
 		public List<File> Attachments { get; set; } = new List<File>();
 
 		[JsonProperty("fields")]
+		[JsonConverter(typeof(FormFieldListJsonConverter))]
 		public List<FormField> Fields { get; set; } = new List<FormField>();
 
 		[JsonProperty("approvals")]
