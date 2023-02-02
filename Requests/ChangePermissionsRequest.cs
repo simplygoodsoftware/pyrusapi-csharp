@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
+using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Requests
 {
 	public class ChangePermissionsRequest
 	{
-		[JsonProperty("add_managers")]
-		public int[] AddManagers { get; set; }
-
-		[JsonProperty("add_members")]
-		public int[] AddMembers { get; set; }
-
-		[JsonProperty("remove_access")]
-		public int[] RemoveAccess { get; set; }
+		[JsonProperty("permissions")]
+		public Dictionary<int, PermissionLevel> Permissions { get; set; }
 	}
 }

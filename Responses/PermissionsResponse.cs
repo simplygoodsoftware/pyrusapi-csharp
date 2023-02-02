@@ -1,14 +1,13 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 using PyrusApiClient;
+using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Responses
 {
 	public class PermissionsResponse : ResponseBase
 	{
-		[JsonProperty("manager_ids")]
-		public int[] Managers { get; set; }
-
-		[JsonProperty("member_ids")]
-		public int[] Members { get; set; }
+		[JsonProperty("permissions")]
+		public Dictionary<int, PermissionLevel> Permissions { get; set; }
 	}
 }
