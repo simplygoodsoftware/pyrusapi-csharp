@@ -13,7 +13,8 @@ namespace PyrusApiClient
 
 			foreach (var field in fields)
 			{
-				res.Add(field);
+				if(field != null)
+					res.Add(field);
 
 				if (field is FormFieldMultipleChoice ffmc)
 					res.AddRange(GetFlatFieldsListByTask(ffmc.Value?.Fields));
