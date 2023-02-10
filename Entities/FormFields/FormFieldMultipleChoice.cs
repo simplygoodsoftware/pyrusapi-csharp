@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
@@ -12,7 +13,7 @@ namespace PyrusApiClient
 		public override string ToString()
 		{
 			return Value?.ChoiceIds?.Length > 0
-				? String.Join(", ", Value.ChoiceIds)
+				? string.Join(", ", Value.ChoiceIds)
 				: Value?.ChoiceId?.ToString() ?? "";
 		}
 	}
@@ -29,6 +30,7 @@ namespace PyrusApiClient
 		[JsonProperty("choice_names")]
 		public string[] ChoiceNames { get; set; }
 
+		[JsonConverter(typeof(FormFieldListJsonConverter))]
 		[JsonProperty("fields")]
 		public List<FormField> Fields { get; set; } = new List<FormField>();
 	}

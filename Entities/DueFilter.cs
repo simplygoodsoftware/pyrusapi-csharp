@@ -15,7 +15,7 @@ namespace PyrusApiClient
 		{
 			Type = Enum.IsDefined(typeof(DueFilterType), type)
 				? type
-				: default(DueFilterType);
+				: default;
 		}
 
 		public DueFilter(params int[] overdueSteps)

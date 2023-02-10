@@ -28,7 +28,7 @@ namespace PyrusApiClient.Extensions
 				return (T)attributes[0];
 			}
 
-			return default(T);
+			return default;
 		}
 
 		internal static T GetPropertyAttribute<T>(this object member, string propertyName)
@@ -43,7 +43,7 @@ namespace PyrusApiClient.Extensions
 				return (T)attributes[0];
 			}
 
-			return default(T);
+			return default;
 		}
 	}
 }

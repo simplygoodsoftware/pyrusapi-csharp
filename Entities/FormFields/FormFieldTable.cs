@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
@@ -10,9 +11,7 @@ namespace PyrusApiClient
 		public List<TableRow> Value { get; set; } = new List<TableRow>();
 
 		public override string ToString()
-		{
-			return $"Name: {Name}, RowCount: {Value?.Count ?? 0}";
-		}
+			=> $"Name: {Name}, RowCount: {Value?.Count ?? 0}";
 	}
 
 	public class TableRow
@@ -29,6 +28,7 @@ namespace PyrusApiClient
 		public int RowId { get; set; }
 
 		[JsonProperty("cells")]
+		[JsonConverter(typeof(FormFieldListJsonConverter))]
 		public List<FormField> Cells { get; set; }
 
 		[JsonProperty("delete", DefaultValueHandling = DefaultValueHandling.Ignore)]
