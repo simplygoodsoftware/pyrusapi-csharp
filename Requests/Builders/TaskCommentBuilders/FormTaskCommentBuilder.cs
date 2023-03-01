@@ -177,6 +177,13 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder EditExistingComment(int commentId)
+        {
+			Comment.EditCommentId = commentId;
+			return this;
+        }
+
+
 
 		public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 

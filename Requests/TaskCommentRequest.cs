@@ -97,5 +97,8 @@ namespace PyrusApiClient
 
         [JsonProperty("skip_satisfaction")]
         public bool? SkipSatisfactionRequest { get; set; }
+
+        [JsonProperty("edit_comment_id")]
+        public int? EditCommentId { get; set; }
     }
 }
