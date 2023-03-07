@@ -187,6 +187,34 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public UpdateMemberRequestBuilder WithWebSessionMaxCountLimit(int maxCount)
+		{
+			_request.WebSessionRestrictionSettings = _request.WebSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.WebSessionRestrictionSettings.MaxCount = maxCount;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropWebSessionMaxCountRestriction()
+		{
+			_request.WebSessionRestrictionSettings = _request.WebSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.WebSessionRestrictionSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableWebSessionMaxCountRestriction()
+		{
+			_request.WebSessionRestrictionSettings = _request.WebSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.WebSessionRestrictionSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableWebSessionMaxCountRestriction()
+		{
+			_request.WebSessionRestrictionSettings = _request.WebSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.WebSessionRestrictionSettings.Disable = false;
+			return this;
+		}
+
 		public static implicit operator UpdateMemberRequest(UpdateMemberRequestBuilder cmrb)
 		{
 			return cmrb._request;
