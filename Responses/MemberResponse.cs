@@ -63,7 +63,7 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("web_session_inactive_settings")]
 		public SessionLifespan WebSessionInactiveSettings { get; set; }
 
-		[JsonProperty("mobile_session_inactive_settings")]
+		[JsonProperty("mobile_session_restriction_settings")]
 		public SessionRestriction MobileSessionRestrictionSettings { get; set; }
 
 		[JsonProperty("web_session_restriction_settings")]

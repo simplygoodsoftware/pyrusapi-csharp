@@ -215,6 +215,34 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public UpdateMemberRequestBuilder WithMobileSessionMaxCountLimit(int maxCount)
+		{
+			_request.MobileSessionRestrictionSettings = _request.MobileSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.MobileSessionRestrictionSettings.MaxCount = maxCount;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DropMobileSessionMaxCountRestriction()
+		{
+			_request.MobileSessionRestrictionSettings = _request.MobileSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.MobileSessionRestrictionSettings.Drop = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder DisableMobileSessionMaxCountRestriction()
+		{
+			_request.MobileSessionRestrictionSettings = _request.MobileSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.MobileSessionRestrictionSettings.Disable = true;
+			return this;
+		}
+
+		public UpdateMemberRequestBuilder EnableMobileSessionMaxCountRestriction()
+		{
+			_request.MobileSessionRestrictionSettings = _request.MobileSessionRestrictionSettings ?? new SessionRestrictionUpdate();
+			_request.MobileSessionRestrictionSettings.Disable = false;
+			return this;
+		}
+
 		public static implicit operator UpdateMemberRequest(UpdateMemberRequestBuilder cmrb)
 		{
 			return cmrb._request;
