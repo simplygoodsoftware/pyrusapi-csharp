@@ -57,6 +57,12 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty("web_session_inactive_settings")]
 		public SessionLifespanUpdate WebSessionInactiveSettings { get; set; }
 
+		[JsonProperty("mobile_session_restriction_settings")]
+		public SessionRestrictionUpdate MobileSessionRestrictionSettings { get; set; }
+
+		[JsonProperty("web_session_restriction_settings")]
+		public SessionRestrictionUpdate WebSessionRestrictionSettings { get; set; }
+
 		[JsonProperty("cant_view_restricted_form_registry")]
 		public bool? CantViewRestrictedFormRegistry { get; set; }
 
