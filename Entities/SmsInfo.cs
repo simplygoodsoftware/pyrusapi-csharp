@@ -13,10 +13,7 @@ namespace PyrusApiClient
 		[JsonProperty("error_message")]
 		public string ErrorMessage { get; set; }
 
-		[JsonProperty("note_id")]
-		public long CommentId { get; set; }
-
-		[JsonProperty("original_comment_id")]
-		public long OriginalCommentId { get; set; }
+		[JsonProperty("sent_comment_id")]
+		public long SentCommentId { get; set; }
 	}
 }
