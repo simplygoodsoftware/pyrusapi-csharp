@@ -80,5 +80,8 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty("cant_add_external_users_to_lists")]
 		public bool? CantAddExternalUsersToLists { get; set; }
+
+		[JsonProperty("two_factor_auth")]
+		public bool? TwoFactorAuth { get; set; }
 	}
 }
