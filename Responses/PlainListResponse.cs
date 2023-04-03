@@ -41,6 +41,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("external_id")]
 		public int? ExternalId { get; set; }
 
+		[JsonProperty("is_private")]
+		public bool IsPrivate { get; set; }
+
 		public PlainTaskList PlainTaskList =>
 			new PlainTaskList
 			{
@@ -52,7 +55,8 @@ namespace Pyrus.ApiClient.Responses
 				ManagerIds = ManagerIds,
 				MemberIds = MemberIds,
 				ExternalId = ExternalId,
-				ExternalVersion = ExternalVersion
+				ExternalVersion = ExternalVersion,
+				IsPrivate = IsPrivate,
 			};
 
 	}
