@@ -39,5 +39,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("external_id")]
 		public int? ExternalId { get; set; }
+
+		[JsonProperty("is_private")]
+		public bool IsPrivate { get; set; }
 	}
 }
