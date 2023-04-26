@@ -29,5 +29,19 @@ namespace Pyrus.ApiClient.Entities
 
 		[JsonProperty("column_settings")]
 		public List<ColumnSettings> ColumnSettings { get; set; }
+
+		[JsonProperty("links")]
+		public List<CatalogLink> Links { get; set; }
+
+		public class CatalogLink
+		{
+			[JsonProperty("catalog_id")]
+
+			public int CatalogId { get; set; }
+
+			[JsonProperty("column_name")]
+
+			public string ColumnName { get; set; }
+		}
 	}
 }
