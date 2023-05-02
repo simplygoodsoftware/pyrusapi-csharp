@@ -37,11 +37,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("column_settings")]
 		public List<ColumnSettings> ColumnSettings { get; set; }
-
-		[JsonProperty(PropertyName = "use_external_id_as_key")]
-		public bool UseExternalIdAsKey { get; set; }
-
-		[JsonProperty(PropertyName = "skip_updating_linked_catalogs")]
-		public bool SkipUpdatingLinkedCatalogs { get; set; }
 	}
 }
