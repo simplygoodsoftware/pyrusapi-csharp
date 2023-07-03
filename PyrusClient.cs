@@ -574,6 +574,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<RoleResponse> GetRole(int id, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{RolesEndpoint}/{id}";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<RoleResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
+
 		public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeFired = false)
 		{
 			var url = $"{ClientSettings.Origin}{MembersEndpoint}?include_fired={includeFired}";
