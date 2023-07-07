@@ -527,6 +527,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<MemberResponse> SetAvatar(int memberId, SetAvatarRequest request, string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}/avatar";
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, url, request, Token));
+			return response;
+		}
+
 		public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
 		{
 			var url = $"{ClientSettings.Origin}{BotsEndpoint}";
