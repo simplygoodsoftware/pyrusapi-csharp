@@ -20,6 +20,9 @@ namespace Pyrus.ApiClient.Requests
 
 		[JsonProperty(PropertyName = "email")]
 		public string Email { get; set; }
+		
+		[JsonProperty("status")]
+		public string Status { get; set; }
 
 		[JsonProperty(PropertyName = "banned")]
 		public bool? Banned { get; set; }
