@@ -247,6 +247,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<RolesResponse> Process(this GetRolesRequestBuilder builder, PyrusClient client)
 			=> await client.GetRoles(includeFired: builder.IncludeFiredRoles);
 
+		public static async Task<RoleResponse> Process(this GetRoleRequestBuilder builder, PyrusClient client)
+			=> await client.GetRole(builder.RoleId);
+
 		public static async Task<MemberResponse> Process(this CreateMemberRequestBuilder builder, PyrusClient client)
 			=> await client.CreateMember(builder);
 
