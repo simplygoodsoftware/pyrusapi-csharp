@@ -247,11 +247,17 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<RolesResponse> Process(this GetRolesRequestBuilder builder, PyrusClient client)
 			=> await client.GetRoles(includeFired: builder.IncludeFiredRoles);
 
+		public static async Task<RoleResponse> Process(this GetRoleRequestBuilder builder, PyrusClient client)
+			=> await client.GetRole(builder.RoleId);
+
 		public static async Task<MemberResponse> Process(this CreateMemberRequestBuilder builder, PyrusClient client)
 			=> await client.CreateMember(builder);
 
 		public static async Task<MemberResponse> Process(this UpdateMemberRequestBuilder builder, PyrusClient client)
 			=> await client.UpdateMember(builder.MemberId, builder);
+
+		public static async Task<MemberResponse> Process(this SetAvatarRequestBuilder builder, PyrusClient client)
+			=> await client.SetAvatar(builder.MemberId, builder);
 
 		public static async Task<MemberResponse> Process(this DeleteMemberRequestBuilder builder, PyrusClient client)
 			=> await client.DeleteMember(builder.MemberId);
@@ -270,7 +276,6 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public static async Task<BotsResponse> Process(this GetBotsRequestBuilder builder, PyrusClient client)
 			=> await client.GetBots(includeFired: builder.IncludeFiredBots);
-
 
 		public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client) 
 			=> await client.GetProfile(builder);

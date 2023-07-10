@@ -36,6 +36,12 @@ namespace PyrusApiClient
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
+		
+		[JsonProperty("status")]
+		public string Status { get; set; }
+
+		[JsonProperty("avatar_id")]
+		public int? AvatarId { get; set; }
 
 		[JsonProperty("rights")]
 		public PersonRights? Rights { get; set; }
