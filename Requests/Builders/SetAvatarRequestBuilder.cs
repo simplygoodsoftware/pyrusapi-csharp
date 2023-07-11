@@ -19,9 +19,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public SetAvatarRequestBuilder SeCloudAvatarId(int cloudAvatarId)
+		public SetAvatarRequestBuilder SeCloudAvatarId(int externalAvatarId)
 		{
-			_request.CloudAvatarId = cloudAvatarId;
+			_request.ExternalAvatarId = externalAvatarId;
 			return this;
 		}
 

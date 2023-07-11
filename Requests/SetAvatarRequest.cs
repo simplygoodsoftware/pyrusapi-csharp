@@ -12,7 +12,7 @@ namespace Pyrus.ApiClient.Requests
         [JsonProperty(PropertyName = "guid")]
         public Guid? Guid { get; set; }
 
-        [JsonProperty(PropertyName = "cloud_avatar_id")]
-        public int? CloudAvatarId { get; set; }
+        [JsonProperty(PropertyName = "external_avatar_id")]
+        public int? ExternalAvatarId { get; set; }
     }
 }
