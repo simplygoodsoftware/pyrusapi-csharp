@@ -11,5 +11,8 @@ namespace Pyrus.ApiClient.Requests
     {
         [JsonProperty(PropertyName = "guid")]
         public Guid? Guid { get; set; }
+
+        [JsonProperty(PropertyName = "cloud_avatar_id")]
+        public int? CloudAvatarId { get; set; }
     }
 }
