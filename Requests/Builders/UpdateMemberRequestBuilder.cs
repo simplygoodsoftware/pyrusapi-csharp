@@ -57,6 +57,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public UpdateMemberRequestBuilder Status(string status)
+		{
+			_request.Status = status;
+			return this;
+		}
+
 		public UpdateMemberRequestBuilder Ban()
 		{
 			_request.Banned = true;

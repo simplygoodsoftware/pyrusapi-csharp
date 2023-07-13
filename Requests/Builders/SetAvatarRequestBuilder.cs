@@ -19,6 +19,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public SetAvatarRequestBuilder SetExternalAvatarId(int externalAvatarId)
+		{
+			_request.ExternalAvatarId = externalAvatarId;
+			return this;
+		}
+
 		public static implicit operator SetAvatarRequest(SetAvatarRequestBuilder cmrb)
 		{
 			return cmrb._request;

@@ -43,6 +43,9 @@ namespace PyrusApiClient
 		[JsonProperty("avatar_id")]
 		public int? AvatarId { get; set; }
 
+		[JsonProperty("external_avatar_id")]
+		public int? ExternalAvatarId { get; set; }
+
 		[JsonProperty("rights")]
 		public PersonRights? Rights { get; set; }
 

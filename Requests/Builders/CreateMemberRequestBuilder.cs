@@ -51,6 +51,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public CreateMemberRequestBuilder Status(string status)
+		{
+			_request.Status = status;
+			return this;
+		}
+
 		public CreateMemberRequestBuilder WithRights(PersonRights rights)
 		{
 			_request.Rights = rights;

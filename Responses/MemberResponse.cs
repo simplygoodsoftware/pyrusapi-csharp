@@ -30,6 +30,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("avatar_id")]
 		public int? AvatarId { get; set; }
 
+		[JsonProperty("external_avatar_id")]
+		public int? ExternalAvatarId { get; set; }
+
 		[JsonProperty("rights")]
 		public PersonRights Rights { get; set; }
 
@@ -110,6 +113,7 @@ namespace Pyrus.ApiClient.Responses
 				DepartmentName = DepartmentName,
 				Status = Status,
 				AvatarId = AvatarId,
+				ExternalAvatarId = ExternalAvatarId,
 				Banned = Banned,
 				Position = Position,
 				Skype = Skype,
