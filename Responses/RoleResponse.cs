@@ -14,6 +14,12 @@ namespace PyrusApiClient
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
+		[JsonProperty("avatar_id")]
+		public int? AvatarId { get; set; }
+
+		[JsonProperty("external_avatar_id")]
+		public int? ExternalAvatarId { get; set; }
+
 		[JsonProperty("banned")]
 		public bool Banned { get; set; }
 
@@ -29,6 +35,8 @@ namespace PyrusApiClient
 				Id = Id,
 				Name = Name,
 				ExternalId = ExternalId,
+				AvatarId = AvatarId,
+				ExternalAvatarId = ExternalAvatarId,
 				Banned = Banned,
 				MemberIds = MemberIds
 			};
