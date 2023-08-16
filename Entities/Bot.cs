@@ -43,6 +43,12 @@ namespace PyrusApiClient
 		[JsonProperty("bot_settings")]
 		public string BotSettings { get; set; }
 
+		[JsonProperty("avatar_id")]
+		public int? AvatarId { get; set; }
+
+		[JsonProperty("external_avatar_id")]
+		public int? ExternalAvatarId { get; set; }
+
 		[JsonProperty("version")]
 		public string BotVersion { get; set; }
 

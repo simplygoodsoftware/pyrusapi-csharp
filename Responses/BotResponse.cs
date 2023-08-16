@@ -27,6 +27,12 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("bot_settings")]
 		public string BotSettings { get; set; }
 
+		[JsonProperty("avatar_id")]
+		public int? AvatarId { get; set; }
+
+		[JsonProperty("external_avatar_id")]
+		public int? ExternalAvatarId { get; set; }
+
 		[JsonProperty("version")]
 		public string BotVersion { get; set; }
 
@@ -55,6 +61,8 @@ namespace Pyrus.ApiClient.Responses
 				BotDescription = BotDescription,
 				BotSettings = BotSettings,
 				BotVersion = BotVersion,
+				AvatarId = AvatarId,
+				ExternalAvatarId = ExternalAvatarId,
 				Login = Login,
 				Rights = Rights,
 				SendOnlyLastComment = SendOnlyLastComment,
