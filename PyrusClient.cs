@@ -61,6 +61,7 @@ namespace PyrusApiClient
 		internal const string TaskAccessHistoryEndpoint = "/taskaccesshistory";
 		internal const string PersonLastActionEndpoint = "/personlastaction";
 		internal const string OrgChartEndpoint = "/orgchart";
+		internal const string ProfileIdentityEndpoint = "/profile/identity";
 
 		internal const string BulkSuffix = "/bulk";
 		internal const string RegisterSuffix = "/register";
@@ -635,6 +636,15 @@ namespace PyrusApiClient
 			return response;
 		}
 
+		public async Task<ProfileIdentityResponse> GetIdentity(string accessToken = null)
+		{
+			var url = $"{ClientSettings.Origin}{ProfileIdentityEndpoint}";
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<ProfileIdentityResponse>(() => RequestHelper.GetRequest(this, url, Token));
+			return response;
+		}
 
 		public async Task<DepartmentsResponse> GetOrgChart(string accessToken = null)
 		{
