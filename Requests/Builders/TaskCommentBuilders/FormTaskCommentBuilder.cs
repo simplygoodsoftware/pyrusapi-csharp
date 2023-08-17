@@ -177,7 +177,7 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormTaskCommentBuilder EditExistingComment(int commentId)
+		public FormTaskCommentBuilder EditExistingComment(long commentId)
         {
 			Comment.EditCommentId = commentId;
 			return this;

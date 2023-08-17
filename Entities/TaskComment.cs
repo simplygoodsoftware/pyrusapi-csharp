@@ -8,7 +8,7 @@ namespace PyrusApiClient
 	public class TaskComment
 	{
 		[JsonProperty("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonProperty("text")]
 		public string Text { get; set; }
@@ -41,7 +41,7 @@ namespace PyrusApiClient
 		public int? ResetToStep { get; set; }
 
 		[JsonProperty("reply_note_id")]
-		public int? ReplyNoteId { get; set; }
+		public long? ReplyNoteId { get; set; }
 
 		[JsonProperty("approvals_added")]
 		public List<List<Approval>> ApprovalsAdded { get; set; } = new List<List<Approval>>();
@@ -114,13 +114,13 @@ namespace PyrusApiClient
 		public Channel Channel { get; set; }
 
 		[JsonProperty("edit_comment_id")]
-		public int? EditCommentId { get; set; }
+		public long? EditCommentId { get; set; }
 
 		[JsonProperty("removed_attachment_ids")]
 		public List<int> RemovedAttachmentIds { get; set; }
 
 		[JsonProperty("delete_comment_id")]
-		public int? DeleteCommentId { get; set; }
+		public long? DeleteCommentId { get; set; }
 
 		[JsonProperty("spent_minutes")]
 		public int? SpentMinutes { get; set; }
