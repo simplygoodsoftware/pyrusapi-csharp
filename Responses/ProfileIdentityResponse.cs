@@ -3,7 +3,7 @@ using PyrusApiClient;
 
 namespace Pyrus.ApiClient.Responses
 {
-	public class PrifileIdentityResponse : ResponseBase
+	public class ProfileIdentityResponse : ResponseBase
 	{
 		[JsonProperty("email")]
 		public string Email { get; internal set; }
