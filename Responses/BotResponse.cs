@@ -12,6 +12,9 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
+
 		[JsonProperty("is_enabled")]
 		public bool? IsEnabled { get; set; }
 
@@ -56,6 +59,7 @@ namespace Pyrus.ApiClient.Responses
 			{
 				Id = Id,
 				Name = Name,
+				ExternalId = ExternalId,
 				IsEnabled = IsEnabled,
 				HookUrl = HookUrl,
 				BotDescription = BotDescription,
