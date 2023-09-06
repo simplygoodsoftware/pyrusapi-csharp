@@ -83,8 +83,10 @@ namespace Pyrus.ApiClient
 				FileName = res.FileName
 			};
 
-			if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.NotFound || res.StatusCode == HttpStatusCode.Gone)
+			if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.Gone)
 				resp.ErrorCode = ErrorCodeType.AccessDeniedFile;
+			else if (res.StatusCode == HttpStatusCode.NotFound)
+				resp.ErrorCode = ErrorCodeType.FileIsMissing;
 			else if (res.StatusCode == HttpStatusCode.Unauthorized)
 				resp.ErrorCode = ErrorCodeType.AuthorizationError;
 			else if (res.StatusCode != HttpStatusCode.OK)

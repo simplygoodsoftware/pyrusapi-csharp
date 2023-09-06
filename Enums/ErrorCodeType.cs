@@ -336,6 +336,9 @@ namespace PyrusApiClient
 		[EnumMember(Value = "access_denied")]
 		AccessDenied = 311,
 
+		[EnumMember(Value = "file_is_missing")]
+		FileIsMissing = 321,
+
 		//Too many Requests (429)
 		[EnumMember(Value = "too_many_requests")]
 		TooManyRequests = 400,
