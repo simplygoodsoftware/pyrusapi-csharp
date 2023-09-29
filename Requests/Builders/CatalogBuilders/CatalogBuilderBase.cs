@@ -93,5 +93,11 @@ namespace PyrusApiClient.Builders
 			Request.Items = items.Select(i => new CatalogItem { Values = i.ToList() }).ToList();
 			return (T)this;
 		}
+
+		public T SetSourceType(int sourceType)
+		{
+			Request.SourceType = sourceType;
+			return (T)this;
+		}
 	}
 }

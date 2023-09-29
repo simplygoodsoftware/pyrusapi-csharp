@@ -22,5 +22,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("catalog_headers")]
 		public List<CatalogHeader> CatalogHeaders { get; set; }
+
+		[JsonProperty("source_type")]
+		public int SourceType { get; set; }
 	}
 }
