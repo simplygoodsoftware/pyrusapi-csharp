@@ -37,8 +37,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("column_settings")]
 		public List<ColumnSettings> ColumnSettings { get; set; }
-
-		[JsonProperty("source_type")]
-		public int SourceType { get; set; }
 	}
 }

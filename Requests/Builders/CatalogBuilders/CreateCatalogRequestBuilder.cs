@@ -12,5 +12,12 @@
 		{
 			return ccrb.Request as CreateCatalogRequest;
 		}
+
+		public CreateCatalogRequestBuilder WithSourceType(SourceType sourceType)
+		{
+			var request = Request as CreateCatalogRequest;
+			request.SourceType = sourceType;
+			return this;
+		}
 	}
 }
