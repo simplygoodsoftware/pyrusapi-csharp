@@ -36,6 +36,6 @@ namespace PyrusApiClient
 		public List<CatalogItem> Items { get; set; }
 
 		[JsonProperty("source_type")]
-		public int SourceType { get; set; }
+		public SourceType SourceType { get; set; }
 	}
 }
