@@ -9,5 +9,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("external_version")]
 		public long ExternalVersion { get; set; }
-	}
+
+        [JsonProperty("source_type")]
+        public SourceType SourceType { get; set; }
+    }
 }

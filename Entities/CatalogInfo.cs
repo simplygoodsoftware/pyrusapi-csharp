@@ -12,6 +12,9 @@ namespace Pyrus.ApiClient.Entities
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
+		[JsonProperty("source_type")]
+		public int SourceType { get; set; }
+
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
