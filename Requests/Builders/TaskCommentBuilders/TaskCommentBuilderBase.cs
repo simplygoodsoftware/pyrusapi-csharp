@@ -157,6 +157,12 @@ namespace PyrusApiClient.Builders
 			return (T)this;
         }
 
+		public T WithSkipNotification(bool skip = true)
+        {
+			Comment.SkipNotification = skip;
+			return (T)this;
+        }
+
         #region subscribers
         public T AddSubscribers(IEnumerable<Person> subscribers)
 		{

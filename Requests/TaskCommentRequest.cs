@@ -100,5 +100,8 @@ namespace PyrusApiClient
 
         [JsonProperty("edit_comment_id")]
         public long? EditCommentId { get; set; }
-    }
+
+		[JsonProperty("skip_notification")]
+		public bool? SkipNotification { get; set; }
+	}
 }
