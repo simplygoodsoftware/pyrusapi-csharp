@@ -31,7 +31,10 @@ namespace PyrusApiClient
 		[JsonConverter(typeof(FormFieldListJsonConverter))]
 		public List<FormField> Cells { get; set; }
 
-		[JsonProperty("deleted", DefaultValueHandling = DefaultValueHandling.Ignore)]
+		[JsonProperty("delete", DefaultValueHandling = DefaultValueHandling.Ignore)]
+		public bool Delete { get; set; }
+
+		[JsonProperty("deleted")]
 		public bool Deleted { get; set; }
 	}
 
