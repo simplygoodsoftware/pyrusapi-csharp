@@ -252,14 +252,14 @@ namespace PyrusApiClient
 
 		public static FormFieldTable DeleteRow(this FormFieldTable formField, TableRow row)
 		{
-			row.Delete = true;
+			row.Deleted = true;
 			formField.Value.Add(row);
 			return formField;
 		}
 
 		public static FormFieldTable DeleteRow(this FormFieldTable formField, int rowId)
 		{
-			formField.Value.Add(new TableRow { RowId = rowId, Delete = true });
+			formField.Value.Add(new TableRow { RowId = rowId, Deleted = true });
 			return formField;
 		}
 
@@ -285,7 +285,7 @@ namespace PyrusApiClient
 		{
 			foreach (var row in rows)
 			{
-				row.Delete = true;
+				row.Deleted = true;
 				formField.Value.Add(row);
 			}
 
@@ -294,7 +294,7 @@ namespace PyrusApiClient
 
 		public static FormFieldTable DeleteRows(this FormFieldTable formField, IEnumerable<int> rowIds)
 		{
-			formField.Value.AddRange(rowIds.Select(id => new TableRow { RowId = id, Delete = true }));
+			formField.Value.AddRange(rowIds.Select(id => new TableRow { RowId = id, Deleted = true }));
 			return formField;
 		}
 
