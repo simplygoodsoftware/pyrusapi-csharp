@@ -33,6 +33,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("delete", DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public bool Delete { get; set; }
+
+		[JsonProperty("deleted")]
+		public bool Deleted { get; set; }
 	}
 
 }
