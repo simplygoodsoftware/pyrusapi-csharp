@@ -7,6 +7,7 @@
 		GreaterThan = 3,
 		IsIn = 4,
 		Range = 5,
-		MatchPrefix = 6
+		MatchPrefix = 6,
+		IsEmpty = 7,
 	}
 }
