@@ -141,6 +141,11 @@ namespace Pyrus.ApiClient.JsonConverters
 
 		private string GetFilterValue(OperatorId operatorId, string[] values)
 		{
+			if (operatorId == OperatorId.IsEmpty)
+			{
+				return "empty";
+			}
+			
 			if (values.Length == 0)
 			{
 				return null;
