@@ -35,7 +35,7 @@ namespace PyrusApiClient
 		[JsonProperty("delete_workflow_headers")]
 		public List<string> DeleteWorkflowHeaders { get; set; }
 
-		[JsonProperty("column_settings")]
+		[JsonProperty("column_settings", DefaultValueHandling = DefaultValueHandling.Include)]
 		public List<ColumnSettings> ColumnSettings { get; set; }
 	}
 }
