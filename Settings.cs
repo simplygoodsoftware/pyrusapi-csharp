@@ -7,6 +7,7 @@ namespace PyrusApiClient
 	public class Settings
 	{
 		public const string PyrusOrigin = "https://api.pyrus.com/v4";
+		public const string PyrusAuthOrigin = "https://accounts.pyrus.com/api/v4";
 		public const string PyrusFilesOrigin = "https://files.pyrus.com";
 
 		public Settings()
@@ -18,6 +19,8 @@ namespace PyrusApiClient
 		{
 			Origin = origin;
 			FilesOrigin = filesOrigin;
+			AuthOrigin = PyrusAuthOrigin;
+			
 			RetryCount = 2;
 		}
 
@@ -45,6 +48,20 @@ namespace PyrusApiClient
 					value = value.TrimEnd('/');
 
 				_filesOrigin = value;
+			}
+		}
+
+		private string _authOrigin;
+
+		public string AuthOrigin
+		{
+			get => _authOrigin;
+			set
+			{
+				if (value.EndsWith("/"))
+					value = value.TrimEnd('/');
+
+				_authOrigin = value;
 			}
 		}
 

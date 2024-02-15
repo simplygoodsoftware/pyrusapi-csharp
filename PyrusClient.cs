@@ -33,6 +33,7 @@ namespace PyrusApiClient
 		public Settings ClientSettings { get; }
 
 		internal const string AuthEndpoint = "/auth";
+		internal const string LoginServiceAuthEndpoint = "https://accounts.pyrus.com/auth";
 		internal const string FormsEndpoint = "/forms";
 		internal const string ListsEndpoint = "/lists";
 		internal const string TasksEndpoint = "/tasks";
@@ -85,10 +86,13 @@ namespace PyrusApiClient
 
 		public async Task<AuthResponse> Auth(string login, string securityKey, int? personId = null)
 		{
-			var url = $"{ClientSettings.Origin}{AuthEndpoint}";
+			var url = ClientExtensions.GetAuthUrl(this);
 			var response = await this.RunQuery<AuthResponse>(()
 				=> RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey, PersonId = personId }));
 			Token = response.AccessToken;
+
+			ClientExtensions.SetOrigins(this, response);
+
 			return response;
 		}
 
