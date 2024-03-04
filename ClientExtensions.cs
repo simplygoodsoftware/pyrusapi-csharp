@@ -99,7 +99,7 @@ namespace Pyrus.ApiClient
 		{
 			try
 			{
-				var url = client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
+				var url = GetAuthUrl(client);
 
 				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId });
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
@@ -107,11 +107,39 @@ namespace Pyrus.ApiClient
 					return false;
 
 				client.Token = result.AccessToken;
+
+				SetOrigins(client, result);
+
 				return true;
 			}
 			catch (Exception e)
 			{
 				throw new PyrusApiClientException(e.Message, e);
+			}
+		}
+
+		internal static string GetAuthUrl(PyrusClient client)
+		{
+			// if is default API origin or custom auth origin
+			if (string.Equals(client.ClientSettings.Origin, Settings.PyrusOrigin)
+				|| !string.Equals(client.ClientSettings.AuthOrigin, Settings.PyrusAuthOrigin))
+			{
+				return client.ClientSettings.AuthOrigin + PyrusClient.AuthEndpoint;
+			}
+			
+			return client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
+		}
+
+		internal static void SetOrigins(PyrusClient client, AuthResponse response)
+		{
+			if (!string.IsNullOrEmpty(response.FilesUrl))
+			{
+				client.ClientSettings.FilesOrigin = response.FilesUrl;
+			}
+
+			if (!string.IsNullOrEmpty(response.ApiUrl))
+			{
+				client.ClientSettings.Origin = response.ApiUrl;
 			}
 		}
 	}
