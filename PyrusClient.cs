@@ -27,8 +27,8 @@ namespace PyrusApiClient
 		public static Settings Settings { get; set; }
 
 		/// <summary>
-		/// Returns static settings if client was created with <see cref="CreateStatic"/>.
-		/// Otherwise, returns custom settings
+		/// Returns custom settings if they were specified in <see cref="PyrusClient"/> constructor.
+		/// Otherwise, returns static settings
 		/// </summary>
 		public Settings ClientSettings { get; }
 
@@ -75,7 +75,7 @@ namespace PyrusApiClient
 			Settings = new Settings();
 		}
 
-		public PyrusClient() : this(new Settings())
+		public PyrusClient() : this(Settings)
 		{
 		}
 
@@ -83,12 +83,6 @@ namespace PyrusApiClient
 		{
 			ClientSettings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
-
-		/// <summary>
-		/// Creates client with static settings
-		/// </summary>
-		public static PyrusClient CreateStatic() => new PyrusClient(Settings);
-
 
 		public async Task<AuthResponse> Auth(string login, string securityKey, int? personId = null)
 		{
