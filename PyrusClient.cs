@@ -332,7 +332,7 @@ namespace PyrusApiClient
 			if (string.IsNullOrEmpty(url))
 				return await DownloadFile(file.Id, accessToken);
 
-			return await DownloadFile(url, accessToken);
+			return await DownloadFileByUrl(url, accessToken);
 		}
 
 		public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null, int? previewId = null)
@@ -354,7 +354,16 @@ namespace PyrusApiClient
 			return response;
 		}
 
-		public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false, bool withDeleted = false)
+		private async Task<DownloadResponse> DownloadFileByUrl(string url, string accessToken = null)
+		{
+			if (accessToken != null)
+				Token = accessToken;
+
+			var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this, url, Token));
+			return response;
+		}
+
+        public async Task<ListsResponse> GetLists(string accessToken = null, bool withForms = false, bool withDeleted = false)
 		{
 			if (accessToken != null)
 				Token = accessToken;
@@ -698,7 +707,7 @@ namespace PyrusApiClient
 			string tz = null, 
 			string accessToken = null)
 		{
-			var url = $"{ClientSettings.FilesOrigin}{HandlingTimeEndpoint}";
+			var path = $"{HandlingTimeEndpoint}";
 
 			var parameters = new NameValueCollection();
 			if (!string.IsNullOrEmpty(ed))
@@ -710,9 +719,9 @@ namespace PyrusApiClient
 			var parametersString = ToQueryString(parameters);
 			
 			if (!string.IsNullOrEmpty(parametersString))
-				url = $"{url}{parametersString}";
+				path = $"{path}{parametersString}";
 			
-			return await DownloadFile(url, accessToken);
+			return await DownloadFile(path, accessToken);
 		}
 
 		public async Task<DownloadResponse> GetPersonLastActionReportAsync(string accessToken = null)
