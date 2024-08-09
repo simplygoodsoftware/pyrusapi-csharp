@@ -2,15 +2,15 @@
 <package>
 	<metadata>
 		<id>Pyrus.ApiClient</id>
-		<version>3.2.2.0</version>
+		<version>3.3.2.0</version>
 		<title>Pyrus API Client</title>
 		<authors>Pyrus</authors>
 		<owners>Pyrus</owners>
-		<iconUrl>https://pyrus.com/ru/help/_media/api/pyrus_logo_p_128.png</iconUrl>
+		<icon>icon.png</icon>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Pyrus.ApiClient is a .NET implementation of Pyrus API. It supports all the API endpoints.</description>
 		<projectUrl>https://github.com/simplygoodsoftware/pyrusapi-csharp</projectUrl>
-		<copyright>Copyright ©2023 Simply Good Software, Inc.</copyright>
+		<copyright>Copyright ©2024 Simply Good Software, Inc.</copyright>
 		<tags>pyrus pyrus.api api pyrus.com</tags>
 		<dependencies>
 			<group targetFramework=".NETFramework4.5">
@@ -27,5 +27,6 @@
 	<files>
 		<file src="bin\Release\net45\Pyrus.ApiClient.dll" target="lib\net45" />
 		<file src="bin\Release\netstandard2.0\Pyrus.ApiClient.dll" target="lib\netstandard2.0" />
+		<file src="icon.png" target="" />
 	</files>
 </package>
