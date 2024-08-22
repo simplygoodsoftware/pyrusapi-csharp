@@ -26,7 +26,10 @@ namespace PyrusApiClient
 		[JsonProperty("row_id")]
 		public int? RowId { get; set; }
 
-		public static TField Create<TField>(int id)
+        [JsonProperty("code")]
+        public string Code { get; set; }
+
+        public static TField Create<TField>(int id)
 			where TField : FormField, new()
 		{
 			ValidateFieldType(typeof(TField));
