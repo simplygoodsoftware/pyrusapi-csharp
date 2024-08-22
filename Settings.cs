@@ -84,7 +84,7 @@ namespace PyrusApiClient
 			};
 		}
 
-		protected HttpClientHandler GetHttpHandler()
+		private HttpClientHandler GetHttpHandler()
 		{
 			if (String.IsNullOrWhiteSpace(ProxyIp))
 			{
