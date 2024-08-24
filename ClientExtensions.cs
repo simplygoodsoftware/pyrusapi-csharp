@@ -6,6 +6,7 @@ using PyrusApiClient;
 using PyrusApiClient.Exceptions;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
@@ -101,7 +102,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = GetAuthUrl(client);
 
-				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId });
+				var response = await RetryGetTokenAsync(client, url);
 				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;
@@ -116,6 +117,35 @@ namespace Pyrus.ApiClient
 			{
 				throw new PyrusApiClientException(e.Message, e);
 			}
+		}
+
+		private static async Task<MessageWithStatusCode> RetryGetTokenAsync(PyrusClient client, string url)
+		{
+			for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
+			{
+				try
+				{
+					var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId });
+					return response;
+				}
+				catch (HttpRequestException e)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+				catch (WebException e)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+				catch (TaskCanceledException e)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+			}
+
+			return null;
 		}
 
 		internal static string GetAuthUrl(PyrusClient client)
