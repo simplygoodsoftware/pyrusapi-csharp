@@ -43,7 +43,14 @@ namespace PyrusApiClient
 			return new TField { Name = name };
 		}
 
-		private static void ValidateFieldType(Type type)
+        public static TField CreateByCode<TField>(string code)
+			where TField : FormField, new()
+        {
+            ValidateFieldType(typeof(TField));
+            return new TField { Code = code };
+        }
+
+        private static void ValidateFieldType(Type type)
 		{
 			var readOnlyTypes = new List<Type>
 			{
