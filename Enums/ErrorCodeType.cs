@@ -301,9 +301,26 @@ namespace PyrusApiClient
 		[EnumMember(Value = "items_count_out_of_range")]
 		ItemsCountOutOfRange = 293,
 
+        [EnumMember(Value = "unrecognized_task_id")]
+        UnrecognizedTaskId = 295,
 
-		//Forbidden (403)
-		[EnumMember(Value = "access_denied_project")]
+        [EnumMember(Value = "too_many_deleted_catalog_items")]
+        TooManyDeletedCatalogItems = 296,
+
+        [EnumMember(Value = "field_cannot_have_multiple_values")]
+        FieldCannotHaveMultipleValues = 297,
+
+        [EnumMember(Value = "field_editing_is_not_allowed")]
+        FieldEditingIsNotAllowed = 298,
+
+        [EnumMember(Value = "non_unique_code")]
+        NonUniqueCode = 299,
+
+        [EnumMember(Value = "invalid_field_code")]
+        InvalidFieldCode = 300,
+
+        //Forbidden (403)
+        [EnumMember(Value = "access_denied_project")]
 		AccessDeniedProject = 301,
 
 		[EnumMember(Value = "access_denied_task")]
