@@ -262,35 +262,47 @@ namespace PyrusApiClient
         [EnumMember(Value = "validation_error")]
         ValidationError = 276,
 
-        [EnumMember(Value = "unrecognized_account_id")]
-        UnrecognizedAccountId = 277,
+        [EnumMember(Value = "file_limit_exceeded")]
+        FileLimitExceeded = 277,
 
-        [EnumMember(Value = "webhook_is_disabled")]
-        WebhookIsDisabled = 278,
+        [EnumMember(Value = "cannot_add_external_user")]
+        CannotAddExternalUser = 278,
+
+        [EnumMember(Value = "invalid_table_row")]
+        UncreatedOrDeletedTableRows = 279,
 
         [EnumMember(Value = "too_large_message_text")]
-        TooLargeMessageText = 279,
+        TooLargeMessageText = 280,
 
         [EnumMember(Value = "unrecognized_message_type")]
-        UnrecognizedMessageType = 280,
+        UnrecognizedMessageType = 281,
 
         [EnumMember(Value = "invalid_field_mapping_code")]
-        InvalidFieldMappingCode = 281,
+        InvalidFieldMappingCode = 282,
 
         [EnumMember(Value = "too_many_attachments")]
-        TooManyAttachments = 282,
+        TooManyAttachments = 283,
 
-        [EnumMember(Value = "unrecognized_call_id")]
-        UnrecognizedCallId = 283,
+        [EnumMember(Value = "sms_integration_not_configured")]
+        SmsIntegrationNotConfigured = 284,
 
-        [EnumMember(Value = "unsupported_record_file_format")]
-        UnsupportedRecordFileFormat = 284,
+        [EnumMember(Value = "max_sms_text_length_exceeded")]
+        MaxSmsTextLengthExceeded = 285,
 
-        [EnumMember(Value = "unrecognized_integration_guid")]
-        UnrecognizedIntegrationGuid = 285,
+        [EnumMember(Value = "limit_exceeded")]
+        LimitExceeded = 286,
+
+        [EnumMember(Value = "unrecognized_account_id")]
+        UnrecognizedAccountId = 287,
+
+        [EnumMember(Value = "webhook_is_disabled")]
+        WebhookIsDisabled = 288,
 
         [EnumMember(Value = "attachment_too_big")]
         AttachmentTooBig = 289,
+
+        [EnumMember(Value = "unrecognized_сall_id")]
+        UnrecognizedCallId = 290,
 
         [EnumMember(Value = "private_channel_access_denied")]
         PrivateChannelAccessDenied = 291,
@@ -300,6 +312,9 @@ namespace PyrusApiClient
 
         [EnumMember(Value = "items_count_out_of_range")]
         ItemsCountOutOfRange = 293,
+
+        [EnumMember(Value = "unrecognized_integration_guid")]
+        UnrecognizedIntegrationGuid = 294,
 
         [EnumMember(Value = "unrecognized_task_id")]
         UnrecognizedTaskId = 295,
@@ -318,6 +333,7 @@ namespace PyrusApiClient
 
         [EnumMember(Value = "invalid_field_code")]
         InvalidFieldCode = 300,
+
 
         //Forbidden (403)
         [EnumMember(Value = "access_denied_project")]
