@@ -289,8 +289,20 @@ namespace PyrusApiClient
         [EnumMember(Value = "unrecognized_integration_guid")]
         UnrecognizedIntegrationGuid = 285,
 
+        [EnumMember(Value = "limit_exceeded")]
+        LimitExceeded = 286,
+
+        [EnumMember(Value = "max_sms_text_length_exceeded")]
+        MaxSmsTextLengthExceeded = 287,
+
+        [EnumMember(Value = "sms_integration_not_configured")]
+        SmsIntegrationNotConfigured = 288,
+
         [EnumMember(Value = "attachment_too_big")]
         AttachmentTooBig = 289,
+
+        [EnumMember(Value = "invalid_table_row")]
+        UncreatedOrDeletedTableRows = 290,
 
         [EnumMember(Value = "private_channel_access_denied")]
         PrivateChannelAccessDenied = 291,
@@ -300,6 +312,9 @@ namespace PyrusApiClient
 
         [EnumMember(Value = "items_count_out_of_range")]
         ItemsCountOutOfRange = 293,
+
+        [EnumMember(Value = "cannot_add_external_user")]
+        CannotAddExternalUser = 294,
 
         [EnumMember(Value = "unrecognized_task_id")]
         UnrecognizedTaskId = 295,
