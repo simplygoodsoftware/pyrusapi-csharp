@@ -50,10 +50,8 @@ namespace PyrusApiClient
 		internal const string BotsEndpoint = "/bots";
 		internal const string InboxEndpoint = "/inbox";
 		internal const string CalendarEndpoint = "/calendar";
-		internal const string GetMessageEndpoint = "/integrations/getmessage";
 		internal const string CallEndpoint = "/integrations/call";
 		internal const string AttachCallRecordEndpoint = "/integrations/attachcallrecord";
-		internal const string CallsEndpoint = "/calls";
 		internal const string HandlingTimeEndpoint = "/handlingtime";
 		internal const string EventHistoryEndpoint = "/eventhistory";
 		internal const string FileAccessHistoryEndpoint = "/fileaccesshistory";
@@ -679,13 +677,6 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}", Token));
 			return response;
 		}
-		
-		public async Task<ResponseBase> RegisterMessageAsync(GetMessageRequest request, string accessToken = null)
-		{
-			Token = accessToken ?? Token;
-			
-			return await this.RunQuery<ResponseBase>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{GetMessageEndpoint}", request, Token));
-		}
 
 		public async Task<CallResponse> RegisterCallAsync(CallRequest request, string accessToken = null)
 		{
@@ -752,38 +743,6 @@ namespace PyrusApiClient
 		public Task<DownloadResponse> GetTaskAccessHistoryAsync(long after, int count, string accessToken = null)
 		{
 			return GetHistoryAsync(after, count, TaskAccessHistoryEndpoint, accessToken);
-		}
-		
-		public async Task<CreateCallResponse> CreateCallAsync(
-			CreateCallRequest request,
-			string accessToken = null)
-		{
-			Token = accessToken ?? Token;
-
-			return await this.RunQuery<CreateCallResponse>(() =>
-				RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CallsEndpoint}", request, Token));
-		}
-
-		public async Task<ResponseBase> UpdateCallAsync(
-			Guid callGuid,
-			UpdateCallRequest request,
-			string accessToken = null)
-		{
-			Token = accessToken ?? Token;
-
-			return await this.RunQuery<ResponseBase>(() =>
-				RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{CallsEndpoint}/{callGuid:D}", request, Token));
-		}
-
-		public async Task<ResponseBase> RegisterCallEventAsync(
-			Guid callGuid,
-			CallEventRequest request,
-			string accessToken = null)
-		{
-			Token = accessToken ?? Token;
-
-			return await this.RunQuery<ResponseBase>(() =>
-				RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CallsEndpoint}/{callGuid:D}/event", request, Token));
 		}
 
 		public async Task<PermissionsResponse> GetFormPermissions(int id, string accessToken = null)
