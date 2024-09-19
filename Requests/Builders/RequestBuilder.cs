@@ -129,19 +129,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
 			=> new OnePropertyBuilder<int, InboxResponse>(tasksCount);
-
-		public static GetMessageBuilder RegisterMessage() => new GetMessageBuilder();
 		
 		public static CallBuilder RegisterCall() => new CallBuilder();
 		
 		public static AttachCallRecordBuilder AttachCallRecord(string recordFile) 
 			=> new AttachCallRecordBuilder(recordFile);
-		
-		public static CreateCallBuilder CreateCall(Guid integrationGuid) => new CreateCallBuilder(integrationGuid);
-		
-		public static UpdateCallBuilder UpdateCall(Guid callGuid) => new UpdateCallBuilder(callGuid);
-
-		public static CallEventBuilder RegisterCallEvent(Guid callGuid) => new CallEventBuilder(callGuid);
 
 		#region Process
 
@@ -291,23 +283,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 				request.ItemCount, request.AllAccessedTasks, request.FilterMask ?? 0b0111);
 		}
 
-		public static async Task<ResponseBase> Process(this GetMessageBuilder builder, PyrusClient client)
-			=> await client.RegisterMessageAsync(builder);
-
 		public static async Task<ResponseBase> Process(this CallBuilder builder, PyrusClient client)
 			=> await client.RegisterCallAsync(builder);
 
 		public static async Task<ResponseBase> Process(this AttachCallRecordBuilder builder, PyrusClient client)
 			=> await client.AttachCallRecordAsync(builder);
-		
-		public static async Task<CreateCallResponse> Process(this CreateCallBuilder builder, PyrusClient client)
-			=> await client.CreateCallAsync(builder);
-
-		public static async Task<ResponseBase> Process(this UpdateCallBuilder builder, PyrusClient client)
-			=> await client.UpdateCallAsync(builder.CallGuid, builder);
-
-		public static async Task<ResponseBase> Process(this CallEventBuilder builder, PyrusClient client)
-			=> await client.RegisterCallEventAsync(builder.CallGuid, builder);
 
 		public static async Task<bool> ProcessToCsv(this FormRegisterRequestBuilder builder, PyrusClient client, string filePath, CsvSettings settings = null)
 		{
