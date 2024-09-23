@@ -203,6 +203,15 @@ namespace PyrusApiClient.Builders
             return this;
         }
 
+        public FormTaskCommentBuilder CancelDue()
+        {
+            Comment.Due = null;
+            Comment.Duration = null;
+            Comment.DueDate = null;
+            Comment.CancelDue = true;
+            return this;
+        }
+
         public FieldUpdatesBuilder FieldUpdates => new FieldUpdatesBuilder(this, TaskId);
 
         public class FieldUpdatesBuilder
