@@ -268,6 +268,15 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}{BulkSuffix}", request, Token));
 			return response;
 		}
+
+		public async Task<SyncCatalogResponse> ChangeCatalogItems(int catalogId, PartialUpdateCatalogRequest request, string accessToken = null)
+		{
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}/diff", request, Token));
+			return response;
+		}
+
 		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
 			=> await GetContacts(request?.IncludeInactive ?? false, accessToken);
 

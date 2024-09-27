@@ -144,6 +144,17 @@ var updateCatalogResponse = await RequestBuilder
 	.Process(pyrusClient);
 ```
 
+* Change catalog items
+
+```csharp
+var catalogId = 1236
+var updateCatalogResponse = await RequestBuilder
+    .ChangeCatalogItems(catalogId)
+    .UpsertItem("3", "gamma")
+    .DeleteItem("2")
+    .Process(pyrusClient);
+```
+
 ## Contacts
 
 * Get all available contacts

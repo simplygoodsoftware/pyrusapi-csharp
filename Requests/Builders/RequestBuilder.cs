@@ -92,6 +92,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
 			=> new CreateCatalogRequestBuilder(name);
 
+		public static ChangeCatalogItemsRequestBuilder ChangeCatalogItems(int catalogId)
+			=> new ChangeCatalogItemsRequestBuilder(catalogId);
+
 		public static CreateRoleRequestBuilder CreateRole(string name)
 			=> new CreateRoleRequestBuilder(name);
 
@@ -229,6 +232,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
 			=> await client.CreateCatalog(builder);
+
+		public static async Task<SyncCatalogResponse> Process(this ChangeCatalogItemsRequestBuilder builder, PyrusClient client)
+			=> await client.ChangeCatalogItems(builder.CatalogId, builder);
 
 		public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
 			=> await client.CreateRole(builder);
