@@ -233,8 +233,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static async Task<CatalogResponse> Process(this CreateCatalogRequestBuilder builder, PyrusClient client)
 			=> await client.CreateCatalog(builder);
 
-		public static async Task<SyncCatalogResponse> Process(this ChangeCatalogItemsRequestBuilder builder, PyrusClient client)
-			=> await client.ChangeCatalogItems(builder.CatalogId, builder);
+		/// <summary>
+		/// Executes a request prepared by the <see cref="ChangeCatalogItemsRequestBuilder"/>.
+		/// </summary>
+		/// <param name="builder">An instance of the <see cref="ChangeCatalogItemsRequestBuilder"/>.</param>
+		/// <param name="client">Pyrus API client.</param>
+		/// <returns>Response of the type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
+		public static Task<SyncCatalogResponse> Process(this ChangeCatalogItemsRequestBuilder builder, PyrusClient client)
+		{
+			if (builder is null) 
+				throw new ArgumentNullException(nameof(builder));
+			if (client is null) 
+				throw new ArgumentNullException(nameof(client));
+
+			return client.ChangeCatalogItems(builder.CatalogId, builder);
+		}
 
 		public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
 			=> await client.CreateRole(builder);
