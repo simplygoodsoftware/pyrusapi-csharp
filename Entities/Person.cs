@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
+using System;
 
 namespace PyrusApiClient
 {
@@ -70,17 +71,33 @@ namespace PyrusApiClient
 		[JsonProperty("position")]
 		public string Position { get; set; }
 
+		[Obsolete]
 		[JsonProperty("skype")]
 		public string Skype { get; set; }
+
+		[JsonProperty("messenger")]
+		public Messenger Messenger { get; set; }
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
-		[JsonProperty("external_id")]
-		public string ExternalId { get; set; }
-
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
+
+		[JsonProperty("location")]
+		public string Location { get; set; }
+
+		[JsonProperty("personality")]
+		public string Personality { get; set; }
+
+		[JsonProperty("personnel_number")]
+		public string PersonnelNumber { get; set; }
+
+		[JsonProperty("vacation_days")]
+		public int? VacationDays { get; set; }
+
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
 
 		[JsonProperty("mobile_session_settings")]
 		public SessionLifespan MobileSessionSettings { get; set; }
