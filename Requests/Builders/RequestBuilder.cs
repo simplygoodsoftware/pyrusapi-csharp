@@ -92,8 +92,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
 			=> new CreateCatalogRequestBuilder(name);
 
-		public static ChangeCatalogItemsRequestBuilder ChangeCatalogItems(int catalogId)
-			=> new ChangeCatalogItemsRequestBuilder(catalogId);
+		public static ChangeCatalogRequestBuilder ChangeCatalog(int catalogId)
+			=> new ChangeCatalogRequestBuilder(catalogId);
 
 		public static CreateRoleRequestBuilder CreateRole(string name)
 			=> new CreateRoleRequestBuilder(name);
@@ -234,12 +234,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> await client.CreateCatalog(builder);
 
 		/// <summary>
-		/// Executes a request prepared by the <see cref="ChangeCatalogItemsRequestBuilder"/>.
+		/// Executes a request prepared by <see cref="ChangeCatalogRequestBuilder"/>.
 		/// </summary>
-		/// <param name="builder">An instance of the <see cref="ChangeCatalogItemsRequestBuilder"/>.</param>
+		/// <param name="builder">An instance of <see cref="ChangeCatalogRequestBuilder"/>.</param>
 		/// <param name="client">Pyrus API client.</param>
-		/// <returns>Response of the type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
-		public static Task<SyncCatalogResponse> Process(this ChangeCatalogItemsRequestBuilder builder, PyrusClient client)
+		/// <returns>Response of type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
+		public static Task<SyncCatalogResponse> Process(this ChangeCatalogRequestBuilder builder, PyrusClient client)
 		{
 			if (builder is null) 
 				throw new ArgumentNullException(nameof(builder));
