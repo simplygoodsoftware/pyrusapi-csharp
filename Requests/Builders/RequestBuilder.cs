@@ -92,6 +92,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public static CreateCatalogRequestBuilder CreateCatalog(string name)
 			=> new CreateCatalogRequestBuilder(name);
 
+		/// <summary>
+		/// Creates a new instance of <see cref="ChangeCatalogRequestBuilder"/> class.
+		/// </summary>
+		/// <param name="catalogId">ID of a catalog.</param>
+		/// <returns>Instance of <see cref="ChangeCatalogRequestBuilder"/>.</returns>
 		public static ChangeCatalogRequestBuilder ChangeCatalog(int catalogId)
 			=> new ChangeCatalogRequestBuilder(catalogId);
 
