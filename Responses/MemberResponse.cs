@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
 using PyrusApiClient;
+using System;
 
 namespace Pyrus.ApiClient.Responses
 {
@@ -51,14 +52,30 @@ namespace Pyrus.ApiClient.Responses
 		[JsonProperty("position")]
 		public string Position { get; set; }
 
+		[Obsolete]
 		[JsonProperty("skype")]
 		public string Skype { get; set; }
+
+		[JsonProperty("messenger")]
+		public Messenger Messenger { get; set; }
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
 
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
+
+		[JsonProperty("location")]
+		public string Location { get; set; }
+
+		[JsonProperty("personality")]
+		public string Personality { get; set; }
+
+		[JsonProperty("personnel_number")]
+		public string PersonnelNumber { get; set; }
+
+		[JsonProperty("vacation_days")]
+		public int? VacationDays { get; set; }
 
 		[JsonProperty("mobile_session_settings")]
 		public SessionLifespan MobileSessionSettings { get; set; }
@@ -114,11 +131,18 @@ namespace Pyrus.ApiClient.Responses
 				Status = Status,
 				AvatarId = AvatarId,
 				ExternalAvatarId = ExternalAvatarId,
-				Banned = Banned,
+				Banned = Banned,				
 				Position = Position,
+#pragma warning disable CS0612 // Type or member is obsolete
 				Skype = Skype,
+#pragma warning restore CS0612 // Type or member is obsolete
+				Messenger = Messenger,
 				Phone = Phone,
 				LoginPhone = LoginPhone,
+				Location = Location,
+				Personality = Personality,
+				PersonnelNumber = PersonnelNumber,
+				VacationDays = VacationDays,
 				MobileSessionSettings = MobileSessionSettings,
 				WebSessionSettings = WebSessionSettings,
 				MobileSessionInactiveSettings = MobileSessionInactiveSettings,
@@ -133,6 +157,5 @@ namespace Pyrus.ApiClient.Responses
 				CantViewRestrictedFormRegistry = CantViewRestrictedFormRegistry,
 				TwoFactorAuth = TwoFactorAuth,
 			};
-
 	}
 }

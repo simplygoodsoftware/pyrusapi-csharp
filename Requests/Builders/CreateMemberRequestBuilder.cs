@@ -1,4 +1,7 @@
 ﻿using Pyrus.ApiClient.Enums;
+using PyrusApiClient;
+using System;
+
 
 namespace Pyrus.ApiClient.Requests.Builders
 {
@@ -33,6 +36,23 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		[Obsolete]
+		public CreateMemberRequestBuilder Skype(string skype)
+		{
+			_request.Skype = skype;
+			return this;
+		}
+
+		public CreateMemberRequestBuilder Messenger(string nickname, MessengerType messengerType)
+		{
+			_request.Messenger = new Messenger()
+			{
+				Nickname = nickname,
+				Type = messengerType
+			};
+			return this;
+		}
+
 		public CreateMemberRequestBuilder WorkPhone(string phone)
 		{
 			_request.Phone = phone;
@@ -45,9 +65,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public CreateMemberRequestBuilder Skype(string skype)
+		public CreateMemberRequestBuilder Location(string location)
 		{
-			_request.Skype = skype;
+			_request.Location = location;
+			return this;
+		}
+
+		public CreateMemberRequestBuilder Personality(string personality)
+		{
+			_request.Personality = personality;
+			return this;
+		}
+
+		public CreateMemberRequestBuilder PersonnelNumber(string personnelNumber)
+		{
+			_request.PersonnelNumber = personnelNumber;
 			return this;
 		}
 
