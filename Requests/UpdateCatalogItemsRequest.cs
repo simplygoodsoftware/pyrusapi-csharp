@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// A class containing catalog item collections to upsert and/or delete.
+	/// Contains catalog item collections to upsert and/or delete.
 	/// </summary>
-	public class PartialUpdateCatalogRequest
+	public class UpdateCatalogItemsRequest
 	{
 		/// <summary>
 		/// Catalog items to be added and/or updated.

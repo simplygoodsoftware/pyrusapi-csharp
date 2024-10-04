@@ -7,11 +7,11 @@ using System.Linq;
 namespace PyrusApiClient.Builders
 {
     /// <summary>
-    /// Builder for <see cref="PartialUpdateCatalogRequest"/> to change catalog items.
+    /// Builder for <see cref="UpdateCatalogItemsRequest"/> to change catalog items.
     /// </summary>
     public class ChangeCatalogRequestBuilder
     {
-        private readonly PartialUpdateCatalogRequest _request;
+        private readonly UpdateCatalogItemsRequest _request;
         
         /// <summary>
         /// ID of a catalog.
@@ -24,7 +24,7 @@ namespace PyrusApiClient.Builders
         /// <param name="catalogId">ID of a catalog.</param>
         public ChangeCatalogRequestBuilder(int catalogId)
         {
-            _request = new PartialUpdateCatalogRequest
+            _request = new UpdateCatalogItemsRequest
             {
                 UpsertItems = new List<CatalogItem>(),
                 DeleteItems = new HashSet<string>(),
@@ -32,7 +32,7 @@ namespace PyrusApiClient.Builders
             CatalogId = catalogId;
         }
 
-        public static implicit operator PartialUpdateCatalogRequest(ChangeCatalogRequestBuilder builder)
+        public static implicit operator UpdateCatalogItemsRequest(ChangeCatalogRequestBuilder builder)
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));

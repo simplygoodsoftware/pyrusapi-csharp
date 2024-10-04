@@ -273,10 +273,10 @@ namespace PyrusApiClient
 		/// Changes catalog items.
 		/// </summary>
 		/// <param name="catalogId">ID of a catalog.</param>
-		/// <param name="request">Request of type <see cref="PartialUpdateCatalogRequest"/> with catalog item collections.</param>
+		/// <param name="request">Request of type <see cref="UpdateCatalogItemsRequest"/> with catalog item collections.</param>
 		/// <param name="accessToken">Pyrus authentication token.</param>
 		/// <returns>Response of type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
-		public async Task<SyncCatalogResponse> ChangeCatalogItems(int catalogId, PartialUpdateCatalogRequest request, string accessToken = null)
+		public async Task<SyncCatalogResponse> ChangeCatalogItems(int catalogId, UpdateCatalogItemsRequest request, string accessToken = null)
 		{
 			Token = accessToken ?? Token;
 
