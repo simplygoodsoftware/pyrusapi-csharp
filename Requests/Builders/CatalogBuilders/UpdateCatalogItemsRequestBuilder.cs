@@ -9,7 +9,7 @@ namespace PyrusApiClient.Builders
     /// <summary>
     /// Builder for <see cref="UpdateCatalogItemsRequest"/> to change catalog items.
     /// </summary>
-    public class ChangeCatalogRequestBuilder
+    public class UpdateCatalogItemsRequestBuilder
     {
         private readonly UpdateCatalogItemsRequest _request;
         
@@ -19,10 +19,10 @@ namespace PyrusApiClient.Builders
         public int CatalogId { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ChangeCatalogRequestBuilder"/> class.
+        /// Initializes a new instance of <see cref="UpdateCatalogItemsRequestBuilder"/> class.
         /// </summary>
         /// <param name="catalogId">ID of a catalog.</param>
-        public ChangeCatalogRequestBuilder(int catalogId)
+        public UpdateCatalogItemsRequestBuilder(int catalogId)
         {
             _request = new UpdateCatalogItemsRequest
             {
@@ -32,7 +32,7 @@ namespace PyrusApiClient.Builders
             CatalogId = catalogId;
         }
 
-        public static implicit operator UpdateCatalogItemsRequest(ChangeCatalogRequestBuilder builder)
+        public static implicit operator UpdateCatalogItemsRequest(UpdateCatalogItemsRequestBuilder builder)
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
@@ -46,8 +46,8 @@ namespace PyrusApiClient.Builders
         /// Adds a catalog item to be inserted or updated.
         /// </summary>
         /// <param name="item">Catalog item.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder UpsertItem(CatalogItem item)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder UpsertItem(CatalogItem item)
         {
             if (item is null)
                 throw new ArgumentNullException(nameof(item));
@@ -59,8 +59,8 @@ namespace PyrusApiClient.Builders
         /// Adds values of a catalog item to be inserted or updated.
         /// </summary>
         /// <param name="values">Collection of values.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder UpsertItem(IEnumerable<string> values)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder UpsertItem(IEnumerable<string> values)
         {
             if (values is null)
                 throw new ArgumentNullException(nameof(values));
@@ -77,8 +77,8 @@ namespace PyrusApiClient.Builders
         /// Adds values of a catalog item to be inserted or updated.
         /// </summary>
         /// <param name="values">Collection of values.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder UpsertItem(params string[] values) => UpsertItem((IEnumerable<string>)values);
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder UpsertItem(params string[] values) => UpsertItem((IEnumerable<string>)values);
 
         #endregion
         
@@ -88,8 +88,8 @@ namespace PyrusApiClient.Builders
         /// Adds catalog items to be inserted or updated.
         /// </summary>
         /// <param name="items">Collection of <see cref="CatalogItem"/>.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder UpsertItems(IEnumerable<CatalogItem> items)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder UpsertItems(IEnumerable<CatalogItem> items)
         {
             if (items is null)
                 throw new ArgumentNullException(nameof(items));
@@ -104,8 +104,8 @@ namespace PyrusApiClient.Builders
         /// Adds catalog items to be inserted or updated.
         /// </summary>
         /// <param name="items">Collection of <see cref="CatalogItem"/>.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder UpsertItems(params CatalogItem[] items) => UpsertItems((IEnumerable<CatalogItem>)items);
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder UpsertItems(params CatalogItem[] items) => UpsertItems((IEnumerable<CatalogItem>)items);
 
         #endregion
         
@@ -115,8 +115,8 @@ namespace PyrusApiClient.Builders
         /// Adds a catalog item to be deleted.
         /// </summary>
         /// <param name="item">Catalog item.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItem(CatalogItem item)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItem(CatalogItem item)
         {
             if (item is null)
                 throw new ArgumentNullException(nameof(item));
@@ -130,8 +130,8 @@ namespace PyrusApiClient.Builders
         /// Adds a key of a catalog item to be deleted.
         /// </summary>
         /// <param name="key">Catalog item key (a value of the first column).</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItem(string key)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItem(string key)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -153,8 +153,8 @@ namespace PyrusApiClient.Builders
         /// Adds catalog items to be deleted.
         /// </summary>
         /// <param name="items">Collection of <see cref="CatalogItem"/>.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItems(IEnumerable<CatalogItem> items)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItems(IEnumerable<CatalogItem> items)
         {
             if (items is null) 
                 throw new ArgumentNullException(nameof(items));
@@ -169,15 +169,15 @@ namespace PyrusApiClient.Builders
         /// Adds catalog items to be deleted.
         /// </summary>
         /// <param name="items">Collection of <see cref="CatalogItem"/>.</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItems(params CatalogItem[] items) => DeleteItems((IEnumerable<CatalogItem>)items);
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItems(params CatalogItem[] items) => DeleteItems((IEnumerable<CatalogItem>)items);
         
         /// <summary>
         /// Adds catalog item keys to be deleted.
         /// </summary>
         /// <param name="keys">Collection of catalog item keys (values of the first column).</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItems(IEnumerable<string> keys)
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItems(IEnumerable<string> keys)
         {
             if (keys is null) 
                 throw new ArgumentNullException(nameof(keys));
@@ -192,8 +192,8 @@ namespace PyrusApiClient.Builders
         /// Adds catalog item keys to be deleted.
         /// </summary>
         /// <param name="keys">Collection of catalog item keys (values of the first column).</param>
-        /// <returns>The same instance of the <see cref="ChangeCatalogRequestBuilder"/> for chaining.</returns>
-        public ChangeCatalogRequestBuilder DeleteItems(params string[] keys) => DeleteItems((IEnumerable<string>)keys);
+        /// <returns>The same instance of the <see cref="UpdateCatalogItemsRequestBuilder"/> for chaining.</returns>
+        public UpdateCatalogItemsRequestBuilder DeleteItems(params string[] keys) => DeleteItems((IEnumerable<string>)keys);
 
         #endregion
     }

@@ -148,8 +148,8 @@ var updateCatalogResponse = await RequestBuilder
 
 ```csharp
 var catalogId = 1236;
-var updateCatalogResponse = await RequestBuilder
-    .ChangeCatalogItems(catalogId)
+var updateCatalogItemsResponse = await RequestBuilder
+    .UpdateCatalogItems(catalogId)
     .UpsertItem("3", "gamma")
     .DeleteItem("2")
     .Process(pyrusClient);

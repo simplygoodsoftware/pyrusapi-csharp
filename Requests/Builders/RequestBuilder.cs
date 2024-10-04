@@ -93,12 +93,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> new CreateCatalogRequestBuilder(name);
 
 		/// <summary>
-		/// Creates a new instance of <see cref="ChangeCatalogRequestBuilder"/> class.
+		/// Creates a new instance of <see cref="UpdateCatalogItemsRequestBuilder"/> class.
 		/// </summary>
 		/// <param name="catalogId">ID of a catalog.</param>
-		/// <returns>Instance of <see cref="ChangeCatalogRequestBuilder"/>.</returns>
-		public static ChangeCatalogRequestBuilder ChangeCatalog(int catalogId)
-			=> new ChangeCatalogRequestBuilder(catalogId);
+		/// <returns>Instance of <see cref="UpdateCatalogItemsRequestBuilder"/>.</returns>
+		public static UpdateCatalogItemsRequestBuilder UpdateCatalogItems(int catalogId)
+			=> new UpdateCatalogItemsRequestBuilder(catalogId);
 
 		public static CreateRoleRequestBuilder CreateRole(string name)
 			=> new CreateRoleRequestBuilder(name);
@@ -239,19 +239,19 @@ namespace Pyrus.ApiClient.Requests.Builders
 			=> await client.CreateCatalog(builder);
 
 		/// <summary>
-		/// Executes a request prepared by <see cref="ChangeCatalogRequestBuilder"/>.
+		/// Executes a request prepared by <see cref="UpdateCatalogItemsRequestBuilder"/>.
 		/// </summary>
-		/// <param name="builder">An instance of <see cref="ChangeCatalogRequestBuilder"/>.</param>
+		/// <param name="builder">An instance of <see cref="UpdateCatalogItemsRequestBuilder"/>.</param>
 		/// <param name="client">Pyrus API client.</param>
 		/// <returns>Response of type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
-		public static Task<SyncCatalogResponse> Process(this ChangeCatalogRequestBuilder builder, PyrusClient client)
+		public static Task<SyncCatalogResponse> Process(this UpdateCatalogItemsRequestBuilder builder, PyrusClient client)
 		{
 			if (builder is null) 
 				throw new ArgumentNullException(nameof(builder));
 			if (client is null) 
 				throw new ArgumentNullException(nameof(client));
 
-			return client.ChangeCatalogItems(builder.CatalogId, builder);
+			return client.UpdateCatalogItems(builder.CatalogId, builder);
 		}
 
 		public static async Task<RoleResponse> Process(this CreateRoleRequestBuilder builder, PyrusClient client)
