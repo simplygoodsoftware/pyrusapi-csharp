@@ -268,6 +268,22 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}{BulkSuffix}", request, Token));
 			return response;
 		}
+
+		/// <summary>
+		/// Changes catalog items.
+		/// </summary>
+		/// <param name="catalogId">ID of a catalog.</param>
+		/// <param name="request">Request of type <see cref="UpdateCatalogItemsRequest"/> with catalog item collections.</param>
+		/// <param name="accessToken">Pyrus authentication token.</param>
+		/// <returns>Response of type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
+		public async Task<SyncCatalogResponse> ChangeCatalogItems(int catalogId, UpdateCatalogItemsRequest request, string accessToken = null)
+		{
+			Token = accessToken ?? Token;
+
+			var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}/diff", request, Token));
+			return response;
+		}
+
 		public async Task<ContactsResponse> GetContacts(ContactsRequest request, string accessToken = null)
 			=> await GetContacts(request?.IncludeInactive ?? false, accessToken);
 

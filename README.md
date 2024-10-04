@@ -134,7 +134,7 @@ var catalogId = catalogResponse.CatalogId;
 * Sync catalog (All unspecified catalog items and text columns will be deleted)
 
 ```csharp
-var catalogId = 1236
+var catalogId = 1236;
 var updateCatalogResponse = await RequestBuilder
 	.SyncCatalog(catalogId)
 	.SetHeaders("Header1", "Header3")
@@ -142,6 +142,17 @@ var updateCatalogResponse = await RequestBuilder
 	.AddItem("C1", "C2")
 	.ApplyChanges()
 	.Process(pyrusClient);
+```
+
+* Change catalog items
+
+```csharp
+var catalogId = 1236;
+var updateCatalogResponse = await RequestBuilder
+    .ChangeCatalogItems(catalogId)
+    .UpsertItem("3", "gamma")
+    .DeleteItem("2")
+    .Process(pyrusClient);
 ```
 
 ## Contacts
@@ -163,7 +174,7 @@ var listsResponse = await RequestBuilder.GetLists().Process(pyrusClient);
 * Get all tasks in list
 
 ```csharp
-var listId = 1322
+var listId = 1322;
 var taskListResponse = await RequestBuilder.GetTaskList(listId, maxItemCount: 25, includeArchived:true).Process(pyrusClient);
 ```
 
