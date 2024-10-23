@@ -17,6 +17,12 @@ namespace PyrusApiClient
 		DeliveryFailed,
 
 		[EnumMember(Value = "send_failed")]
-		SendFailed
-	}
+		SendFailed,
+
+        [EnumMember(Value = "postponed")]
+        Postponed,
+
+        [EnumMember(Value = "postponed_canceled")]
+        PostponedCanceled,
+    }
 }
