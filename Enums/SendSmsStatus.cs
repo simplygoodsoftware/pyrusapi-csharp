@@ -4,19 +4,25 @@ using Newtonsoft.Json.Converters;
 
 namespace PyrusApiClient
 {
-	[JsonConverter(typeof(StringEnumConverter))]
-	public enum SendSmsStatus
-	{
-		[EnumMember(Value = "sent")]
-		Sent,
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum SendSmsStatus
+    {
+        [EnumMember(Value = "sent")]
+        Sent,
 
-		[EnumMember(Value = "delivered")]
-		Delivered,
+        [EnumMember(Value = "delivered")]
+        Delivered,
 
-		[EnumMember(Value = "delivery_failed")]
-		DeliveryFailed,
+        [EnumMember(Value = "delivery_failed")]
+        DeliveryFailed,
 
-		[EnumMember(Value = "send_failed")]
-		SendFailed
-	}
+        [EnumMember(Value = "send_failed")]
+        SendFailed,
+
+        [EnumMember(Value = "postponed")]
+        Postponed,
+
+        [EnumMember(Value = "postponed_canceled")]
+        PostponedCanceled,
+    }
 }
