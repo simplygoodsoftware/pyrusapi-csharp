@@ -38,7 +38,8 @@ namespace PyrusApiClient
 				AvatarId = AvatarId,
 				ExternalAvatarId = ExternalAvatarId,
 				Banned = Banned,
-				MemberIds = MemberIds
+				MemberIds = MemberIds,
+				Fired = Fired,
 			};
 	}
 }
