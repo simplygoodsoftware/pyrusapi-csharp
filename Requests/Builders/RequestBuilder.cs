@@ -106,6 +106,9 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static UpdateRoleRequestBuilder UpdateRole(int roleId)
             => new UpdateRoleRequestBuilder(roleId);
 
+        public static DeleteRoleRequestBuilder DeleteRole(int roleId, int taskReceiverId)
+            => new DeleteRoleRequestBuilder(roleId, taskReceiverId);
+
         public static GetRolesRequestBuilder GetRoles()
             => new GetRolesRequestBuilder();
 
