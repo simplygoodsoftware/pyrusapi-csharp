@@ -386,6 +386,15 @@ namespace PyrusApiClient
             return response;
         }
 
+        public async Task<ListResponse> GetList(int listId, string accessToken = null, bool withForms = false, bool withDeleted = false)
+        {
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<ListResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{ListsEndpoint}/{listId}?with_forms={withForms}&with_deleted={withDeleted}", Token));
+            return response;
+        }
+
         public async Task<PlainListResponse> CreateList(CreateListRequest request, string accessToken = null)
         {
             if (accessToken != null)
