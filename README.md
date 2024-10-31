@@ -165,6 +165,13 @@ var contactsResponse = await RequestBuilder.GetContacts().Process(pyrusClient);
 
 ## Lists
 
+* Get list
+
+```csharp
+var listId = 1322;
+var listResponse = await RequestBuilder.GetList(listId).Process(pyrusClient);
+```
+
 * Get all lists
 
 ```csharp

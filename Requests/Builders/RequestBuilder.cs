@@ -72,7 +72,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static EmptyBuilder<ListsResponse> GetLists() => new EmptyBuilder<ListsResponse>();
 
-        public static EmptyBuilder<ListResponse> GetList() => new EmptyBuilder<ListResponse>();
+        public static OnePropertyBuilder<int, ListResponse> GetList(int listId) => new OnePropertyBuilder<int, ListResponse>(listId);
 
         public static EmptyBuilder<AnnouncementsResponse> GetAnnouncements()
             => new EmptyBuilder<AnnouncementsResponse>();
