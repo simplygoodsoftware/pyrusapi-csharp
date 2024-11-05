@@ -154,12 +154,12 @@ namespace PyrusApiClient
             return await this.RunQuery<AnnouncementResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}/{announcementId}", Token));
         }
 
-        public async Task<AnnouncementsResponse> GetAnnouncements(string accessToken = null)
+        public async Task<AnnouncementsResponse> GetAnnouncements(int itemCount = 100, string accessToken = null)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            return await this.RunQuery<AnnouncementsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}", Token));
+            return await this.RunQuery<AnnouncementsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}?item_count={itemCount}", Token));
         }
 
 

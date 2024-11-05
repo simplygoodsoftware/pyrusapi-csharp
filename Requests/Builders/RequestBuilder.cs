@@ -190,8 +190,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static async Task<AnnouncementResponse> Process(this OnePropertyBuilder<int, AnnouncementResponse> builder, PyrusClient client)
             => await client.GetAnnouncement(builder.Property);
-        public static async Task<AnnouncementsResponse> Process(this EmptyBuilder<AnnouncementsResponse> builder, PyrusClient client)
-            => await client.GetAnnouncements();
+        public static async Task<AnnouncementsResponse> Process(this OnePropertyBuilder<int, AnnouncementsResponse> builder, PyrusClient client)
+            => await client.GetAnnouncements(builder.Property);
 
         public static async Task<DownloadResponse> Process(this OnePropertyBuilder<int, DownloadResponse> builder, PyrusClient client)
             => await client.DownloadFile(builder.Property);
