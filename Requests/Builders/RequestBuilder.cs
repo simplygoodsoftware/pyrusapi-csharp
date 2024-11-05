@@ -72,6 +72,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static EmptyBuilder<ListsResponse> GetLists() => new EmptyBuilder<ListsResponse>();
 
+        public static OnePropertyBuilder<int, ListResponse> GetList(int listId) => new OnePropertyBuilder<int, ListResponse>(listId);
+
         public static OnePropertyBuilder<int, AnnouncementsResponse> GetAnnouncements(int itemCount = 100)
             => new OnePropertyBuilder<int, AnnouncementsResponse>(itemCount);
 
@@ -225,6 +227,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static async Task<ListsResponse> Process(this EmptyBuilder<ListsResponse> builder, PyrusClient client)
             => await client.GetLists();
+
+        public static async Task<ListResponse> Process(this OnePropertyBuilder<int, ListResponse> builder, PyrusClient client)
+            => await client.GetList(builder.Property);
 
         public static async Task<TaskListResponse> Process(this TaskListRequestBuilder builder, PyrusClient client)
             => await client.GetTaskList(builder.ListId, builder);
