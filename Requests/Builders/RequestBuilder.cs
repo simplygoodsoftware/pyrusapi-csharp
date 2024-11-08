@@ -74,8 +74,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static OnePropertyBuilder<int, ListResponse> GetList(int listId) => new OnePropertyBuilder<int, ListResponse>(listId);
 
-        public static EmptyBuilder<AnnouncementsResponse> GetAnnouncements()
-            => new EmptyBuilder<AnnouncementsResponse>();
+        public static OnePropertyBuilder<int, AnnouncementsResponse> GetAnnouncements(int itemCount = 100)
+            => new OnePropertyBuilder<int, AnnouncementsResponse>(itemCount);
 
         public static TaskListRequestBuilder GetTaskList(int listId, int maxItemCount = 200, bool includeArchived = false)
             => GetTaskList(listId).MaxItemCount(maxItemCount).IncludeArchived(includeArchived);
@@ -192,8 +192,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static async Task<AnnouncementResponse> Process(this OnePropertyBuilder<int, AnnouncementResponse> builder, PyrusClient client)
             => await client.GetAnnouncement(builder.Property);
-        public static async Task<AnnouncementsResponse> Process(this EmptyBuilder<AnnouncementsResponse> builder, PyrusClient client)
-            => await client.GetAnnouncements();
+
+        public static async Task<AnnouncementsResponse> Process(this OnePropertyBuilder<int, AnnouncementsResponse> builder, PyrusClient client)
+            => await client.GetAnnouncements(builder.Property);
 
         public static async Task<DownloadResponse> Process(this OnePropertyBuilder<int, DownloadResponse> builder, PyrusClient client)
             => await client.DownloadFile(builder.Property);

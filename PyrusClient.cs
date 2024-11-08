@@ -67,6 +67,8 @@ namespace PyrusApiClient
         internal const string CommentSuffix = "/comments";
         internal const string TasksSuffix = "/tasks";
 
+        private const int AnnouncementMaxCount = 10000;
+
         static PyrusClient()
         {
             ServicePointManager.DnsRefreshTimeout = 0;
@@ -154,12 +156,15 @@ namespace PyrusApiClient
             return await this.RunQuery<AnnouncementResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}/{announcementId}", Token));
         }
 
-        public async Task<AnnouncementsResponse> GetAnnouncements(string accessToken = null)
+        public async Task<AnnouncementsResponse> GetAnnouncements(int itemCount = 100, string accessToken = null)
         {
+            if (itemCount < 1 || itemCount > AnnouncementMaxCount)
+                throw new ArgumentOutOfRangeException(nameof(itemCount), $"must be between 0 and {AnnouncementMaxCount}");
+
             if (accessToken != null)
                 Token = accessToken;
 
-            return await this.RunQuery<AnnouncementsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}", Token));
+            return await this.RunQuery<AnnouncementsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{AnnouncementsEndpoint}?item_count={itemCount}", Token));
         }
 
 
