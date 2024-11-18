@@ -62,7 +62,13 @@ namespace Pyrus.ApiClient.Requests.Builders
 			_request.Phone = phone;
 			return this;
 		}
-		
+
+		public UpdateMemberRequestBuilder MobilePhone(string phone)
+		{
+			_request.MobilePhone = phone;
+			return this;
+		}
+
 		public UpdateMemberRequestBuilder LoginPhone(string phone)
 		{
 			_request.LoginPhone = phone;
