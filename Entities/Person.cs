@@ -37,7 +37,7 @@ namespace PyrusApiClient
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
-		
+
 		[JsonProperty("status")]
 		public string Status { get; set; }
 
@@ -80,6 +80,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
+
+		[JsonProperty("mobile_phone")]
+		public string MobilePhone { get; set; }
 
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }

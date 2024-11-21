@@ -24,7 +24,7 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("email")]
 		public string Email { get; set; }
-		
+
 		[JsonProperty("status")]
 		public string Status { get; set; }
 
@@ -61,6 +61,9 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("phone")]
 		public string Phone { get; set; }
+
+		[JsonProperty("mobile_phone")]
+		public string MobilePhone { get; set; }
 
 		[JsonProperty("login_phone")]
 		public string LoginPhone { get; set; }
@@ -118,7 +121,7 @@ namespace Pyrus.ApiClient.Responses
 
 		public Person Person =>
 			new Person
-			{ 
+			{
 				Id = Id,
 				FirstName = FirstName,
 				LastName = LastName,
@@ -131,13 +134,14 @@ namespace Pyrus.ApiClient.Responses
 				Status = Status,
 				AvatarId = AvatarId,
 				ExternalAvatarId = ExternalAvatarId,
-				Banned = Banned,				
+				Banned = Banned,
 				Position = Position,
 #pragma warning disable CS0612 // Type or member is obsolete
 				Skype = Skype,
 #pragma warning restore CS0612 // Type or member is obsolete
 				Messenger = Messenger,
 				Phone = Phone,
+				MobilePhone = MobilePhone,
 				LoginPhone = LoginPhone,
 				Location = Location,
 				Personality = Personality,
