@@ -698,20 +698,29 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<CalendarResponse> GetCalendarTasks(DateTime startDateTime, DateTime endDateTime,
-            int? tasksCount = 50, bool allAccessedTasks = false, int filterMask = 0b0111, string accessToken = null)
+        public async Task<CalendarResponse> GetCalendarTasks(
+            DateTime startDateTime,
+            DateTime endDateTime,
+            int? tasksCount = 50,
+            bool allAccessedTasks = false,
+            int filterMask = 0b0111,
+            string accessToken = null)
         {
-            var path = $"{CalendarEndpoint}?" +
-                      $"start_date_utc={startDateTime}" +
-                      $"&end_date_utc={endDateTime}" +
-                      $"&item_count={tasksCount}" +
-                      $"&all_accessed_tasks={allAccessedTasks}" +
-                      $"&filter_mask={filterMask}";
+            var startDateTimeStr = startDateTime.ToString(Constants.DateTimeFormat);
+            var endDateTimeStr = endDateTime.ToString(Constants.DateTimeFormat);
+
+            var query = string.Join(
+                "&",
+                $"start_date_utc={startDateTimeStr}",
+                $"end_date_utc={endDateTimeStr}",
+                $"item_count={tasksCount}",
+                $"all_accessed_tasks={allAccessedTasks}",
+                $"filter_mask={filterMask}");
 
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}", Token));
+            var response = await this.RunQuery<CalendarResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{CalendarEndpoint}?{query}", Token));
             return response;
         }
 
