@@ -143,6 +143,9 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
             => new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
+        public static GetCalendarTasksBuilder GetCalendarTasks(DateTime startDateTimeUtc, DateTime endDateTimeUtc)
+            => new GetCalendarTasksBuilder(startDateTimeUtc, endDateTimeUtc);
+
         public static CallBuilder RegisterCall() => new CallBuilder();
 
         public static AttachCallRecordBuilder AttachCallRecord(string recordFile)

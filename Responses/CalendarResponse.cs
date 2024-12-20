@@ -11,5 +11,8 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("has_more")]
 		public bool HasMore { get; set; }
+
+		[JsonProperty("meetings")]
+		public List<Meeting> Meetings { get; set; }
 	}
 }
