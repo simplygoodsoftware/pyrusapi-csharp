@@ -704,6 +704,7 @@ namespace PyrusApiClient
             int? tasksCount = 50,
             bool allAccessedTasks = false,
             int filterMask = 0b0111,
+            bool includeMeetings = false,
             string accessToken = null)
         {
             var startDateTimeStr = startDateTime.ToString(Constants.DateTimeFormat);
@@ -715,7 +716,8 @@ namespace PyrusApiClient
                 $"end_date_utc={endDateTimeStr}",
                 $"item_count={tasksCount}",
                 $"all_accessed_tasks={allAccessedTasks}",
-                $"filter_mask={filterMask}");
+                $"filter_mask={filterMask}",
+                $"include_meetings={includeMeetings}");
 
             if (accessToken != null)
                 Token = accessToken;

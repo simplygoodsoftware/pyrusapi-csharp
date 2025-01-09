@@ -319,7 +319,8 @@ namespace Pyrus.ApiClient.Requests.Builders
             CalendarTasksRequest request = builder;
             return await client.GetCalendarTasks(
                 request.StartDateUtc, request.EndDateUtc,
-                request.ItemCount, request.AllAccessedTasks, request.FilterMask ?? 0b0111);
+                request.ItemCount, request.AllAccessedTasks,
+                request.FilterMask ?? 0b0111, request.IncludeMeetings);
         }
 
         public static async Task<ResponseBase> Process(this CallBuilder builder, PyrusClient client)

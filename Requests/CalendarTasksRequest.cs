@@ -19,5 +19,8 @@ namespace PyrusApiClient
 		
 		[JsonProperty(PropertyName = "filter_mask")]
 		public int? FilterMask { get; set; }
-	}
+
+		[JsonProperty(PropertyName = "include_meetings")]
+		public bool IncludeMeetings { get; set; }
+    }
 }
