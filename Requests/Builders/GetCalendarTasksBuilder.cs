@@ -49,7 +49,7 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-        public static implicit operator CalendarTasksRequest(GetCalendarTasksBuilder builder)
+		public static implicit operator CalendarTasksRequest(GetCalendarTasksBuilder builder)
 		{
 			return builder._calendarTasksRequest;
 		}
