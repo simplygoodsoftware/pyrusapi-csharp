@@ -55,17 +55,19 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldDueDate WithValue(this FormFieldDueDate formField, DateTime? dueDate)
+		public static FormFieldDueDate WithValue(this FormFieldDueDate formField, DateTime? dueDate, int? duration = null)
 		{
 			formField.Value = dueDate;
+			formField.Duration = duration;
 			return formField;
 		}
 
-		public static FormFieldDueDateTime WithValue(this FormFieldDueDateTime formField, DateTime? dueDate)
+		public static FormFieldDueDateTime WithValue(this FormFieldDueDateTime formField, DateTime? dueDate, int? duration = null)
 		{
 			formField.Value = dueDate;
+			formField.Duration = duration;
 			return formField;
-		}
+        }
 
 		public static FormFieldEmail WithValue(this FormFieldEmail formField, string email)
 		{
