@@ -143,6 +143,9 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
             => new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
+        public static GetCalendarTasksBuilder GetCalendarTasks(DateTime startDateTimeUtc, DateTime endDateTimeUtc)
+            => new GetCalendarTasksBuilder(startDateTimeUtc, endDateTimeUtc);
+
         public static CallBuilder RegisterCall() => new CallBuilder();
 
         public static AttachCallRecordBuilder AttachCallRecord(string recordFile)
@@ -316,7 +319,8 @@ namespace Pyrus.ApiClient.Requests.Builders
             CalendarTasksRequest request = builder;
             return await client.GetCalendarTasks(
                 request.StartDateUtc, request.EndDateUtc,
-                request.ItemCount, request.AllAccessedTasks, request.FilterMask ?? 0b0111);
+                request.ItemCount, request.AllAccessedTasks,
+                request.FilterMask ?? 0b0111, request.IncludeMeetings);
         }
 
         public static async Task<ResponseBase> Process(this CallBuilder builder, PyrusClient client)

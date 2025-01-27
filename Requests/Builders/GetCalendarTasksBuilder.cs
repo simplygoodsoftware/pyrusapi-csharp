@@ -43,6 +43,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public GetCalendarTasksBuilder IncludeMeetings(bool includeMeetings)
+		{
+			_calendarTasksRequest.IncludeMeetings = includeMeetings;
+			return this;
+		}
+
 		public static implicit operator CalendarTasksRequest(GetCalendarTasksBuilder builder)
 		{
 			return builder._calendarTasksRequest;
