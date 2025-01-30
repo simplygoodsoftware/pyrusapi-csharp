@@ -67,7 +67,7 @@ namespace PyrusApiClient
 			formField.Value = dueDate;
 			formField.Duration = duration;
 			return formField;
-        }
+		}
 
 		public static FormFieldEmail WithValue(this FormFieldEmail formField, string email)
 		{

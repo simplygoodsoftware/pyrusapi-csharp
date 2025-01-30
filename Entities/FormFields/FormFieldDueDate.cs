@@ -21,8 +21,8 @@ namespace PyrusApiClient
 		[JsonProperty("value")]
 		public DateTime? Value { get; set; }
 
-        [JsonProperty("duration")]
-        public int? Duration { get; set; }
+		[JsonProperty("duration")]
+		public int? Duration { get; set; }
 
 		public override string ToString()
 		{
