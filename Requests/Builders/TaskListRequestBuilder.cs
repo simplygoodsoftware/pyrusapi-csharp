@@ -34,6 +34,30 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
+		public TaskListRequestBuilder CreatedBefore(DateTime dateTime)
+		{
+			_taskListRequest.CreatedBefore = dateTime;
+			return this;
+		}
+
+		public TaskListRequestBuilder CreatedAfter(DateTime dateTime)
+		{
+			_taskListRequest.CreatedAfter = dateTime;
+			return this;
+		}
+
+		public TaskListRequestBuilder ClosedBefore(DateTime dateTime)
+		{
+			_taskListRequest.ClosedBefore = dateTime;
+			return this;
+		}
+
+		public TaskListRequestBuilder ClosedAfter(DateTime dateTime)
+		{
+			_taskListRequest.ClosedAfter = dateTime;
+			return this;
+		}
+
 		public TaskListRequestBuilder MaxItemCount(int maxItemCount)
 		{
 			if (maxItemCount <= 0)
