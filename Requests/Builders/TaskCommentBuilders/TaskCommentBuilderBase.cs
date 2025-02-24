@@ -163,6 +163,12 @@ namespace PyrusApiClient.Builders
 			return (T)this;
 		}
 
+        public T WithSkipAutoReopen(bool skip = true)
+        {
+            Comment.SkipAutoReopen = skip;
+            return (T)this;
+        }
+
         #region subscribers
         public T AddSubscribers(IEnumerable<Person> subscribers)
 		{
