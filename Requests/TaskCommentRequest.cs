@@ -103,5 +103,8 @@ namespace PyrusApiClient
 
         [JsonProperty("skip_notification")]
         public bool? SkipNotification { get; set; }
+
+        [JsonProperty("skip_auto_reopen")]
+        public bool? SkipAutoReopen { get; set; }
     }
 }
