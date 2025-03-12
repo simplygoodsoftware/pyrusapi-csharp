@@ -230,6 +230,15 @@ namespace PyrusApiClient
             return response;
         }
 
+        public async Task<CatalogResponse> GetCatalog(int catalogId, GetCatalogRequest request, string accessToken = null)
+        {
+            var path = $"{CatalogsEndpoint}/{catalogId}/filter";
+            Token = accessToken ?? Token;
+
+            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}/{path}", request, Token));
+            return response;
+        }
+
         public async Task<CatalogsResponse> GetCatalogs(string accessToken = null)
         {
             Token = accessToken ?? Token;
