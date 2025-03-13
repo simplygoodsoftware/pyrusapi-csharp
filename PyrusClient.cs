@@ -235,7 +235,7 @@ namespace PyrusApiClient
             var path = $"{CatalogsEndpoint}/{catalogId}/filter";
             Token = accessToken ?? Token;
 
-            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}/{path}", request, Token));
+            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{path}", request, Token));
             return response;
         }
 
