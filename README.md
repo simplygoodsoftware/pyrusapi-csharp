@@ -30,7 +30,7 @@ var pyrusClient = new PyrusClient();
 * Perform authorization 
 
 ```csharp
-var authResponse = await pyrusClient.Auth(
+var authResponse = await pyrusClient.Auth(	
   "pyrus@login.com", 
   "security_key_from_profile");
 ```
@@ -115,6 +115,15 @@ var fileId = fileResponse.Guid;
 ```csharp
 var catalogId = 1525;
 var catalogResponse = await RequestBuilder.GetCatalog(catalogId).Process(pyrusClient);
+var items = catalogResponse.Items;
+```
+
+* Get catalog with filtered items
+```csharp
+var catalogId = 1525;
+var catalogResponse = await RequestBuilder.GetCatalogWithItems(catalogId)
+    .AddValueFilter("Column", "Value")
+    .Process(pyrusClient);
 var items = catalogResponse.Items;
 ```
 
