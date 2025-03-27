@@ -24,7 +24,7 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value)
+		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value, bool isRegularExpression = false)
 		{
 			if (columnName == null)
 				throw new ArgumentNullException(nameof(columnName));
@@ -35,7 +35,7 @@ namespace PyrusApiClient.Builders
 			if (IncludeDeletedItems)
 				throw new InvalidOperationException("Filtering deleted items is not suppported.");
 
-			_filters.Add(new CatalogItemValueFilter() { ColumnName = columnName, Value = value});
+			_filters.Add(new CatalogItemValueFilter() { ColumnName = columnName, Value = value, IsRegularExpression = isRegularExpression });
 			return this;
 		}
 

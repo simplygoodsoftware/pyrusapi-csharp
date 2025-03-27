@@ -232,10 +232,10 @@ namespace PyrusApiClient
 
         public async Task<CatalogResponse> GetCatalog(int catalogId, GetCatalogRequest request, string accessToken = null)
         {
-            var path = $"{CatalogsEndpoint}/{catalogId}/filter";
+            var path = $"{CatalogsEndpoint}/{catalogId}";
             Token = accessToken ?? Token;
 
-            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{path}", request, Token));
+            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}{request.ToString()}", Token));
             return response;
         }
 
