@@ -20,17 +20,17 @@ namespace Pyrus.ApiClient.Requests
             result.Append("?");
             result.Append($"include_deleted={IncludeDeletedItems}");
 
-            var isRegularExpression = false;
+            var useRegularExpression = false;
             foreach (var filter in Filters)
             {
                 if (filter.IsRegularExpression)
-                    isRegularExpression = true;
+                    useRegularExpression = true;
 
                 result.Append(
                     $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
             }
 
-            result.Append($"&is_regex={isRegularExpression}");
+            result.Append($"&use_regex={useRegularExpression}");
 
             return result.ToString();
         }
