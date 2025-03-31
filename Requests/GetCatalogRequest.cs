@@ -19,20 +19,23 @@ namespace Pyrus.ApiClient.Requests
 
             result.Append("?");
             result.Append($"include_deleted={IncludeDeletedItems}");
-
-            var useRegularExpression = false;
-            foreach (var filter in Filters)
+            
+            if (Filters != null && Filters.Length > 0)
             {
-                if (filter.IsRegularExpression)
-                    useRegularExpression = true;
+                var useRegularExpression = false;
+                foreach (var filter in Filters)
+                {
+                    if (filter.IsRegularExpression)
+                        useRegularExpression = true;
 
-                result.Append(
-                    $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
+                    result.Append(
+                        $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
+                }
+
+                result.Append($"&use_regex={useRegularExpression}");
             }
-
-            result.Append($"&use_regex={useRegularExpression}");
 
             return result.ToString();
         }
     }
-}
+    }
