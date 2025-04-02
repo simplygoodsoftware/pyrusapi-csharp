@@ -4,6 +4,7 @@ using PyrusApiClient;
 using PyrusApiClient.Builders;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using File = PyrusApiClient.File;
@@ -210,7 +211,12 @@ namespace Pyrus.ApiClient.Requests.Builders
             => await client.Auth(builder.Login, builder.SecretKey);
 
         public static async Task<CatalogResponse> Process(this GetCatalogRequestBuilder builder, PyrusClient client)
-            => await client.GetCatalog(builder.CatalogId, includeDeleted: builder.IncludeDeletedItems);
+        {
+            if (builder.Filters.Count > 0)
+                return await client.GetCatalog(builder.CatalogId, new GetCatalogRequest() { IncludeDeletedItems = false, Filters = builder.Filters.ToArray() });
+                
+            return await client.GetCatalog(builder.CatalogId, includeDeleted: builder.IncludeDeletedItems);
+        }
 
         public static async Task<CatalogResponse> Process(this OnePropertyBuilder<int, CatalogResponse> builder, PyrusClient client)
             => await client.GetCatalog(builder.Property);

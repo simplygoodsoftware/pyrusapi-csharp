@@ -221,12 +221,20 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null, bool includeDeleted = false)
+        public Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null, bool includeDeleted = false)
         {
-            var path = $"{CatalogsEndpoint}/{catalogId}?include_deleted={includeDeleted}";
             Token = accessToken ?? Token;
+            var request = new GetCatalogRequest() { IncludeDeletedItems = includeDeleted };
 
-            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}", Token));
+            return GetCatalog(catalogId, request, accessToken);
+        }
+
+        public async Task<CatalogResponse> GetCatalog(int catalogId, GetCatalogRequest request, string accessToken = null)
+        {
+            var path = $"{CatalogsEndpoint}/{catalogId}";
+            Token = accessToken ?? Token;
+            
+            var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}{request.ToString()}", Token));
             return response;
         }
 
