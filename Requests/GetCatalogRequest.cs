@@ -17,8 +17,7 @@ namespace Pyrus.ApiClient.Requests
         {
             var result = new StringBuilder();
 
-            result.Append("?");
-            result.Append($"include_deleted={IncludeDeletedItems}");
+            result.Append($"?include_deleted={IncludeDeletedItems}");
             
             if (Filters != null && Filters.Length > 0)
             {
