@@ -1,4 +1,5 @@
-﻿using System;
+using Pyrus.ApiClient.Requests.FormFilters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,6 +62,18 @@ namespace PyrusApiClient.Builders
 		public FormRegisterRequestBuilder IncludingArchived()
 		{
 			_formRegisterRequest.IncludeArchived = true;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder SortByTaskId(bool descending = false)
+		{
+			_formRegisterRequest.Sort = new Pyrus.ApiClient.Entities.FormRegisterSort()
+			{
+				ByTaskId = true
+			};
+
+			_formRegisterRequest.Descending = descending;
+
 			return this;
 		}
 
@@ -136,6 +149,7 @@ namespace PyrusApiClient.Builders
 			private int _currentFieldId;
 			private string _currentFieldName;
 			private bool? _byId;
+			private bool _isTaskIdFilter;
 			public int FormId { get; }
 
 			public FormRegisterFilterBuilder(FormRegisterRequestBuilder formRegisterRequestBuilder, int formId)
@@ -149,10 +163,17 @@ namespace PyrusApiClient.Builders
 				return frfb._formRegisterRequestBuilder;
 			}
 
+			public FormRegisterFilterBuilder TaskId()
+			{
+				_isTaskIdFilter = true;
+				return this;
+			}
+
 			public FormRegisterFilterBuilder Field(int fieldId)
 			{
 				_currentFieldId = fieldId;
 				_byId = true;
+				_isTaskIdFilter = false;
 				return this;
 			}
 
@@ -160,77 +181,110 @@ namespace PyrusApiClient.Builders
 			{
 				_currentFieldName = fieldName;
 				_byId = false;
+				_isTaskIdFilter = false;
 				return this;
 			}
 
 			public FormRegisterFilterBuilder EqualsTo(object value)
 			{
-				switch (_byId)
+				if (_isTaskIdFilter)
 				{
-					case true:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new EqualsFilter(_currentFieldId, value));
-						break;
-					case false:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new EqualsFilter(_currentFieldName, value));
-						break;
-					case null:
-						throw new ArgumentException("Field name or id should be set first");
+					_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new EqualsTaskIdFilter(value));
+				}
+				else
+				{
+					switch (_byId)
+					{
+						case true:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new EqualsFilter(_currentFieldId, value));
+							break;
+						case false:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new EqualsFilter(_currentFieldName, value));
+							break;
+						case null:
+							throw new ArgumentException("Field name or id should be set first");
+					}
 				}
 
+				_isTaskIdFilter = false;
 				_byId = null;
 				return this;
 			}
 
 			public FormRegisterFilterBuilder LessThen(object value)
 			{
-				switch (_byId)
+				if (_isTaskIdFilter)
 				{
-					case true:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new LessThanFilter(_currentFieldId, value));
-						break;
-					case false:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new LessThanFilter(_currentFieldName, value));
-						break;
-					case null:
-						throw new ArgumentException("Field name or id should be set first");
+					_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new LessThanTaskIdFilter(value));
+				}
+				else
+				{ 
+					switch (_byId)
+					{
+						case true:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new LessThanFilter(_currentFieldId, value));
+							break;
+						case false:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new LessThanFilter(_currentFieldName, value));
+							break;
+						case null:
+							throw new ArgumentException("Field name or id should be set first");
+					}
 				}
 
+				_isTaskIdFilter = false;
 				_byId = null;
 				return this;
 			}
 
 			public FormRegisterFilterBuilder GreaterThen(object value)
 			{
-				switch (_byId)
+				if (_isTaskIdFilter)
 				{
-					case true:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new GreaterThanFilter(_currentFieldId, value));
-						break;
-					case false:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new GreaterThanFilter(_currentFieldName, value));
-						break;
-					case null:
-						throw new ArgumentException("Field name or id should be set first");
+					_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new GreaterThanTaskIdFilter(value));
+				}
+				else
+				{
+					switch (_byId)
+					{
+						case true:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new GreaterThanFilter(_currentFieldId, value));
+							break;
+						case false:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new GreaterThanFilter(_currentFieldName, value));
+							break;
+						case null:
+							throw new ArgumentException("Field name or id should be set first");
+					}
 				}
 
+				_isTaskIdFilter = false;
 				_byId = null;
 				return this;
 			}
 
 			public FormRegisterFilterBuilder IsInList(IEnumerable<object> values)
 			{
-				switch (_byId)
+				if (_isTaskIdFilter)
 				{
-					case true:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new IsInFilter(_currentFieldId, values));
-						break;
-					case false:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new IsInFilter(_currentFieldName, values));
-						break;
-					case null:
-						throw new ArgumentException("Field name or id should be set first");
+					_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new IsInTaskIdFilter(values));
+				}
+				else
+				{
+					switch (_byId)
+					{
+						case true:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new IsInFilter(_currentFieldId, values));
+							break;
+						case false:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new IsInFilter(_currentFieldName, values));
+							break;
+						case null:
+							throw new ArgumentException("Field name or id should be set first");
+					}
 				}
 
+				_isTaskIdFilter = false;
 				_byId = null;
 				return this;
 			}
@@ -242,18 +296,26 @@ namespace PyrusApiClient.Builders
 
 			public FormRegisterFilterBuilder Between(object start, object end)
 			{
-				switch (_byId)
+				if (_isTaskIdFilter)
 				{
-					case true:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new RangeFilter(_currentFieldId, start, end));
-						break;
-					case false:
-						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new RangeFilter(_currentFieldName, start, end));
-						break;
-					case null:
-						throw new ArgumentException("Field name or id should be set first");
+					_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new RangeTaskIdFilter(start, end));
+				}
+				else
+				{
+					switch (_byId)
+					{
+						case true:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new RangeFilter(_currentFieldId, start, end));
+							break;
+						case false:
+							_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new RangeFilter(_currentFieldName, start, end));
+							break;
+						case null:
+							throw new ArgumentException("Field name or id should be set first");
+					}
 				}
 
+				_isTaskIdFilter = false;
 				_byId = null;
 				return this;
 			}
