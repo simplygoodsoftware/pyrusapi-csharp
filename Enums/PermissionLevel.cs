@@ -16,6 +16,9 @@ namespace Pyrus.ApiClient.Enums
 		[EnumMember(Value = "member")]
 		Member,
 
+		[EnumMember(Value = "restricted_manager")]
+		RestrictedManager,
+
 		[EnumMember(Value = "administrator")]
 		Administrator
 	}
