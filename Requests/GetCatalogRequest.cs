@@ -21,17 +21,17 @@ namespace Pyrus.ApiClient.Requests
             
             if (Filters != null && Filters.Length > 0)
             {
-                var useRegularExpression = false;
+                var useWildcard = false;
                 foreach (var filter in Filters)
                 {
                     if (filter.IsRegularExpression)
-                        useRegularExpression = true;
+                        useWildcard = true;
 
                     result.Append(
                         $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
                 }
 
-                result.Append($"&use_regex={useRegularExpression}");
+                result.Append($"&use_wildcard={useWildcard}");
             }
 
             return result.ToString();
