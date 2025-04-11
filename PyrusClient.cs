@@ -135,7 +135,7 @@ namespace PyrusApiClient
             if (form == null)
                 return;
 
-            foreach (var requestFilter in requestFilters.Where(f => !f.FieldId.HasValue))
+            foreach (var requestFilter in requestFilters.Where(f => !f.FieldId.HasValue && !f.IsTaskIdFilter))
                 requestFilter.FieldId = FormFilter.GetFieldIdByName(requestFilter.FieldName, form);
         }
 
