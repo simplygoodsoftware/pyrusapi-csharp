@@ -67,7 +67,7 @@ namespace Pyrus.ApiClient.JsonConverters
 				WriteFilters(writer, serializer, request);
 
 			if (request.Sort != null && request.Sort.ByTaskId)
-				WriteString(writer, nameof(request.Sort), "tsk");;
+				WriteString(writer, nameof(request.Sort), "tsk");
 
 			if (request.ModifiedBefore.HasValue)
 				WriteDate(writer, nameof(request.ModifiedBefore), request.ModifiedBefore.Value);
