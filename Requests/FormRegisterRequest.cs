@@ -60,8 +60,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("sort")]
 		public FormRegisterSort Sort { get; set; }
-
-		[JsonProperty("desc")]
-		public bool Descending { get; set; }
 	}
 }

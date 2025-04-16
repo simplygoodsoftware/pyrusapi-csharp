@@ -65,14 +65,12 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormRegisterRequestBuilder SortByTaskId(bool descending = false)
+		public FormRegisterRequestBuilder SortByTaskId()
 		{
 			_formRegisterRequest.Sort = new Pyrus.ApiClient.Entities.FormRegisterSort()
 			{
 				ByTaskId = true
 			};
-
-			_formRegisterRequest.Descending = descending;
 
 			return this;
 		}
