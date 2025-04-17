@@ -67,7 +67,7 @@ namespace Pyrus.ApiClient.JsonConverters
 				WriteFilters(writer, serializer, request);
 
 			if (request.Sort != null && request.Sort.ByTaskId)
-				WriteString(writer, nameof(request.Sort), "tsk");
+				WriteString(writer, nameof(request.Sort), "id");
 
 			if (request.ModifiedBefore.HasValue)
 				WriteDate(writer, nameof(request.ModifiedBefore), request.ModifiedBefore.Value);
@@ -138,7 +138,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			foreach (var filter in request.Filters)
 			{
 				if (filter.IsTaskIdFilter)
-					writer.WritePropertyName("tsk");
+					writer.WritePropertyName("id");
 				else
 					writer.WritePropertyName($"fld{filter.FieldId}");
 
