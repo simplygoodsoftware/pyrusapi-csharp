@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Pyrus.ApiClient.Entities;
 
 namespace PyrusApiClient
 {
@@ -56,5 +57,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("item_count")]
 		public int? MaxItemCount { get; set; }
+
+		[JsonProperty("sort")]
+		public FormRegisterSort Sort { get; set; }
 	}
 }

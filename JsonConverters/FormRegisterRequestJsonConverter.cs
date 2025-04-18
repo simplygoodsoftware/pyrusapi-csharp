@@ -66,6 +66,9 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (request.Filters != null && request.Filters.Count != 0)
 				WriteFilters(writer, serializer, request);
 
+			if (request.Sort != null && request.Sort.ByTaskId)
+				WriteString(writer, nameof(request.Sort), "id");
+
 			if (request.ModifiedBefore.HasValue)
 				WriteDate(writer, nameof(request.ModifiedBefore), request.ModifiedBefore.Value);
 			if (request.ModifiedAfter.HasValue)
@@ -117,6 +120,7 @@ namespace Pyrus.ApiClient.JsonConverters
 			writer.WritePropertyName(JsonNames[propertyName]);
 			writer.WriteValue(propertyValue);
 		}
+
 		private static void WriteInt(JsonWriter writer, string propertyName, int propertyValue)
 		{
 			writer.WritePropertyName(JsonNames[propertyName]);
@@ -133,7 +137,11 @@ namespace Pyrus.ApiClient.JsonConverters
 		{
 			foreach (var filter in request.Filters)
 			{
-				writer.WritePropertyName($"fld{filter.FieldId}");
+				if (filter.IsTaskIdFilter)
+					writer.WritePropertyName("id");
+				else
+					writer.WritePropertyName($"fld{filter.FieldId}");
+
 				var filterValue = GetFilterValue(filter.OperatorId, filter.Values);
 				serializer.Serialize(writer, filterValue);
 			}

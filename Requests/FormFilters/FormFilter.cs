@@ -16,6 +16,13 @@ namespace PyrusApiClient
 			Values = values.Select(ConvertToString).ToArray();
 		}
 
+		protected FormFilter(OperatorId operatorId, bool isTaskIdFilter, params object[] values)
+		{
+			OperatorId = operatorId;
+			Values = values.Select(ConvertToString).ToArray();
+			IsTaskIdFilter = isTaskIdFilter;
+		}
+
 		private static string ConvertToString(object arg)
 		{
 			switch (arg)
@@ -38,6 +45,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("field_id")]
 		internal int? FieldId { get; set; }
+
+		internal bool IsTaskIdFilter { get; set; }
 
 		[JsonProperty("operator_id")]
 		internal OperatorId OperatorId { get; }
