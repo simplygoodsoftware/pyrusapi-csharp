@@ -234,7 +234,7 @@ var profileResponse = await RequestBuilder.GetProfile().Process(pyrusClient);
 * Get inbox
 
 ```csharp
-var inboxResponse = await RequestBuilder.GetInbox(10).Process(pyrusClient);
+var inboxResponse = await RequestBuilder.GetInbox(10, 5).Process(pyrusClient);
 ```
 
 ## Announcements

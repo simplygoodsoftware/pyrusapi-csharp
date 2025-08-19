@@ -697,12 +697,12 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null)
+        public async Task<InboxResponse> GetInbox(InboxRequest request, string accessToken = null)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{InboxEndpoint}?item_count={tasksCount}", Token));
+            var response = await this.RunQuery<InboxResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{InboxEndpoint}?{request}", Token));
             return response;
         }
 

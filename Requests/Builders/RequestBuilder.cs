@@ -141,8 +141,8 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static ProfileRequestBuilder GetProfile() => new ProfileRequestBuilder();
 
-        public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
-            => new OnePropertyBuilder<int, InboxResponse>(tasksCount);
+        public static InboxRequestBuilder GetInbox(int tasksCount = 50, int groupTasksCount = 50)
+            => new InboxRequestBuilder(tasksCount, groupTasksCount);
 
         public static GetCalendarTasksBuilder GetCalendarTasks(DateTime startDateTimeUtc, DateTime endDateTimeUtc)
             => new GetCalendarTasksBuilder(startDateTimeUtc, endDateTimeUtc);
@@ -317,8 +317,8 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static async Task<ProfileResponse> Process(this ProfileRequestBuilder builder, PyrusClient client)
             => await client.GetProfile(builder);
 
-        public static async Task<InboxResponse> Process(this OnePropertyBuilder<int, InboxResponse> builder, PyrusClient client)
-            => await client.GetInbox(builder.Property);
+        public static async Task<InboxResponse> Process(this InboxRequestBuilder builder, PyrusClient client)
+            => await client.GetInbox(builder);
 
         public static async Task<CalendarResponse> Process(this GetCalendarTasksBuilder builder, PyrusClient client)
         {
