@@ -697,6 +697,9 @@ namespace PyrusApiClient
             return response;
         }
 
+        public Task<InboxResponse> GetInbox(int tasksCount = 50, string accessToken = null) =>
+            GetInbox(new InboxRequest() { TasksCount = tasksCount }, accessToken);
+
         public async Task<InboxResponse> GetInbox(InboxRequest request, string accessToken = null)
         {
             if (accessToken != null)
