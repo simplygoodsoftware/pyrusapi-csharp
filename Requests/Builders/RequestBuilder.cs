@@ -144,7 +144,7 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static OnePropertyBuilder<int, InboxResponse> GetInbox(int tasksCount = 50)
             => new OnePropertyBuilder<int, InboxResponse>(tasksCount);
 
-        public static InboxRequestBuilder GetInbox(int tasksCount = 50, int groupTasksCount = 50)
+        public static InboxRequestBuilder GetInbox(int tasksCount, int groupTasksCount = 50)
             => new InboxRequestBuilder(tasksCount, groupTasksCount);
 
         public static GetCalendarTasksBuilder GetCalendarTasks(DateTime startDateTimeUtc, DateTime endDateTimeUtc)
