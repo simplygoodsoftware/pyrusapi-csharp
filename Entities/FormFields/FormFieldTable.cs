@@ -18,10 +18,11 @@ namespace PyrusApiClient
 	{
 		public TableRow(){ }
 
-		public TableRow(int rowId, IEnumerable<FormField> cells)
+		public TableRow(int rowId, IEnumerable<FormField> cells, int? position = null)
 		{
 			RowId = rowId;
 			Cells = cells?.ToList() ?? new List<FormField>();
+			Position = position;
 		}
 
 		[JsonProperty("row_id")]
@@ -36,6 +37,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("deleted")]
 		public bool Deleted { get; set; }
+
+		[JsonProperty("position")]
+		public int? Position { get; set; }
 	}
 
 }
