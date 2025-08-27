@@ -375,8 +375,12 @@ namespace PyrusApiClient
         [EnumMember(Value = "too_many_requests")]
         TooManyRequests = 400,
 
+		[EnumMember(Value = "duplicate_position")]
+		DuplicatePosition = 504,
 
+		[EnumMember(Value = "invalid_position")]
+		InvalidPosition = 505,
 
-        UnknownError = 999,
+		UnknownError = 999,
     }
 }
