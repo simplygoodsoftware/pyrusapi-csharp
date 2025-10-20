@@ -37,10 +37,13 @@ namespace Pyrus.ApiClient
 					{
 						result = JsonConvert.DeserializeObject<TResponse>(res.Message, new FormFieldJsonConverter());
 					}
-					catch
+					catch (Exception ex)
 					{
 						if (i == client.ClientSettings.RetryCount)
+						{
+							ThrowIfResponseHtml(res, ex);
 							throw;
+						}
 						continue;
 					}
 
@@ -126,7 +129,7 @@ namespace Pyrus.ApiClient
 			{
 				return client.ClientSettings.AuthOrigin + PyrusClient.AuthEndpoint;
 			}
-			
+
 			return client.ClientSettings.Origin + PyrusClient.AuthEndpoint;
 		}
 
@@ -141,6 +144,21 @@ namespace Pyrus.ApiClient
 			{
 				client.ClientSettings.Origin = response.ApiUrl;
 			}
+		}
+
+		private static void ThrowIfResponseHtml(MessageWithStatusCode response, Exception exception)
+		{
+			if (!(exception is JsonReaderException))
+				return;
+
+			if (response?.Message == null)
+				return;
+
+			if (!response.Message.StartsWith("<", StringComparison.Ordinal))
+				return;
+
+			var message = $"Invalid server response: {response.ResponseMessage}, Response content: {response.Message}";
+			throw new InvalidServerResponeException(message, exception);
 		}
 	}
 }
