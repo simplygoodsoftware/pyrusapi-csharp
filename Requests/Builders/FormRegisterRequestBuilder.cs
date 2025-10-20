@@ -336,6 +336,24 @@ namespace PyrusApiClient.Builders
 				return this;
 			}
 
+			public FormRegisterFilterBuilder Exists()
+			{
+				switch (_byId)
+				{
+					case true:
+						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new ExistsFilter(_currentFieldId));
+						break;
+					case false:
+						_formRegisterRequestBuilder._formRegisterRequest.Filters.Add(new ExistsFilter(_currentFieldName));
+						break;
+					case null:
+						throw new ArgumentException("Field name or id should be set first");
+				}
+
+				_byId = null;
+				return this;
+			}
+
 			public FormRegisterRequestBuilder BuildFilters()
 			{
 				return _formRegisterRequestBuilder;

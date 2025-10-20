@@ -153,8 +153,11 @@ namespace Pyrus.ApiClient.JsonConverters
 			{
 				return "empty";
 			}
-			
-			if (values.Length == 0)
+			else if(operatorId == OperatorId.Exists)
+			{
+				return "*";
+			}
+			else if (values.Length == 0)
 			{
 				return null;
 			}
