@@ -327,7 +327,7 @@ namespace PyrusApiClient
             }
         }
 
-        public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null, bool useFileService = false)
+        public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null, bool useFileService = true)
         {
             if (accessToken != null)
                 Token = accessToken;
@@ -337,10 +337,13 @@ namespace PyrusApiClient
 
             var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
 
-            var response = await this.RunQuery<UploadResponse>(async () =>
+            var isFilesOriginDefined = string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase); 
+
+			var response = await this.RunQuery<UploadResponse>(async () =>
             {
-                var url = useFileService
-                    ? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
+                var url = useFileService && isFilesOriginDefined
+					? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
                     : $"{ClientSettings.Origin}{UploadFilesEndpoint}";
 
                 return await RequestHelper.PostFileRequest(this, url, streamFactory, fileName, Token);
