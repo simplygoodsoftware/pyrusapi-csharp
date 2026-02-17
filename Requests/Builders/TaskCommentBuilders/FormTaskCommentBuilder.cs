@@ -187,6 +187,15 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+        public FormTaskCommentBuilder SendToMaxMessengerChannel()
+        {
+            Comment.Channel = new Channel
+            {
+                Type = ChannelType.MaxMessenger
+            };
+
+            return this;
+        }
 
 		public FormTaskCommentBuilder EditExistingComment(long commentId)
 		{
