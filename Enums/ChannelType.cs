@@ -70,6 +70,9 @@ namespace PyrusApiClient
 		Custom = 20,
 		
 		[EnumMember(Value = "sms")]
-		Sms = 21
-	}
+		Sms = 21,
+
+        [EnumMember(Value = "max_messenger")]
+        MaxMessenger = 22,
+    }
 }
