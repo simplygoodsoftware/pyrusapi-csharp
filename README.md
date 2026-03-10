@@ -263,9 +263,85 @@ var announcementResponse = await RequestBuilder
 ```
 
 * Create an announcement
-  
+
 ```csharp
 var announcementResponse = await RequestBuilder
 	.CreateAnnouncement("New announcement")
+	.Process(pyrusClient);
+```
+
+## Knowledge Base
+
+* Get a knowledge base entity (article or topic)
+
+```csharp
+var response = await RequestBuilder
+    .GetKnowledgeBaseEntity("LMcleQRnRqB")
+    .Process(pyrusClient);
+```
+
+* Create an article
+
+```csharp
+var response = await RequestBuilder
+	.CreateKnowledgeBaseArticle("My Article")
+	.WithBody("Article content in MD format")
+	.InTopic("KoSjtyL9EWm")
+	.Process(pyrusClient);
+```
+
+* Create a topic
+
+```csharp
+var response = await RequestBuilder
+	.CreateKnowledgeBaseTopic("My Topic")
+	.Process(pyrusClient);
+```
+
+* Update a knowledge base entity
+
+```csharp
+var response = await RequestBuilder
+	.UpdateKnowledgeBaseEntity("LMcleQRnRqB")
+	.WithTitle("Updated Title")
+	.WithBody("Updated content in MD format")
+	.Process(pyrusClient);
+```
+
+* Delete a knowledge base entity
+
+```csharp
+var response = await RequestBuilder
+	.DeleteKnowledgeBaseEntity("LMcleQRnRqB")
+	.WithChildren()
+	.Process(pyrusClient);
+```
+
+* Get knowledge base structure
+
+```csharp
+var response = await RequestBuilder
+	.GetKnowledgeBaseStructure()
+	.WithParentTopicId("KoSjtyL9EWm")
+	.WithDepth(2)
+	.Process(pyrusClient);
+```
+
+* Get knowledge base entity permissions
+
+```csharp
+var response = await RequestBuilder
+    .GetKnowledgeBasePermissions("KoSjtyL9EWm")
+    .Process(pyrusClient);
+```
+
+* Update knowledge base entity permissions
+
+```csharp
+var response = await RequestBuilder
+	.UpdateKnowledgeBasePermissions("KoSjtyL9EWm")
+	.SetInherit(false)
+	.SetReaders(1732, 4368)
+	.SetEditors(2434)
 	.Process(pyrusClient);
 ```

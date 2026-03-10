@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pyrus.ApiClient.Enums;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Builders;
@@ -154,6 +155,30 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static AttachCallRecordBuilder AttachCallRecord(string recordFile)
             => new AttachCallRecordBuilder(recordFile);
+
+        public static CreateKnowledgeBaseEntityBuilder CreateKnowledgeBaseArticle(string title)
+            => new CreateKnowledgeBaseEntityBuilder(title, KnowledgeBaseEntityType.Article);
+
+        public static CreateKnowledgeBaseEntityBuilder CreateKnowledgeBaseTopic(string title)
+            => new CreateKnowledgeBaseEntityBuilder(title, KnowledgeBaseEntityType.Topic);
+
+        public static UpdateKnowledgeBaseEntityBuilder UpdateKnowledgeBaseEntity(string entityId)
+            => new UpdateKnowledgeBaseEntityBuilder(entityId);
+
+        public static DeleteKnowledgeBaseEntityBuilder DeleteKnowledgeBaseEntity(string entityId)
+            => new DeleteKnowledgeBaseEntityBuilder(entityId);
+
+        public static OnePropertyBuilder<string, KnowledgeBaseEntityResponse> GetKnowledgeBaseEntity(string entityId)
+            => new OnePropertyBuilder<string, KnowledgeBaseEntityResponse>(entityId);
+
+        public static GetKnowledgeBaseStructureBuilder GetKnowledgeBaseStructure()
+            => new GetKnowledgeBaseStructureBuilder();
+
+        public static OnePropertyBuilder<string, KnowledgeBasePermissionsResponse> GetKnowledgeBasePermissions(string entityId)
+            => new OnePropertyBuilder<string, KnowledgeBasePermissionsResponse>(entityId);
+
+        public static UpdateKnowledgeBasePermissionsBuilder UpdateKnowledgeBasePermissions(string entityId)
+            => new UpdateKnowledgeBasePermissionsBuilder(entityId);
 
         #region Process
 
@@ -365,6 +390,27 @@ namespace Pyrus.ApiClient.Requests.Builders
 
             return new CsvResponse { Csv = response?.Csv, Success = true };
         }
+
+        public static async Task<KnowledgeBaseEntityResponse> Process(this CreateKnowledgeBaseEntityBuilder builder, PyrusClient client)
+            => await client.CreateKnowledgeBaseEntity(builder);
+
+        public static async Task<KnowledgeBaseEntityResponse> Process(this UpdateKnowledgeBaseEntityBuilder builder, PyrusClient client)
+            => await client.UpdateKnowledgeBaseEntity(builder.EntityId, builder);
+
+        public static async Task<KnowledgeBaseDeleteResponse> Process(this DeleteKnowledgeBaseEntityBuilder builder, PyrusClient client)
+            => await client.DeleteKnowledgeBaseEntity(builder.EntityId, builder.DeleteWithChildren);
+
+        public static async Task<KnowledgeBaseEntityResponse> Process(this OnePropertyBuilder<string, KnowledgeBaseEntityResponse> builder, PyrusClient client)
+            => await client.GetKnowledgeBaseEntity(builder.Property);
+
+        public static async Task<KnowledgeBaseStructureResponse> Process(this GetKnowledgeBaseStructureBuilder builder, PyrusClient client)
+            => await client.GetKnowledgeBaseStructure(builder.ParentTopicId, builder.Depth);
+
+        public static async Task<KnowledgeBasePermissionsResponse> Process(this OnePropertyBuilder<string, KnowledgeBasePermissionsResponse> builder, PyrusClient client)
+            => await client.GetKnowledgeBasePermissions(builder.Property);
+
+        public static async Task<KnowledgeBasePermissionsResponse> Process(this UpdateKnowledgeBasePermissionsBuilder builder, PyrusClient client)
+            => await client.UpdateKnowledgeBasePermissions(builder.EntityId, builder);
 
         #endregion
     }
