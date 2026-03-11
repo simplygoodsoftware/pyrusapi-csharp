@@ -61,11 +61,14 @@ namespace PyrusApiClient
         internal const string PersonLastActionEndpoint = "/personlastaction";
         internal const string OrgChartEndpoint = "/orgchart";
         internal const string ProfileIdentityEndpoint = "/profile/identity";
+        internal const string KnowledgeBaseEndpoint = "/knowledgebase";
 
         internal const string BulkSuffix = "/bulk";
         internal const string RegisterSuffix = "/register";
         internal const string CommentSuffix = "/comments";
         internal const string TasksSuffix = "/tasks";
+        internal const string PermissionsSuffix = "/permissions";
+        internal const string StructureSuffix = "/structure";
 
         private const int AnnouncementMaxCount = 10000;
 
@@ -894,6 +897,59 @@ namespace PyrusApiClient
 
             var url = $"{ClientSettings.Origin}{path}";
             return await this.RunQuery<TResponse>(() => RequestHelper.DeleteRequest(this, url, request, Token));
+        }
+
+        public async Task<KnowledgeBaseEntityResponse> GetKnowledgeBaseEntity(string id, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}", Token));
+        }
+
+        public async Task<KnowledgeBaseEntityResponse> CreateKnowledgeBaseEntity(CreateKnowledgeBaseEntityRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}", request, Token));
+        }
+
+        public async Task<KnowledgeBaseEntityResponse> UpdateKnowledgeBaseEntity(string id, UpdateKnowledgeBaseEntityRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}", request, Token));
+        }
+
+        public async Task<KnowledgeBaseDeleteResponse> DeleteKnowledgeBaseEntity(string id, bool deleteWithChildren = false, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBaseDeleteResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}?delete_with_children={deleteWithChildren.ToString().ToLower()}", Token));
+        }
+
+        public async Task<KnowledgeBaseStructureResponse> GetKnowledgeBaseStructure(string parentTopicId = null, int? depth = null, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            var url = $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}{StructureSuffix}";
+            
+            var queryParams = new List<string>();
+            if (parentTopicId != null)
+                queryParams.Add($"parent_topic_id={parentTopicId}");
+            if (depth != null)
+                queryParams.Add($"depth={depth}");
+            
+            if (queryParams.Count > 0)
+                url += "?" + string.Join("&", queryParams);
+            
+            return await this.RunQuery<KnowledgeBaseStructureResponse>(() => RequestHelper.GetRequest(this, url, Token));
+        }
+
+        public async Task<KnowledgeBasePermissionsResponse> GetKnowledgeBasePermissions(string id, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", Token));
+        }
+
+        public async Task<KnowledgeBasePermissionsResponse> UpdateKnowledgeBasePermissions(string id, UpdateKnowledgeBasePermissionsRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", request, Token));
         }
     }
 }
