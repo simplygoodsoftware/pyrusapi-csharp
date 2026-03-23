@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
 
@@ -44,5 +45,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("is_public")]
 		public bool IsPublic { get; set; }
+
+		[JsonProperty("attachments")]
+		public List<KnowledgeBaseAttachmentInfo> Attachments { get; set; }
 	}
 }
