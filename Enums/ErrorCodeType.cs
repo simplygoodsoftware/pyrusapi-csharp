@@ -380,6 +380,9 @@ namespace PyrusApiClient
 
 		[EnumMember(Value = "invalid_position")]
 		InvalidPosition = 505,
+		
+		[EnumMember(Value = "task_delete_limit_exceeded")]
+		DeleteTaskLimitExceeded = 513,
 
 		UnknownError = 999,
     }
