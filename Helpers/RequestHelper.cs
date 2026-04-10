@@ -202,6 +202,6 @@ namespace PyrusApiClient
 		internal Stream Content;
 		internal string FileName;
 		internal HttpResponseMessage ResponseMessage;
-		internal bool ToCsv => ResponseMessage.Content.Headers.ContentType.MediaType == "text/csv";
+		internal bool ToCsv => ResponseMessage.Content.Headers.ContentType?.MediaType == "text/csv";
 	}
 }

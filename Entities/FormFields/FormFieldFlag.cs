@@ -11,7 +11,7 @@ namespace PyrusApiClient
 
 		public override string ToString()
 		{
-			return $"{Value?.GetAttribute<EnumMemberAttribute>().Value}";
+			return $"{Value?.GetAttribute<EnumMemberAttribute>()?.Value}";
 		}
 	}
 }

@@ -158,7 +158,7 @@ namespace Pyrus.ApiClient
 				return;
 
 			var message = $"Invalid server response: {response.ResponseMessage}, Response content: {response.Message}";
-			throw new InvalidServerResponeException(message, exception);
+			throw new InvalidServerResponseException(message, exception);
 		}
 	}
 }

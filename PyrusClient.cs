@@ -162,7 +162,7 @@ namespace PyrusApiClient
         public async Task<AnnouncementsResponse> GetAnnouncements(int itemCount = 100, string accessToken = null)
         {
             if (itemCount < 1 || itemCount > AnnouncementMaxCount)
-                throw new ArgumentOutOfRangeException(nameof(itemCount), $"must be between 0 and {AnnouncementMaxCount}");
+                throw new ArgumentOutOfRangeException(nameof(itemCount), $"must be between 1 and {AnnouncementMaxCount}");
 
             if (accessToken != null)
                 Token = accessToken;
@@ -775,6 +775,8 @@ namespace PyrusApiClient
             var path = $"{HandlingTimeEndpoint}";
 
             var parameters = new NameValueCollection();
+            if (!string.IsNullOrEmpty(sd))
+                parameters.Add("sd", sd);
             if (!string.IsNullOrEmpty(ed))
                 parameters.Add("ed", ed);
             if (formId != null)

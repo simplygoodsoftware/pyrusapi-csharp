@@ -48,6 +48,6 @@ namespace PyrusApiClient
         /// Данные для автоматического заполнения полей формы
         /// </summary>
         [JsonProperty(PropertyName = "mappings")]
-        public List<FormMapping> Mappings { get; set; }
+        public List<FormMapping> Mappings { get; set; } = new List<FormMapping>();
     }
 }
