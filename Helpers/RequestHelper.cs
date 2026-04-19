@@ -45,7 +45,7 @@ namespace PyrusApiClient
 						Encoding.UTF8, "application/json")))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
@@ -62,7 +62,7 @@ namespace PyrusApiClient
 						Encoding.UTF8, "application/json")))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace PyrusApiClient
 				using (var response = await httpClient.DeleteAsync(url))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
@@ -94,7 +94,7 @@ namespace PyrusApiClient
 				using (var response = await httpClient.SendAsync(httpRequest))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
@@ -113,7 +113,7 @@ namespace PyrusApiClient
 				using (var response = await httpClient.PostAsync(url, multipart))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return new MessageWithStatusCode { Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
@@ -127,7 +127,12 @@ namespace PyrusApiClient
 
 				using (var response = await httpClient.GetAsync(url))
 				{
-					var result = new MessageWithStatusCode { StatusCode = response.StatusCode };
+					var result = new MessageWithStatusCode
+					{
+						StatusCode = response.StatusCode,
+						ContentType = response.Content?.Headers?.ContentType?.MediaType,
+						ResponseDescription = response.ToString()
+					};
 					if (response.StatusCode == HttpStatusCode.OK)
 					{
 						result.Content = new MemoryStream();
@@ -136,10 +141,10 @@ namespace PyrusApiClient
 
 						if (response.Content.Headers.ContentDisposition != null)
 						{
-							result.FileName = !string.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
+							var fileName = !string.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
 								? response.Content.Headers.ContentDisposition.FileNameStar
 								: response.Content.Headers.ContentDisposition.FileName;
-							result.FileName = result.FileName.TrimStart('"').TrimEnd('"');
+							result.FileName = fileName?.TrimStart('"').TrimEnd('"');
 						}
 					}
 
@@ -163,8 +168,7 @@ namespace PyrusApiClient
 						using (var response = await httpClient.GetAsync(url))
 						{
 							var message = await response.Content.ReadAsStringAsync();
-							return new MessageWithStatusCode
-							{ Message = message, StatusCode = response.StatusCode, ResponseMessage = response };
+							return CreateMessageWithStatusCode(response, message);
 						}
 					}
 
@@ -188,6 +192,17 @@ namespace PyrusApiClient
 			return null;
 		}
 
+		private static MessageWithStatusCode CreateMessageWithStatusCode(HttpResponseMessage response, string message)
+		{
+			return new MessageWithStatusCode
+			{
+				Message = message,
+				StatusCode = response.StatusCode,
+				ContentType = response.Content?.Headers?.ContentType?.MediaType,
+				ResponseDescription = response.ToString()
+			};
+		}
+
 		private static void SetHeaders(HttpClient client, string token, string userAgent)
 		{
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -201,7 +216,8 @@ namespace PyrusApiClient
 		internal HttpStatusCode StatusCode;
 		internal Stream Content;
 		internal string FileName;
-		internal HttpResponseMessage ResponseMessage;
-		internal bool ToCsv => ResponseMessage.Content.Headers.ContentType?.MediaType == "text/csv";
+		internal string ContentType;
+		internal string ResponseDescription;
+		internal bool ToCsv => ContentType == "text/csv";
 	}
 }

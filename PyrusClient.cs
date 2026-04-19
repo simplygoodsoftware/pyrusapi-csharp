@@ -24,7 +24,7 @@ namespace PyrusApiClient
 
         public int? PersonId { get; set; }
 
-        public static Settings Settings { get; set; }
+        public static Settings Settings { get; private set; }
 
         /// <summary>
         /// Returns custom settings if they were specified in <see cref="PyrusClient"/> constructor.
@@ -316,6 +316,9 @@ namespace PyrusApiClient
 
         public async Task<UploadResponse> UploadFile(string path, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException(nameof(path));
+
             try
             {
                 using (var fileStream = System.IO.File.Open(path, FileMode.Open))
