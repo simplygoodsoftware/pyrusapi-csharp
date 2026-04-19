@@ -5,9 +5,9 @@
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
 	<!-- Needed to support nullable reference types -->
@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Pyrus.ApiClient</PackageId>
-    <Version>4.24.0.0</Version>
+    <Version>5.0.0.0</Version>
     <Title>Pyrus API Client</Title>
 	<Authors>Pyrus</Authors>
     <Owners>Pyrus</Owners>

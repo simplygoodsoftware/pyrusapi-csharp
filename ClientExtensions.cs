@@ -157,8 +157,8 @@ namespace Pyrus.ApiClient
 			if (!response.Message.StartsWith("<", StringComparison.Ordinal))
 				return;
 
-			var message = $"Invalid server response: {response.ResponseMessage}, Response content: {response.Message}";
-			throw new InvalidServerResponeException(message, exception);
+			var message = $"Invalid server response: {response.ResponseDescription}, Response content: {response.Message}";
+			throw new InvalidServerResponseException(message, exception);
 		}
 	}
 }

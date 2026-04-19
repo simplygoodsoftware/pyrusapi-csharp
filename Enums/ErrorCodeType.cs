@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 
@@ -368,22 +368,124 @@ namespace PyrusApiClient
         [EnumMember(Value = "access_denied")]
         AccessDenied = 311,
 
+        [EnumMember(Value = "option_is_not_supported")]
+        OptionIsNotSupported = 312,
+
+        [EnumMember(Value = "conflict")]
+        Conflict = 313,
+
+        [EnumMember(Value = "less_than_two_or_not_unique_tasks")]
+        LessThanTwoOrNotUniqueTasks = 314,
+
+        [EnumMember(Value = "no_rights_to_send_sms")]
+        NoRightsToSendSms = 315,
+
+        [EnumMember(Value = "both_text_and_formatted_text_specified")]
+        BothTextAndFormattedTextSpecified = 316,
+
+        [EnumMember(Value = "number_not_processing")]
+        NumberNotProcessing = 317,
+
+        [EnumMember(Value = "phone_already_in_use")]
+        PhoneAlreadyInUse = 318,
+
+        [EnumMember(Value = "form_is_deleted")]
+        FormIsDeleted = 319,
+
+        [EnumMember(Value = "task_migrated")]
+        TaskMigrated = 320,
+
         [EnumMember(Value = "file_is_missing")]
         FileIsMissing = 321,
+
+        [EnumMember(Value = "invalid_request_encoding")]
+        InvalidRequestEncoding = 322,
+
+        [EnumMember(Value = "invalid_input")]
+        InvalidInput = 323,
+
+        [EnumMember(Value = "unsupported_catalog_operation")]
+        UnsupportedCatalogOperation = 324,
+
+        [EnumMember(Value = "file_limit_exceeded")]
+        FileLimitExceeded = 325,
+
+        [EnumMember(Value = "empty_item_key")]
+        EmptyItemKey = 326,
+
+        [EnumMember(Value = "cannot_be_fired")]
+        CannotBeFired = 327,
+
+        [EnumMember(Value = "invalid_department")]
+        InvalidDepartment = 328,
+
+        [EnumMember(Value = "person_email_already_in_use")]
+        PersonEmailAlreadyInUse = 329,
+
+        [EnumMember(Value = "max_file_name_length_exceeded")]
+        MaxFileNameLengthExceeded = 330,
+
+        [EnumMember(Value = "invalid_award_limits")]
+        InvalidAwardLimits = 331,
+
+        [EnumMember(Value = "access_denied_awards")]
+        AccessDeniedAwards = 332,
+
+        [EnumMember(Value = "access_denied_field")]
+        FieldAccessDenied = 333,
 
         //Too many Requests (429)
         [EnumMember(Value = "too_many_requests")]
         TooManyRequests = 400,
 
-		[EnumMember(Value = "duplicate_position")]
-		DuplicatePosition = 504,
+        //BadRequest (400)
+        [EnumMember(Value = "incorrect_email_format")]
+        IncorrectEmailFormat = 500,
 
-		[EnumMember(Value = "invalid_position")]
-		InvalidPosition = 505,
-		
-		[EnumMember(Value = "task_delete_limit_exceeded")]
-		DeleteTaskLimitExceeded = 513,
+        [EnumMember(Value = "invalid_catalog_item_filter")]
+        InvalidCatalogItemFilter = 501,
 
-		UnknownError = 999,
+        [EnumMember(Value = "catalog_column_not_found")]
+        CatalogColumnNotFound = 502,
+
+        [EnumMember(Value = "add_task_to_list_forbidden")]
+        AddTaskToListForbidden = 503,
+
+        [EnumMember(Value = "duplicate_position")]
+        DuplicatePosition = 504,
+
+        [EnumMember(Value = "invalid_position")]
+        InvalidPosition = 505,
+
+        // Knowledge Base
+        [EnumMember(Value = "knowledge_base_not_found")]
+        KnowledgeBaseNotFound = 506,
+
+        [EnumMember(Value = "knowledge_base_version_conflict")]
+        KnowledgeBaseVersionConflict = 507,
+
+        [EnumMember(Value = "knowledge_base_access_denied")]
+        KnowledgeBaseAccessDenied = 508,
+
+        [EnumMember(Value = "knowledge_base_invalid_request")]
+        KnowledgeBaseInvalidRequest = 509,
+
+        [EnumMember(Value = "knowledge_base_title_required")]
+        KnowledgeBaseTitleRequired = 510,
+
+        [EnumMember(Value = "knowledge_base_body_required")]
+        KnowledgeBaseBodyRequired = 511,
+
+        [EnumMember(Value = "knowledge_base_invalid_parent")]
+        KnowledgeBaseInvalidParent = 512,
+
+        [EnumMember(Value = "task_delete_limit_exceeded")]
+        DeleteTaskLimitExceeded = 513,
+
+        [EnumMember(Value = "value_is_too_long")]
+        ValueIsTooLong = 600,
+
+        [EnumMember(Value = "unknown_error")]
+        UnknownError = 999,
     }
 }

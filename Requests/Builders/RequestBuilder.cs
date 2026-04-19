@@ -384,7 +384,7 @@ namespace Pyrus.ApiClient.Requests.Builders
             if (response?.ErrorCode != null)
                 return new CsvResponse
                 {
-                    Csv = $"Unexpected error occured: {JsonConvert.SerializeObject(response)}",
+                    Csv = $"Unexpected error occurred: {JsonConvert.SerializeObject(response)}",
                     Success = false
                 };
 

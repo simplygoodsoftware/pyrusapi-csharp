@@ -209,7 +209,7 @@ namespace PyrusApiClient.Builders
 				return this;
 			}
 
-			public FormRegisterFilterBuilder LessThen(object value)
+			public FormRegisterFilterBuilder LessThan(object value)
 			{
 				if (_isTaskIdFilter)
 				{
@@ -235,7 +235,7 @@ namespace PyrusApiClient.Builders
 				return this;
 			}
 
-			public FormRegisterFilterBuilder GreaterThen(object value)
+			public FormRegisterFilterBuilder GreaterThan(object value)
 			{
 				if (_isTaskIdFilter)
 				{
