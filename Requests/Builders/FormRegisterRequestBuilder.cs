@@ -287,6 +287,11 @@ namespace PyrusApiClient.Builders
 				return this;
 			}
 
+			public FormRegisterFilterBuilder IsInList<T>(IEnumerable<T> values) where T : struct
+			{
+				return IsInList(values.Cast<object>());
+			}
+
 			public FormRegisterFilterBuilder IsInList(params object[] values)
 			{
 				return IsInList((IEnumerable<object>)values);
