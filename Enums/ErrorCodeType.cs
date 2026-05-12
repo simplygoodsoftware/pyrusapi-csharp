@@ -383,6 +383,9 @@ namespace PyrusApiClient
 		
 		[EnumMember(Value = "task_delete_limit_exceeded")]
 		DeleteTaskLimitExceeded = 513,
+		
+		[EnumMember(Value = "invalid_from_mailbox")]
+		InvalidFormMailBox = 514,
 
 		UnknownError = 999,
     }
