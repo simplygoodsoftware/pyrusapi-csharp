@@ -4,7 +4,7 @@ namespace Pyrus.ApiClient.Requests.FormFilters
 {
 	public class GreaterThanTaskIdFilter : FormFilter
 	{
-		public GreaterThanTaskIdFilter(object value)
+		public GreaterThanTaskIdFilter(int value)
 			: base(OperatorId.GreaterThan, true, value)
 		{
 
