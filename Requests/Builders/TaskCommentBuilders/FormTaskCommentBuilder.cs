@@ -139,12 +139,13 @@ namespace PyrusApiClient.Builders
 			Comment.ApprovalSteps.AddRange(steps);
 			return this;
 		}
-
-		public FormTaskCommentBuilder SendToEmailChannel()
+		
+		public FormTaskCommentBuilder SendToEmailChannel(string fromEmail = null)
 		{
 			Comment.Channel = new Channel
 			{
-				Type = ChannelType.Email
+				Type = ChannelType.Email,
+				From = fromEmail != null ? new ChannelUser { Email = fromEmail } : null
 			};
 			return this;
 		}
