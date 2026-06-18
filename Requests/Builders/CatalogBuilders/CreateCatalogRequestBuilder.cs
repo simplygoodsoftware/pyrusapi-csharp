@@ -1,4 +1,6 @@
-﻿namespace PyrusApiClient.Builders
+﻿using System;
+
+namespace PyrusApiClient.Builders
 {
 	public class CreateCatalogRequestBuilder : CatalogBuilderBase<CreateCatalogRequestBuilder>
 	{
@@ -19,5 +21,20 @@
 			request.SourceType = sourceType;
 			return this;
 		}
+
+		public CreateCatalogRequestBuilder WithExternalLastSyncDate(DateTime? externalLastSyncDate)
+		{
+			var request = Request as CreateCatalogRequest;
+			request.ExternalLastSyncDate = externalLastSyncDate;
+			return this;
+		}
+
+
+		public CreateCatalogRequestBuilder WithExternalChangeDate(DateTime? externalChangeDate)
+		{
+			var request = Request as CreateCatalogRequest;
+			request.ExternalChangeDate = externalChangeDate;
+			return this;
+		}		
 	}
 }
