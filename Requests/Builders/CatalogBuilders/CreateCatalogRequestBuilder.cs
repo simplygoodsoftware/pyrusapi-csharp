@@ -1,4 +1,6 @@
-﻿namespace PyrusApiClient.Builders
+﻿using System;
+
+namespace PyrusApiClient.Builders
 {
 	public class CreateCatalogRequestBuilder : CatalogBuilderBase<CreateCatalogRequestBuilder>
 	{
