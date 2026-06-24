@@ -10,6 +10,9 @@ namespace PyrusApiClient
 		[JsonProperty(PropertyName = "phone")]
 		public string Phone { get; set; }
 
+		[JsonProperty(PropertyName = "direction")]
+		public string Direction  { get; set; }
+		
 		[JsonProperty(PropertyName = "to")]
 		public ChannelUser To { get; set; }
 		
