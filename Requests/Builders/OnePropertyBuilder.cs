@@ -6,9 +6,9 @@ namespace Pyrus.ApiClient.Requests.Builders
 	{
 		internal T Property { get; set; }
 
-		internal OnePropertyBuilder(T intProperty)
+		internal OnePropertyBuilder(T value)
 		{
-			Property = intProperty;
+			Property = value;
 		}
 	}
 }

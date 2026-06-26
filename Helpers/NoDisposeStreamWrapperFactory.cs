@@ -16,9 +16,17 @@ namespace Pyrus.ApiClient.Helpers
 		private Stream CreateMemoryStream(Stream source)
 		{
 			var result = new MemoryStream();
-			source.CopyTo(result);
-			result.Seek(0, SeekOrigin.Begin);
-			return result;
+			try
+			{
+				source.CopyTo(result);
+				result.Seek(0, SeekOrigin.Begin);
+				return result;
+			}
+			catch
+			{
+				result.Dispose();
+				throw;
+			}
 		}
 
 		public Stream Create()

@@ -49,7 +49,7 @@ namespace PyrusApiClient.Builders
 
 		public SimpleTaskCommentBuilder AddParticipant(string email)
 		{
-			Comment.ParticipantsRemoved.Add(new Person { Email = email });
+			Comment.ParticipantsAdded.Add(new Person { Email = email });
 			return this;
 		}
 

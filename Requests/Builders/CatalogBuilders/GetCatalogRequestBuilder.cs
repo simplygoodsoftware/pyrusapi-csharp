@@ -33,7 +33,7 @@ namespace PyrusApiClient.Builders
 				throw new ArgumentNullException(nameof(value));
 
 			if (IncludeDeletedItems)
-				throw new InvalidOperationException("Filtering deleted items is not suppported.");
+				throw new InvalidOperationException("Filtering deleted items is not supported.");
 
 			_filters.Add(new CatalogItemValueFilter() { ColumnName = columnName, Value = value, IsRegularExpression = isRegularExpression });
 			return this;

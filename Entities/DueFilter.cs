@@ -13,13 +13,14 @@ namespace PyrusApiClient
 
 		public DueFilter(DueFilterType type)
 		{
-			Type = Enum.IsDefined(typeof(DueFilterType), type)
-				? type
-				: default;
+			if (!Enum.IsDefined(typeof(DueFilterType), type))
+				throw new ArgumentOutOfRangeException(nameof(type), type, $"Unknown {nameof(DueFilterType)} value.");
+			Type = type;
 		}
 
 		public DueFilter(params int[] overdueSteps)
 		{
+			if (overdueSteps == null) throw new ArgumentNullException(nameof(overdueSteps));
 			OverdueSteps = overdueSteps;
 		}
 	}

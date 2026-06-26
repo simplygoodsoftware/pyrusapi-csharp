@@ -12,7 +12,7 @@ namespace PyrusApiClient
 		public Title Value { get; set; } = new Title();
 
 		public override string ToString()
-			=> $"{Value?.GetAttribute<EnumMemberAttribute>().Value}";
+			=> $"{Value?.Checkmark?.GetAttribute<EnumMemberAttribute>()?.Value}";
 
 	}
 
