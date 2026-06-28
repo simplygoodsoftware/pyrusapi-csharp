@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace PyrusApiClient
@@ -37,5 +38,11 @@ namespace PyrusApiClient
 
 		[JsonProperty("source_type")]
 		public SourceType SourceType { get; set; }
+
+		[JsonProperty("last_sync_date")]
+		public DateTime? LastSyncDate { get; set; }
+
+		[JsonProperty("last_change_date")]
+		public DateTime? LastChangeDate { get; set; }
 	}
 }
