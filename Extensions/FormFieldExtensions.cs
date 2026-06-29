@@ -342,10 +342,10 @@ namespace PyrusApiClient
 			return formField;
 		}
 
-		public static FormFieldTitle AddField(this FormFieldTitle formFieldTilte, FormField formField)
+		public static FormFieldTitle AddField(this FormFieldTitle formFieldTitle, FormField formField)
 		{
-			formFieldTilte.Value.Fields.Add(formField);
-			return formFieldTilte;
+			formFieldTitle.Value.Fields.Add(formField);
+			return formFieldTitle;
 		}
 
 		public static FormFieldTitle WithFields(this FormFieldTitle formField, IEnumerable<FormField> fields)

@@ -27,7 +27,7 @@ namespace PyrusApiClient
 		private string _origin;
 
 		public string Origin {
-			get { return _origin; } 
+			get => _origin;
 			set
 			{
 				if (value.EndsWith("/"))

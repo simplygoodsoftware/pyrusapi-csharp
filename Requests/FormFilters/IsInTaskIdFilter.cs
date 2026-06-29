@@ -6,8 +6,8 @@ namespace Pyrus.ApiClient.Requests.FormFilters
 {
 	public class IsInTaskIdFilter : FormFilter
 	{
-		public IsInTaskIdFilter(IEnumerable<object> values)
-			:base(OperatorId.IsIn, true, values.ToArray())
+		public IsInTaskIdFilter(IEnumerable<int> values)
+			:base(OperatorId.IsIn, true, values.Cast<object>().ToArray())
 		{
 		}
 	}

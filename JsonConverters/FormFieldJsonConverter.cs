@@ -11,7 +11,7 @@ namespace Pyrus.ApiClient.JsonConverters
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException($"{nameof(FormFieldJsonConverter)} is read-only (CanWrite is false).");
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -20,7 +20,13 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (obj == null)
 				return null;
 
-			var formFieldType = obj[typeof(FormField).GetPropertyAttribute<JsonPropertyAttribute>(nameof(FormField.Type)).PropertyName].ToString();
+			var typeAttr = typeof(FormField).GetPropertyAttribute<JsonPropertyAttribute>(nameof(FormField.Type));
+			if (typeAttr?.PropertyName == null)
+				throw new JsonSerializationException($"{nameof(FormField)}.{nameof(FormField.Type)} is missing a {nameof(JsonPropertyAttribute)}.");
+
+			var formFieldType = obj[typeAttr.PropertyName]?.ToString();
+			if (formFieldType == null)
+				return null;
 
 			if (formFieldType == FormFieldType.Text.GetAttribute<EnumMemberAttribute>().Value)
 				return obj.ToObject<FormFieldText>();

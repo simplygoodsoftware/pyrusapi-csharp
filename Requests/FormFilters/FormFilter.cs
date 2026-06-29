@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -27,13 +28,22 @@ namespace PyrusApiClient
 		{
 			switch (arg)
 			{
+				case null:
+					return null;
 				case DateTime dateTime:
 					return dateTime.ToString("yyyy-MM-dd");
 				case decimal dec:
 					return dec.ToString(CultureInfo.InvariantCulture);
+				case string s:
+					return s;
 				case Checkmark _:
 				case Flag _:
 					return arg.GetAttribute<EnumMemberAttribute>().Value;
+				case IEnumerable _:
+					throw new ArgumentException(
+						$"Filter value cannot be a collection (got '{arg.GetType().Name}'). " +
+						"For IsInList pass items as separate arguments or an IEnumerable<T> overload; " +
+						"scalar operators (EqualsTo/LessThan/GreaterThan/Between) require a single value.");
 			}
 
 			return arg.ToString();
