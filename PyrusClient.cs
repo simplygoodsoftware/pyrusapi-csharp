@@ -62,6 +62,7 @@ namespace PyrusApiClient
         internal const string OrgChartEndpoint = "/orgchart";
         internal const string ProfileIdentityEndpoint = "/profile/identity";
         internal const string KnowledgeBaseEndpoint = "/knowledgebase";
+        internal const string MeetingsEndpoint = "/meetings";
 
         internal const string BulkSuffix = "/bulk";
         internal const string RegisterSuffix = "/register";
@@ -69,6 +70,8 @@ namespace PyrusApiClient
         internal const string TasksSuffix = "/tasks";
         internal const string PermissionsSuffix = "/permissions";
         internal const string StructureSuffix = "/structure";
+        internal const string MeetingRoomsSuffix = "/meeting-rooms";
+        internal const string MyStatusSuffix = "/my-status";
 
         private const int AnnouncementMaxCount = 10000;
 
@@ -955,6 +958,48 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", request, Token));
+        }
+
+        public async Task<MeetingResponse> CreateMeeting(CreateMeetingRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}", request, Token));
+        }
+
+        public async Task<MeetingResponse> GetMeeting(int meetingId, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}/{meetingId}", Token));
+        }
+
+        public async Task<MeetingResponse> UpdateMeeting(int meetingId, UpdateMeetingRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}/{meetingId}", request, Token));
+        }
+
+        public async Task<MeetingResponse> UpdateMeetingTasks(int meetingId, UpdateMeetingTasksRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}/{meetingId}{TasksSuffix}", request, Token));
+        }
+
+        public async Task<MeetingResponse> UpdateMeetingMyStatus(int meetingId, UpdateMeetingMyStatusRequest request, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}/{meetingId}{MyStatusSuffix}", request, Token));
+        }
+
+        public async Task<DeleteMeetingResponse> DeleteMeeting(int meetingId, string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<DeleteMeetingResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}/{meetingId}", Token));
+        }
+
+        public async Task<MeetingRoomsResponse> GetMeetingRooms(string accessToken = null)
+        {
+            Token = accessToken ?? Token;
+            return await this.RunQuery<MeetingRoomsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{MeetingsEndpoint}{MeetingRoomsSuffix}", Token));
         }
     }
 }
