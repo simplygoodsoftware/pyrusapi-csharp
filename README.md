@@ -345,3 +345,70 @@ var response = await RequestBuilder
 	.SetEditors(2434)
 	.Process(pyrusClient);
 ```
+
+## Meetings
+
+* Create a meeting
+
+```csharp
+var meetingResponse = await RequestBuilder
+    .CreateMeeting(MeetingType.Zoom, DateTime.UtcNow.AddHours(1), durationMinutes: 30, "Stand-up")
+    .SetNote("Daily sync")
+    .SetMembers(1732, 4368)
+    .SetMeetingRooms(987654L)
+    .SetTasks(15353)
+    .SharedToExternalPerson()
+    .Process(pyrusClient);
+```
+
+* Get a meeting
+
+```csharp
+var meetingResponse = await RequestBuilder
+    .GetMeeting(meetingId: 42)
+    .Process(pyrusClient);
+```
+
+* Update a meeting (full replace of meeting parameters and members)
+
+```csharp
+var meetingResponse = await RequestBuilder
+    .UpdateMeeting(42, MeetingType.Offline, DateTime.UtcNow.AddDays(1), durationMinutes: 60, "Planning")
+    .SetMembers(1732)
+    .SetMeetingRooms(987654L)
+    .Process(pyrusClient);
+```
+
+* Add or remove linked tasks
+
+```csharp
+var meetingResponse = await RequestBuilder
+    .UpdateMeetingTasks(42)
+    .AddTasks(15353, 15354)
+    .RemoveTasks(15400)
+    .Process(pyrusClient);
+```
+
+* Update participant status (current user)
+
+```csharp
+var meetingResponse = await RequestBuilder
+    .UpdateMeetingMyStatus(42, MeetingMemberStatus.Going)
+    .Process(pyrusClient);
+```
+
+* Delete a meeting
+
+```csharp
+var deleteResponse = await RequestBuilder
+    .DeleteMeeting(42)
+    .Process(pyrusClient);
+```
+
+* List meeting rooms of the organization
+
+```csharp
+var meetingRoomsResponse = await RequestBuilder
+    .GetMeetingRooms()
+    .Process(pyrusClient);
+```

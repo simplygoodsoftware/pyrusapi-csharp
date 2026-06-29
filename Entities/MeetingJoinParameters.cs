@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
@@ -10,7 +10,7 @@ namespace PyrusApiClient
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
-        [JsonProperty("password")]
-        public string Password { get; set; }
-    }
+		[JsonProperty("password")]
+		public string Password { get; set; }
+	}
 }
