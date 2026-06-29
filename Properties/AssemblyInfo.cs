@@ -20,5 +20,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2f417273-ad68-48b2-8592-b51f0aff5c5e")]
-
 // Version is managed in Pyrus.ApiClient.csproj

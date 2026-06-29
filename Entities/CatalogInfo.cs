@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PyrusApiClient;
+using System;
 using System.Collections.Generic;
 
 namespace Pyrus.ApiClient.Entities
@@ -35,6 +36,12 @@ namespace Pyrus.ApiClient.Entities
 
 		[JsonProperty("links")]
 		public List<CatalogLink> Links { get; set; }
+
+		[JsonProperty("last_sync_date")]
+		public DateTime? LastSyncDate { get; set; }
+
+		[JsonProperty("last_change_date")]
+		public DateTime? LastChangeDate { get; set; }
 
 		public class CatalogLink
 		{
