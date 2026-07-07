@@ -180,6 +180,26 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static UpdateKnowledgeBasePermissionsBuilder UpdateKnowledgeBasePermissions(string entityId)
             => new UpdateKnowledgeBasePermissionsBuilder(entityId);
 
+        public static CreateMeetingBuilder CreateMeeting(MeetingType type, DateTime startTime, int durationMinutes, string title)
+            => new CreateMeetingBuilder(type, startTime, durationMinutes, title);
+
+        public static UpdateMeetingBuilder UpdateMeeting(int meetingId, MeetingType type, DateTime startTime, int durationMinutes, string title)
+            => new UpdateMeetingBuilder(meetingId, type, startTime, durationMinutes, title);
+
+        public static UpdateMeetingTasksBuilder UpdateMeetingTasks(int meetingId)
+            => new UpdateMeetingTasksBuilder(meetingId);
+
+        public static UpdateMeetingMyStatusBuilder UpdateMeetingMyStatus(int meetingId, MeetingMemberStatus status)
+            => new UpdateMeetingMyStatusBuilder(meetingId, status);
+
+        public static OnePropertyBuilder<int, MeetingResponse> GetMeeting(int meetingId)
+            => new OnePropertyBuilder<int, MeetingResponse>(meetingId);
+
+        public static OnePropertyBuilder<int, DeleteMeetingResponse> DeleteMeeting(int meetingId)
+            => new OnePropertyBuilder<int, DeleteMeetingResponse>(meetingId);
+
+        public static EmptyBuilder<MeetingRoomsResponse> GetMeetingRooms() => new EmptyBuilder<MeetingRoomsResponse>();
+
         #region Process
 
         public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
@@ -411,6 +431,27 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static async Task<KnowledgeBasePermissionsResponse> Process(this UpdateKnowledgeBasePermissionsBuilder builder, PyrusClient client)
             => await client.UpdateKnowledgeBasePermissions(builder.EntityId, builder);
+
+        public static async Task<MeetingResponse> Process(this CreateMeetingBuilder builder, PyrusClient client)
+            => await client.CreateMeeting(builder);
+
+        public static async Task<MeetingResponse> Process(this UpdateMeetingBuilder builder, PyrusClient client)
+            => await client.UpdateMeeting(builder.MeetingId, builder);
+
+        public static async Task<MeetingResponse> Process(this UpdateMeetingTasksBuilder builder, PyrusClient client)
+            => await client.UpdateMeetingTasks(builder.MeetingId, builder);
+
+        public static async Task<MeetingResponse> Process(this UpdateMeetingMyStatusBuilder builder, PyrusClient client)
+            => await client.UpdateMeetingMyStatus(builder.MeetingId, builder);
+
+        public static async Task<MeetingResponse> Process(this OnePropertyBuilder<int, MeetingResponse> builder, PyrusClient client)
+            => await client.GetMeeting(builder.Property);
+
+        public static async Task<DeleteMeetingResponse> Process(this OnePropertyBuilder<int, DeleteMeetingResponse> builder, PyrusClient client)
+            => await client.DeleteMeeting(builder.Property);
+
+        public static async Task<MeetingRoomsResponse> Process(this EmptyBuilder<MeetingRoomsResponse> builder, PyrusClient client)
+            => await client.GetMeetingRooms();
 
         #endregion
     }

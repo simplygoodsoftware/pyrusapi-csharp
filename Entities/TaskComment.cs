@@ -131,6 +131,9 @@ namespace PyrusApiClient
 		[JsonProperty("sms_info")]
 		public SmsInfo SmsInfo { get; set; }
 
+		[JsonProperty("meeting_action")]
+		public MeetingActionInfo MeetingAction { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
 	}

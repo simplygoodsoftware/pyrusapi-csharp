@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0.0] - 2026-06-29
+### Added
+- Meetings public API (`/meetings`) — create, read, update, delete, link tasks, set own status, list meeting rooms.
+- `meeting_action` block on task comments (`GET /tasks/{id}`) — added/updated/deleted events for linked meetings.
+
 ## [2.1.14] - 2019-06-11
 ### Added
 - This CHANGELOG file.
