@@ -24,7 +24,7 @@ namespace Pyrus.ApiClient.Requests
                 var useWildcard = false;
                 foreach (var filter in Filters)
                 {
-                    if (filter.IsRegularExpression)
+                    if (filter.UseWildcard)
                         useWildcard = true;
 
                     result.Append(

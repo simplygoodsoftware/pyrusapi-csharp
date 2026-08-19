@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Pyrus.ApiClient.Entities
+﻿namespace Pyrus.ApiClient.Entities
 {
     public class CatalogItemValueFilter
     {
@@ -8,6 +6,6 @@ namespace Pyrus.ApiClient.Entities
 
         public string Value { get; set; }
 
-        public bool IsRegularExpression { get; set; }
+        public bool UseWildcard { get; set; }
     }
 }
