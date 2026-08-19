@@ -13,25 +13,24 @@ namespace Pyrus.ApiClient.Requests
         [JsonProperty(PropertyName = "filters")]
         public CatalogItemValueFilter[] Filters { get; set; }
 
+        [JsonProperty(PropertyName = "use_wildcard")]
+        public bool UseWildcard { get; set; }
+
         public override string ToString()
         {
             var result = new StringBuilder();
 
             result.Append($"?include_deleted={IncludeDeletedItems}");
-            
+
             if (Filters != null && Filters.Length > 0)
             {
-                var useWildcard = false;
                 foreach (var filter in Filters)
                 {
-                    if (filter.UseWildcard)
-                        useWildcard = true;
-
                     result.Append(
                         $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
                 }
 
-                result.Append($"&use_wildcard={useWildcard}");
+                result.Append($"&use_wildcard={UseWildcard}");
             }
 
             return result.ToString();

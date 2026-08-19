@@ -241,7 +241,7 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static async Task<CatalogResponse> Process(this GetCatalogRequestBuilder builder, PyrusClient client)
         {
             if (builder.Filters.Count > 0)
-                return await client.GetCatalog(builder.CatalogId, new GetCatalogRequest() { IncludeDeletedItems = false, Filters = builder.Filters.ToArray() });
+                return await client.GetCatalog(builder.CatalogId, new GetCatalogRequest() { IncludeDeletedItems = false, Filters = builder.Filters.ToArray(), UseWildcard = builder.UseWildcard });
                 
             return await client.GetCatalog(builder.CatalogId, includeDeleted: builder.IncludeDeletedItems);
         }
