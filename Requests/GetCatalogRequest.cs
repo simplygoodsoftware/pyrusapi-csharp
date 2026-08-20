@@ -24,13 +24,19 @@ namespace Pyrus.ApiClient.Requests
 
             if (Filters != null && Filters.Length > 0)
             {
+                var useWildcard = UseWildcard;
                 foreach (var filter in Filters)
                 {
+#pragma warning disable 618
+                    if (filter.IsRegularExpression)
+                        useWildcard = true;
+#pragma warning restore 618
+
                     result.Append(
                         $"&column={Uri.EscapeDataString(filter.ColumnName)}&value={Uri.EscapeDataString(filter.Value)}");
                 }
 
-                result.Append($"&use_wildcard={UseWildcard}");
+                result.Append($"&use_wildcard={useWildcard}");
             }
 
             return result.ToString();

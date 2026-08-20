@@ -46,6 +46,14 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		[Obsolete("Use UseWildcardInFilters method.")]
+		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value, bool isRegularExpression)
+		{
+			AddValueFilter(columnName, value);
+			_filters[_filters.Count - 1].IsRegularExpression = isRegularExpression;
+			return this;
+		}
+
 		private readonly List<CatalogItemValueFilter> _filters;
 		public IReadOnlyCollection<CatalogItemValueFilter> Filters => _filters;
 	}
