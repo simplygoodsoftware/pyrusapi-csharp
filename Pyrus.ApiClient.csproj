@@ -32,14 +32,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Pyrus.ApiClient</PackageId>
-    <Version>5.1.0.0</Version>
+    <Version>5.2.0.0</Version>
     <Title>Pyrus API Client</Title>
 	<Authors>Pyrus</Authors>
     <Owners>Pyrus</Owners>
 	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	<Description>Pyrus.ApiClient is a .NET implementation of Pyrus API. It supports all the API endpoints.</Description>
 	<PackageProjectUrl>https://github.com/simplygoodsoftware/pyrusapi-csharp</PackageProjectUrl>
-	<Copyright>Copyright ©2024 Simply Good Software, Inc.</Copyright>
+	<Copyright>Copyright ©2026 Simply Good Software, Inc.</Copyright>
 	<PackageTags>pyrus pyrus.api api pyrus.com</PackageTags>
 	<PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
