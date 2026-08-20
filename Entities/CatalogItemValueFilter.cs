@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 
 namespace Pyrus.ApiClient.Entities
 {
@@ -8,6 +8,7 @@ namespace Pyrus.ApiClient.Entities
 
         public string Value { get; set; }
 
+        [Obsolete("Use GetCatalogRequest.UseWildcard.")]
         public bool IsRegularExpression { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace PyrusApiClient.Builders
 	public class GetCatalogRequestBuilder
 	{
 		public bool IncludeDeletedItems { get; private set; }
+		public bool UseWildcard { get; private set; }
 		public int CatalogId { get; }
 
 		public GetCatalogRequestBuilder(int catalogId)
@@ -24,7 +25,13 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value, bool isRegularExpression = false)
+		public GetCatalogRequestBuilder UseWildcardInFilters()
+		{
+			UseWildcard = true;
+			return this;
+		}
+
+		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value)
 		{
 			if (columnName == null)
 				throw new ArgumentNullException(nameof(columnName));
@@ -35,7 +42,15 @@ namespace PyrusApiClient.Builders
 			if (IncludeDeletedItems)
 				throw new InvalidOperationException("Filtering deleted items is not supported.");
 
-			_filters.Add(new CatalogItemValueFilter() { ColumnName = columnName, Value = value, IsRegularExpression = isRegularExpression });
+			_filters.Add(new CatalogItemValueFilter() { ColumnName = columnName, Value = value });
+			return this;
+		}
+
+		[Obsolete("Use UseWildcardInFilters method.")]
+		public GetCatalogRequestBuilder AddValueFilter(string columnName, string value, bool isRegularExpression)
+		{
+			AddValueFilter(columnName, value);
+			_filters[_filters.Count - 1].IsRegularExpression = isRegularExpression;
 			return this;
 		}
 
