@@ -18,5 +18,8 @@ namespace PyrusApiClient
 		
 		[JsonProperty(PropertyName = "from")]
 		public ChannelUser From { get; set; }
-	}
+
+        [JsonProperty(PropertyName = "integration_id")]
+        public int IntegrationId { get; set; }
+    }
 }

@@ -168,7 +168,17 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-		public FormTaskCommentBuilder SendToSmsChannel(string phone)
+        public FormTaskCommentBuilder SendToCustomChannel(int integrationId)
+        {
+            Comment.Channel = new Channel
+            {
+                Type = ChannelType.Custom,
+				IntegrationId = integrationId
+            };
+            return this;
+        }
+
+        public FormTaskCommentBuilder SendToSmsChannel(string phone)
 		{
 			Comment.Channel = new Channel
 			{
