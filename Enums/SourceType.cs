@@ -79,5 +79,6 @@ namespace PyrusApiClient
 		[EnumMember(Value = "sage_intacct_customers")] SageIntacct_Customers = 71,
 		[EnumMember(Value = "sage_intacct_items")] SageIntacct_Items = 72,
 		[EnumMember(Value = "sage_intacct_classes")] SageIntacct_Classes = 73,
+		[EnumMember(Value = "quickbooks_unit_of_measure")] Quickbooks_UnitOfMeasure = 80,
 	}
 }
