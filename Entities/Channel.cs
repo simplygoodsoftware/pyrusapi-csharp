@@ -20,6 +20,6 @@ namespace PyrusApiClient
 		public ChannelUser From { get; set; }
 
         [JsonProperty(PropertyName = "integration_id")]
-        public int IntegrationId { get; set; }
+        public int? IntegrationId { get; set; }
     }
 }
