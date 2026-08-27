@@ -87,6 +87,18 @@ var taskResponse = await RequestBuilder
 	.Process(pyrusClient);
 ```
 
+* Add task comment to a custom channel
+
+```csharp
+var taskId = 15353;
+var integrationId = 35351;
+var taskResponse = await RequestBuilder
+	.CommentFormTask(taskId)
+	.WithText("Hello!")
+	.SendToCustomChannel(integrationId)
+	.Process(pyrusClient)
+```
+
 * Create a task
   
 ```csharp

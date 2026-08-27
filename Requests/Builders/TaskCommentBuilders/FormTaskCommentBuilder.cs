@@ -168,6 +168,16 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormTaskCommentBuilder SendToCustomChannel(int integrationId)
+		{
+			Comment.Channel = new Channel
+			{
+				Type = ChannelType.Custom,
+				IntegrationId = integrationId
+			};
+			return this;
+		}
+
 		public FormTaskCommentBuilder SendToSmsChannel(string phone)
 		{
 			Comment.Channel = new Channel
@@ -188,15 +198,15 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
-        public FormTaskCommentBuilder SendToMaxMessengerChannel()
-        {
-            Comment.Channel = new Channel
-            {
-                Type = ChannelType.MaxMessenger
-            };
+		public FormTaskCommentBuilder SendToMaxMessengerChannel()
+		{
+			Comment.Channel = new Channel
+			{
+				Type = ChannelType.MaxMessenger
+			};
 
-            return this;
-        }
+			return this;
+		}
 
 		public FormTaskCommentBuilder EditExistingComment(long commentId)
 		{

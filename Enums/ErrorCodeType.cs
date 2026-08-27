@@ -485,6 +485,9 @@ namespace PyrusApiClient
         [EnumMember(Value = "invalid_from_mailbox")]
         InvalidFromMailBox = 514,
 
+        [EnumMember(Value = "custom_channel_not_found")]
+        CustomChannelNotFound = 515,
+
         [EnumMember(Value = "value_is_too_long")]
         ValueIsTooLong = 600,
 
