@@ -180,12 +180,17 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
+        public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null, Guid? idempotencyKey = null)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}", comment, Token));
+            var headers = new Dictionary<string, string>();
+
+            if (idempotencyKey != null)
+                headers["X-Pyrus-Idempotency-Key"] = idempotencyKey.ToString();
+
+            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}", comment, Token, headers));
             return response;
         }
 

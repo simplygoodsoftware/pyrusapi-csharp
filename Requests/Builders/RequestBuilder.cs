@@ -191,15 +191,15 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static async Task<TaskResponse> Process(this SimpleTaskBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
             => await client.CreateTask(builder, idempotencyKey: idempotencyKey);
 
-        public static async Task<TaskResponse> Process(this SimpleTaskCommentBuilder builder, PyrusClient client)
-            => await client.CommentTask(builder.TaskId, builder);
 
+        public static async Task<TaskResponse> Process(this SimpleTaskCommentBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CommentTask(builder.TaskId, builder, idempotencyKey: idempotencyKey);
 
-        public static async Task<TaskResponse> Process(this FormTaskCommentBuilder builder, PyrusClient client)
-            => await client.CommentTask(builder.TaskId, builder);
+        public static async Task<TaskResponse> Process(this FormTaskCommentBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CommentTask(builder.TaskId, builder, idempotencyKey: idempotencyKey);
 
-        public static async Task<TaskResponse> Process(this FormTaskCommentBuilder.FieldUpdatesBuilder builder, PyrusClient client)
-            => await client.CommentTask(builder.TaskId, builder);
+        public static async Task<TaskResponse> Process(this FormTaskCommentBuilder.FieldUpdatesBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CommentTask(builder.TaskId, builder, idempotencyKey: idempotencyKey);
 
         public static async Task<MultipleTasksChangeResponse> Process(this MultipleTasksChangeBuilder builder, PyrusClient client)
             => await client.CommentMultipleTasksInOneTransaction(builder);
