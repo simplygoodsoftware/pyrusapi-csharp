@@ -67,5 +67,8 @@ namespace PyrusApiClient
 
 		[JsonProperty("fill_defaults")]
 		public bool FillDefaults { get; set; }
-	}
+
+		[JsonIgnore]
+		public Guid IdempotencyKey { get; set; }
+    }
 }

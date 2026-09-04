@@ -182,14 +182,14 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         #region Process
 
-        public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client)
-            => await client.CreateTask(builder);
+        public static async Task<TaskResponse> Process(this FormTaskBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CreateTask(builder, idempotencyKey: idempotencyKey);
 
-        public static async Task<TaskResponse> Process(this FormTaskBuilder.FormFieldsBuilder builder, PyrusClient client)
-            => await client.CreateTask(builder);
+        public static async Task<TaskResponse> Process(this FormTaskBuilder.FormFieldsBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CreateTask(builder, idempotencyKey: idempotencyKey);
 
-        public static async Task<TaskResponse> Process(this SimpleTaskBuilder builder, PyrusClient client)
-            => await client.CreateTask(builder);
+        public static async Task<TaskResponse> Process(this SimpleTaskBuilder builder, PyrusClient client, Guid? idempotencyKey = null)
+            => await client.CreateTask(builder, idempotencyKey: idempotencyKey);
 
         public static async Task<TaskResponse> Process(this SimpleTaskCommentBuilder builder, PyrusClient client)
             => await client.CommentTask(builder.TaskId, builder);

@@ -32,11 +32,18 @@ namespace PyrusApiClient
 		private static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
-		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
+        internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null, 
+			Dictionary<string, string> addHeaders = null)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			{
 				SetHeaders(httpClient, token, UserAgent);
+
+				foreach (var header in addHeaders ?? new Dictionary<string, string>())
+				{
+                    SetCustomHeader(httpClient, header.Key, header.Value);
+                }
+
 				using (var response = await httpClient.PostAsync(url,
 					new StringContent(
 						JsonConvert.SerializeObject(request,
@@ -209,7 +216,15 @@ namespace PyrusApiClient
 			client.DefaultRequestHeaders.Add("ContentType", "application/json; charset=UTF-8");
 			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
 		}
-	}
+
+		private static void SetCustomHeader(HttpClient client, string headerName, string headerValue)
+        {
+            if (!string.IsNullOrEmpty(headerName) && !string.IsNullOrEmpty(headerValue))
+            {
+                client.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
+            }
+        }
+    }
 	internal class MessageWithStatusCode
 	{
 		internal string Message;
