@@ -7,6 +7,7 @@ using PyrusApiClient.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -180,12 +181,18 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
+        public Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken = null)
+            => CommentTask(taskId, comment, accessToken, null);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task<TaskResponse> CommentTask(int taskId, TaskCommentRequest comment, string accessToken, Guid? idempotencyKey)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}", comment, Token));
+            var headers = IdempotencyHeaders(idempotencyKey);
+
+            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}/{taskId}{CommentSuffix}", comment, Token, headers));
             return response;
         }
 
@@ -206,12 +213,18 @@ namespace PyrusApiClient
             return response;
         }
 
-        public async Task<TaskResponse> CreateTask(TaskRequest task, string accessToken = null)
+        public Task<TaskResponse> CreateTask(TaskRequest task, string accessToken = null)
+            => CreateTask(task, accessToken, null);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task<TaskResponse> CreateTask(TaskRequest task, string accessToken, Guid? idempotencyKey)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}", task, Token));
+            var headers = IdempotencyHeaders(idempotencyKey);
+
+            var response = await this.RunQuery<TaskResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{TasksEndpoint}", task, Token, headers));
             return response;
         }
 
@@ -955,6 +968,17 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", request, Token));
+        }
+
+        private static Dictionary<string, string> IdempotencyHeaders(Guid? idempotencyKey)
+        {
+            if (!idempotencyKey.HasValue || idempotencyKey.Value == Guid.Empty)
+                return null;
+
+            return new Dictionary<string, string>
+            {
+                { Constants.IdempotencyKeyHeader, idempotencyKey.Value.ToString("D") }
+            };
         }
     }
 }

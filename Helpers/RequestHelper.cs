@@ -32,17 +32,22 @@ namespace PyrusApiClient
 		private static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
-		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null)
+		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
+			IReadOnlyDictionary<string, string> headers = null)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, url))
 			{
 				SetHeaders(httpClient, token, UserAgent);
-				using (var response = await httpClient.PostAsync(url,
-					new StringContent(
-						JsonConvert.SerializeObject(request,
-							JsonSerializerSettings
-							),
-						Encoding.UTF8, "application/json")))
+				AddHeaders(httpRequest, headers);
+
+				httpRequest.Content = new StringContent(
+					JsonConvert.SerializeObject(request,
+						JsonSerializerSettings
+						),
+					Encoding.UTF8, "application/json");
+
+				using (var response = await httpClient.SendAsync(httpRequest))
 				{
 					var message = await response.Content.ReadAsStringAsync();
 					return CreateMessageWithStatusCode(response, message);
@@ -208,6 +213,18 @@ namespace PyrusApiClient
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("ContentType", "application/json; charset=UTF-8");
 			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+		}
+
+		private static void AddHeaders(HttpRequestMessage request, IReadOnlyDictionary<string, string> headers)
+		{
+			if (headers == null)
+				return;
+
+			foreach (var header in headers)
+			{
+				if (!string.IsNullOrEmpty(header.Key) && !string.IsNullOrEmpty(header.Value))
+					request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+			}
 		}
 	}
 	internal class MessageWithStatusCode

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace PyrusApiClient.Builders
@@ -8,6 +9,8 @@ namespace PyrusApiClient.Builders
 	{
 		protected readonly List<Approval> Approvals = new List<Approval>();
 		protected readonly TaskRequest Task;
+
+		internal Guid? IdempotencyKey { get; private set; }
 
 		protected TaskBuilderBase(TaskRequest task)
 		{
@@ -18,6 +21,13 @@ namespace PyrusApiClient.Builders
 		{
 			Task.FormattedText = null;
 			Task.Text = text;
+			return (T)this;
+		}
+
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public T WithIdempotencyKey(Guid idempotencyKey)
+		{
+			IdempotencyKey = idempotencyKey;
 			return (T)this;
 		}
 
