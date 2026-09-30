@@ -1,0 +1,21 @@
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace PyrusApiClient
+{
+    public class ChatReaction
+    {
+        [JsonProperty("key")]
+        public string Key { get; set; }
+
+        [JsonProperty("count")]
+        public int Count { get; set; }
+
+        [JsonProperty("is_set_by_me")]
+        public bool IsSetByMe { get; set; }
+
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData { get; set; }
+    }
+}

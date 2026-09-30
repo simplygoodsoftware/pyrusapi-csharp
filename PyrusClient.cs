@@ -1,17 +1,20 @@
-﻿using Pyrus.ApiClient;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Pyrus.ApiClient;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Requests.Builders;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace PyrusApiClient
 {
@@ -63,6 +66,8 @@ namespace PyrusApiClient
         internal const string OrgChartEndpoint = "/orgchart";
         internal const string ProfileIdentityEndpoint = "/profile/identity";
         internal const string KnowledgeBaseEndpoint = "/knowledgebase";
+
+        internal const string ChatsEndpoint = "/chats";
 
         internal const string BulkSuffix = "/bulk";
         internal const string RegisterSuffix = "/register";
@@ -979,6 +984,453 @@ namespace PyrusApiClient
             {
                 { Constants.IdempotencyKeyHeader, idempotencyKey.Value.ToString("D") }
             };
+        }
+
+        public Task<ChatsResponse> GetChatsAsync(string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatsResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatsEndpoint, null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> GetChatAsync(string chatId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatPath(chatId), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> CreateChatGroupAsync(CreateChatGroupRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/group", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> UpdateChatGroupAsync(string chatId, UpdateChatGroupRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatPath(chatId), payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> DeleteChatGroupAsync(string chatId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            token = CommandToken(token);
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + ChatPath(chatId) + "?token=" + ChatSegment(token), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> DeleteChatAvatarAsync(string chatId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            token = CommandToken(token);
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + ChatPath(chatId) + "/avatar?token=" + ChatSegment(token), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> RevokeChatInviteAsync(string chatId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            token = CommandToken(token);
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + ChatPath(chatId) + "/invite?token=" + ChatSegment(token), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> SetChatNotificationSettingsAsync(string chatId, ChatNotificationRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(request);
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatPath(chatId) + "/notification_settings", payload, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatResponse> SetChatAvatarAsync(string chatId, ChatAvatarRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatPath(chatId) + "/avatar", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> AddChatMembersAsync(string chatId, AddChatMembersRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/members/add", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> UpdateChatMemberAsync(string chatId, UpdateChatMemberRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/members/update", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMembershipResponse> RemoveChatMemberAsync(string chatId, RemoveChatMemberRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatMembershipResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/members/remove", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMembershipResponse> LeaveChatAsync(string chatId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(new ChatTokenRequest { Token = CommandToken(token) });
+
+            return this.RunQuery<ChatMembershipResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/leave", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatInviteResponse> CreateChatInviteAsync(string chatId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(new ChatTokenRequest { Token = CommandToken(token) });
+
+            return this.RunQuery<ChatInviteResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/invite", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatResponse> JoinChatByInviteAsync(ChatJoinRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/join_by_invite", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string cursor = null, string order = "desc", string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatPath(chatId) + "/messages?limit=" + limit.ToString(CultureInfo.InvariantCulture) + "&order=" + ChatSegment(order) + (cursor == null ? "" : "&cursor=" + ChatSegment(cursor)), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> GetChatMessageAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + MessagePath(chatId, messageId), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessagesResponse> SearchChatMessagesAsync(string chatId, string query, int limit = 50, string cursor = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatPath(chatId) + "/messages/search?query=" + Uri.EscapeDataString(query) + "&limit=" + limit.ToString(CultureInfo.InvariantCulture) + (cursor == null ? "" : "&cursor=" + ChatSegment(cursor)), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessagesResponse> GetChatPinsAsync(string chatId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatPath(chatId) + "/pins", null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> SendChatMessageAsync(string chatId, SendChatMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/messages", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> ForwardChatMessageAsync(string chatId, ChatForwardRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/forwards", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> SendDirectMessageAsync(int peerId, SendChatMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> ForwardDirectMessageAsync(int peerId, ChatForwardRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/forwards", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> EditChatMessageAsync(string chatId, string messageId, EditChatMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + MessagePath(chatId, messageId), payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> DeleteChatMessageAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + MessagePath(chatId, messageId), null, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ResponseBase> SetChatReactionAsync(string chatId, string messageId, string key, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/reactions/" + ChatSegment(key), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> RemoveChatReactionAsync(string chatId, string messageId, string key, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/reactions/" + ChatSegment(key), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> PinChatMessageAsync(string chatId, string messageId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(new ChatTokenRequest { Token = CommandToken(token) });
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/pin", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> UnpinChatMessageAsync(string chatId, string messageId, string token = null, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            token = CommandToken(token);
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/pin?token=" + ChatSegment(token), null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> SetChatReadStateAsync(string chatId, ChatReadStateRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(request);
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatPath(chatId) + "/read_state", payload, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> VoteInChatPollAsync(string chatId, string messageId, ChatVoteRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(request);
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/vote", payload, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> CancelChatPollVoteAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/vote", null, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> CloseChatPollAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + MessagePath(chatId, messageId) + "/close_poll", null, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatScheduledMessagesResponse> GetChatScheduledMessagesAsync(string chatId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatScheduledMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages", null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatScheduledMessageCreatedResponse> CreateChatScheduledMessageAsync(string chatId, CreateChatScheduledMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatScheduledMessageCreatedResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> EditChatScheduledMessageAsync(string chatId, string id, EditChatScheduledMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages/" + ChatSegment(id), payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> CancelChatScheduledMessageAsync(string chatId, string id, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages/" + ChatSegment(id), null, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> SendChatScheduledMessageNowAsync(string chatId, string id, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages/" + ChatSegment(id) + "/send", null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatScheduledMessagesResponse> GetDirectScheduledMessagesAsync(int peerId, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatScheduledMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages", null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ChatScheduledMessageCreatedResponse> CreateDirectScheduledMessageAsync(int peerId, CreateChatScheduledMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ChatScheduledMessageCreatedResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages", payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> EditDirectScheduledMessageAsync(int peerId, string id, EditChatScheduledMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages/" + ChatSegment(id), payload, Token, cancellationToken), true, cancellationToken);
+        }
+
+        public Task<ResponseBase> CancelDirectScheduledMessageAsync(int peerId, string id, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Delete,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages/" + ChatSegment(id), null, Token, cancellationToken), false, cancellationToken);
+        }
+
+        public Task<ChatMessageResponse> SendDirectScheduledMessageNowAsync(int peerId, string id, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            Token = accessToken ?? Token;
+
+            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
+                ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages/" + ChatSegment(id) + "/send", null, Token, cancellationToken), true, cancellationToken);
+        }
+
+        private static string ChatSegment(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("An identifier is required.", nameof(value));
+            return Uri.EscapeDataString(value);
+        }
+
+        private static string ChatPath(string id) => ChatsEndpoint + "/" + ChatSegment(id);
+
+        private static string MessagePath(string chatId, string messageId) => ChatPath(chatId) + "/messages/" + ChatSegment(messageId);
+
+        private static string CommandToken(string token) => token ?? Guid.NewGuid().ToString("D");
+
+        private static T WithChatToken<T>(T body) where T : ChatTokenRequest
+        {
+            if (body == null)
+                throw new ArgumentNullException(nameof(body));
+            body.Token = CommandToken(body.Token);
+            return body;
+        }
+
+        private static string FilesChatUrl(string origin, string path)
+        {
+            var root = origin.TrimEnd('/');
+            if (!root.EndsWith("/v4", StringComparison.OrdinalIgnoreCase))
+                root += "/v4";
+            return root + "/" + path.TrimStart('/');
+        }
+
+        public Task<DownloadResponse> DownloadChatAttachmentAsync(string downloadPath, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            if (downloadPath == null || !downloadPath.StartsWith("chats/", StringComparison.Ordinal) || Uri.IsWellFormedUriString(downloadPath, UriKind.Absolute) || downloadPath.Contains("..") || downloadPath.Contains("\\"))
+                throw new ArgumentException("A relative chat download_path is required.", nameof(downloadPath));
+
+            Token = accessToken ?? Token;
+            return this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this,
+                FilesChatUrl(ClientSettings.FilesOrigin, downloadPath), Token, cancellationToken), true, cancellationToken);
+        }
+
+        public async Task<UploadResponse> UploadChatFileAsync(Stream file, string fileName, string accessToken = null, CancellationToken cancellationToken = default)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            if (accessToken != null)
+                Token = accessToken;
+
+            if (file.Length == 0)
+                throw new PyrusApiClientException("Uploaded file can not be empty");
+
+            var streamFactory = new NoDisposeStreamWrapperFactory(file);
+            return await this.RunQuery<UploadResponse>(() => RequestHelper.PostFileRequest(this,
+                FilesChatUrl(ClientSettings.FilesOrigin, UploadFilesEndpoint), streamFactory, fileName, Token, cancellationToken), false, cancellationToken).ConfigureAwait(false);
         }
     }
 }

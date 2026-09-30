@@ -488,6 +488,18 @@ namespace PyrusApiClient
         [EnumMember(Value = "custom_channel_not_found")]
         CustomChannelNotFound = 515,
 
+        [EnumMember(Value = "chat_invalid_request")]
+        ChatInvalidRequest = 527,
+
+        [EnumMember(Value = "chat_resource_not_found")]
+        ChatResourceNotFound = 528,
+
+        [EnumMember(Value = "chat_action_forbidden")]
+        ChatActionForbidden = 529,
+
+        [EnumMember(Value = "chat_state_conflict")]
+        ChatStateConflict = 530,
+
         [EnumMember(Value = "value_is_too_long")]
         ValueIsTooLong = 600,
 
