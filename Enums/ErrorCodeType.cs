@@ -488,6 +488,24 @@ namespace PyrusApiClient
         [EnumMember(Value = "custom_channel_not_found")]
         CustomChannelNotFound = 515,
 
+        [EnumMember(Value = "bpmn_token_not_found")]
+        BpmnTokenNotFound = 517,
+
+        [EnumMember(Value = "bpmn_node_not_found")]
+        BpmnNodeNotFound = 518,
+
+        [EnumMember(Value = "bpmn_invalid_token_move")]
+        BpmnInvalidTokenMove = 519,
+
+        [EnumMember(Value = "bpmn_engine_failure")]
+        BpmnEngineFailure = 521,
+
+        [EnumMember(Value = "bpmn_task_closed")]
+        BpmnTaskClosed = 522,
+
+        [EnumMember(Value = "bpmn_diagram_version_not_found")]
+        BpmnDiagramVersionNotFound = 526,
+
         [EnumMember(Value = "value_is_too_long")]
         ValueIsTooLong = 600,
 
