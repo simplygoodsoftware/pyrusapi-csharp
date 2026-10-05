@@ -60,8 +60,5 @@ namespace PyrusApiClient
 
 		[JsonProperty("sort")]
 		public FormRegisterSort Sort { get; set; }
-
-		[JsonProperty("include_text")]
-		public string IncludeText { get; set; }
 	}
 }
