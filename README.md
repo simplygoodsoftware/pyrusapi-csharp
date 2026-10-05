@@ -61,6 +61,27 @@ var formRegisterResponse = await RequestBuilder
 var tasks = formRegisterResponse.Tasks;
 ```
 
+* Get saved BPMN diagram versions of a form
+
+```csharp
+var versionsResponse = await RequestBuilder
+	.GetFormBpmnVersions(formId)
+	.Process(pyrusClient);
+
+var versions = versionsResponse.Versions;
+var activeVersion = versionsResponse.ActiveBpmnVersion;
+```
+
+* Get BPMN diagram of a form by version
+
+```csharp
+var diagramResponse = await RequestBuilder
+	.GetFormBpmnDiagram(formId, bpmnVersion: 1)
+	.Process(pyrusClient);
+
+var nodes = diagramResponse.Nodes;
+```
+
 ## Tasks
 
 * Get task with all comments
