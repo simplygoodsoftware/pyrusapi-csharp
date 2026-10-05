@@ -63,6 +63,9 @@ var tasks = formRegisterResponse.Tasks;
 
 * Get saved BPMN diagram versions of a form
 
+The list includes deleted versions (their `DeleteDate` is set) and is sorted by version number in descending order.
+`ActiveBpmnVersion` is the version used for new tasks; it is `null` if BPMN routing for new tasks is turned off.
+
 ```csharp
 var versionsResponse = await RequestBuilder
 	.GetFormBpmnVersions(formId)
@@ -74,9 +77,11 @@ var activeVersion = versionsResponse.ActiveBpmnVersion;
 
 * Get BPMN diagram of a form by version
 
+Version 0 always exists: until it is saved it is returned empty, without `CreateDate` and `Nodes`.
+
 ```csharp
 var diagramResponse = await RequestBuilder
-	.GetFormBpmnDiagram(formId, bpmnVersion: 1)
+	.GetFormBpmnDiagram(formId, versionsResponse.ActiveBpmnVersion ?? 0)
 	.Process(pyrusClient);
 
 var nodes = diagramResponse.Nodes;

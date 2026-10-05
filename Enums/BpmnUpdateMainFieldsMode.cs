@@ -7,13 +7,12 @@ namespace PyrusApiClient
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnUpdateMainFieldsMode
 	{
-		[EnumMember(Value = "Unknown")]
-		Unknown,
+		Unknown = -1,
 
 		[EnumMember(Value = "Immediately")]
-		Immediately,
+		Immediately = 0,
 
 		[EnumMember(Value = "OnStep")]
-		OnStep
+		OnStep = 1
 	}
 }

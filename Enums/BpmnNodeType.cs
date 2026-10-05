@@ -7,37 +7,36 @@ namespace PyrusApiClient
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnNodeType
 	{
-		[EnumMember(Value = "Unknown")]
-		Unknown,
+		Unknown = -1,
 
 		[EnumMember(Value = "Start")]
-		Start,
+		Start = 0,
 
 		[EnumMember(Value = "Finish")]
-		Finish,
+		Finish = 1,
 
 		[EnumMember(Value = "XOR")]
-		Xor,
+		Xor = 2,
 
 		[EnumMember(Value = "AND_Split")]
-		AndSplit,
+		AndSplit = 3,
 
 		[EnumMember(Value = "AND_Join")]
-		AndJoin,
+		AndJoin = 4,
 
 		[EnumMember(Value = "Activity")]
-		Activity,
+		Activity = 5,
 
 		[EnumMember(Value = "Subprocess")]
-		Subprocess,
+		Subprocess = 6,
 
 		[EnumMember(Value = "Queue")]
-		Queue,
+		Queue = 7,
 
 		[EnumMember(Value = "Timer")]
-		Timer,
+		Timer = 8,
 
 		[EnumMember(Value = "AwaitingStatus")]
-		AwaitingStatus
+		AwaitingStatus = 9
 	}
 }

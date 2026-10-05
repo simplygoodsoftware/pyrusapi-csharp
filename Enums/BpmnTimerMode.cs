@@ -7,13 +7,12 @@ namespace PyrusApiClient
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnTimerMode
 	{
-		[EnumMember(Value = "Unknown")]
-		Unknown,
+		Unknown = -1,
 
 		[EnumMember(Value = "RelativeTime")]
-		RelativeTime,
+		RelativeTime = 0,
 
 		[EnumMember(Value = "RelativeOrgWorkTime")]
-		RelativeOrgWorkTime
+		RelativeOrgWorkTime = 1
 	}
 }

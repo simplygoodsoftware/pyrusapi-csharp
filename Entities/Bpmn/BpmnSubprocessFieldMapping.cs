@@ -5,7 +5,7 @@ namespace PyrusApiClient
 	public class BpmnSubprocessFieldMapping
 	{
 		[JsonProperty("local_id")]
-		public int? FieldLocalId { get; set; }
+		public int? MainFieldLocalId { get; set; }
 
 		[JsonProperty("subprocess_field_local_id")]
 		public int? SubprocessFieldLocalId { get; set; }

@@ -7,22 +7,21 @@ namespace PyrusApiClient
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnParticipantAction
 	{
-		[EnumMember(Value = "Unknown")]
-		Unknown,
+		Unknown = -1,
 
 		[EnumMember(Value = "Approve")]
-		Approve,
+		Approve = 1,
 
 		[EnumMember(Value = "Reject")]
-		Reject,
+		Reject = 2,
 
 		[EnumMember(Value = "Acknowledge")]
-		Acknowledge,
+		Acknowledge = 4,
 
 		[EnumMember(Value = "Complete")]
-		Complete,
+		Complete = 5,
 
 		[EnumMember(Value = "Sign")]
-		Sign
+		Sign = 6
 	}
 }

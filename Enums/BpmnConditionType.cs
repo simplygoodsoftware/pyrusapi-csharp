@@ -1,8 +1,12 @@
 ﻿namespace PyrusApiClient
 {
 	/// <summary>
-	/// Тип условия. В отличие от остальных enum'ов, передаётся числом, а не строкой.
+	/// Condition type. Unlike other enums, it is serialized as a number, not a string.
 	/// </summary>
+	/// <remarks>
+	/// There is intentionally no <c>Unknown</c> member and no string enum converter here:
+	/// an unrecognized number is kept as is.
+	/// </remarks>
 	public enum BpmnConditionType
 	{
 		More = 0,
