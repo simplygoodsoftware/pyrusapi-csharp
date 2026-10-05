@@ -139,6 +139,12 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormRegisterRequestBuilder IncludingText(string text)
+		{
+			_formRegisterRequest.IncludeText = text;
+			return this;
+		}
+
 		public FormRegisterFilterBuilder FilteredBy => new FormRegisterFilterBuilder(this, FormId);
 
 		public class FormRegisterFilterBuilder
