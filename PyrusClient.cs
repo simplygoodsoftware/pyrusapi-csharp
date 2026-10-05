@@ -66,6 +66,7 @@ namespace PyrusApiClient
 
         internal const string BulkSuffix = "/bulk";
         internal const string RegisterSuffix = "/register";
+        internal const string BpmnSuffix = "/bpmn";
         internal const string CommentSuffix = "/comments";
         internal const string TasksSuffix = "/tasks";
         internal const string PermissionsSuffix = "/permissions";
@@ -115,6 +116,24 @@ namespace PyrusApiClient
                 Token = accessToken;
 
             var response = await this.RunQuery<FormResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{FormsEndpoint}/{formId}", Token));
+            return response;
+        }
+
+        public async Task<FormBpmnVersionsResponse> GetFormBpmnVersions(int formId, string accessToken = null)
+        {
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<FormBpmnVersionsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{FormsEndpoint}/{formId}{BpmnSuffix}", Token));
+            return response;
+        }
+
+        public async Task<FormBpmnDiagramResponse> GetFormBpmnDiagram(int formId, int bpmnVersion, string accessToken = null)
+        {
+            if (accessToken != null)
+                Token = accessToken;
+
+            var response = await this.RunQuery<FormBpmnDiagramResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{FormsEndpoint}/{formId}{BpmnSuffix}/{bpmnVersion}", Token));
             return response;
         }
 
