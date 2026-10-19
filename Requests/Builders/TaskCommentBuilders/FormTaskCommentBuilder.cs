@@ -142,8 +142,11 @@ namespace PyrusApiClient.Builders
 		
 		/// <summary>
 		/// Уточняет BPMN-узел, на котором производится согласование. Нужен, когда в задаче несколько токенов
-		/// ждут действия одного исполнителя. Используется вместе с Approve/Reject/Acknowledge/Revoke.
+		/// ждут действия одного исполнителя.
 		/// </summary>
+		/// <remarks>
+		/// Работает только вместе с Approve/Reject/Acknowledge/Revoke. Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// </remarks>
 		public FormTaskCommentBuilder OnBpmnNode(int nodeId)
 		{
 			Comment.BpmnNodeId = nodeId;
@@ -153,6 +156,10 @@ namespace PyrusApiClient.Builders
 		/// <summary>
 		/// Возобновляет обработку приостановленных BPMN-токенов задачи.
 		/// </summary>
+		/// <remarks>
+		/// Нельзя совмещать в одном комментарии с согласованием, MoveBpmnToken и WithAction(Finished/Reopened).
+		/// Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// </remarks>
 		public FormTaskCommentBuilder ResumeBpmnProcessing()
 		{
 			Comment.BpmnResumeProcessing = true;
@@ -162,11 +169,12 @@ namespace PyrusApiClient.Builders
 		/// <summary>
 		/// Вручную переводит BPMN-токен на указанный узел.
 		/// </summary>
+		/// <remarks>
+		/// Нельзя совмещать в одном комментарии с согласованием, ResumeBpmnProcessing и WithAction(Finished/Reopened).
+		/// Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// </remarks>
 		public FormTaskCommentBuilder MoveBpmnToken(int tokenId, int nodeId)
 		{
-			if (Comment.BpmnTokenMoves == null)
-				Comment.BpmnTokenMoves = new List<BpmnTokenMove>();
-
 			Comment.BpmnTokenMoves.Add(new BpmnTokenMove { TokenId = tokenId, NodeId = nodeId });
 			return this;
 		}

@@ -70,20 +70,34 @@ namespace PyrusApiClient
 		public bool IsClosed { get; set; }
 
 		/// <summary>
-		/// Версия BPMN диаграммы, по которой идёт задача. null — задача не по BPMN.
+		/// Версия BPMN диаграммы, по которой идёт задача.
 		/// </summary>
+		/// <remarks>
+		/// Заполняется только в ответе на получение задачи (GET /tasks/{id}) и в ответах на комментарий.
+		/// В реестре формы, календаре и вебхуках бота (если у формы выключен SendBpmnInfoToWebhooks) не приходит,
+		/// поэтому null не означает, что задача не по BPMN.
+		/// </remarks>
 		[JsonProperty("bpmn_version")]
 		public int? BpmnVersion { get; set; }
 
 		/// <summary>
 		/// Есть приостановленные BPMN-потоки.
 		/// </summary>
+		/// <remarks>
+		/// В GET /tasks/{id} и в ответах на комментарий приходит у BPMN-задач всегда. В реестре формы — только
+		/// когда true, поэтому null там не означает false. В календаре и вебхуках бота (если у формы выключен
+		/// SendBpmnInfoToWebhooks) не приходит.
+		/// </remarks>
 		[JsonProperty("bpmn_suspended")]
 		public bool? BpmnSuspended { get; set; }
 
 		/// <summary>
 		/// Текущее состояние BPMN-токенов задачи.
 		/// </summary>
+		/// <remarks>
+		/// Заполняется только в GET /tasks/{id} и в ответах на комментарий. В реестре формы, календаре и вебхуках бота
+		/// (если у формы выключен SendBpmnInfoToWebhooks) не приходит.
+		/// </remarks>
 		[JsonProperty("bpmn_tokens")]
 		public List<BpmnToken> BpmnTokens { get; set; }
 

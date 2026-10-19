@@ -115,6 +115,9 @@ Comments have `BpmnTransitions`: the nodes the tokens moved to as a result of th
 * Manage BPMN tokens of a task
 
 Only one of these commands can be used in a single comment: approval, resume, token moves.
+Resume and token moves also cannot be combined with closing or reopening the task (`WithAction(Finished/Reopened)`),
+and `OnBpmnNode` works only together with an approval choice (`Approve`, `Reject`, `Acknowledge`, `Revoke`).
+The client does not check this: the server returns a validation error.
 
 ```csharp
 // resume suspended tokens

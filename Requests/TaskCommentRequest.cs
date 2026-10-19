@@ -120,7 +120,7 @@ namespace PyrusApiClient
         /// Вручную перевести BPMN-токены на указанные узлы.
         /// </summary>
         [JsonProperty("bpmn_token_moves")]
-        public List<BpmnTokenMove> BpmnTokenMoves { get; set; }
+        public List<BpmnTokenMove> BpmnTokenMoves { get; set; } = new List<BpmnTokenMove>();
 
         [JsonProperty("skip_auto_reopen")]
         public bool? SkipAutoReopen { get; set; }
