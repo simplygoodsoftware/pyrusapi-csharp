@@ -75,6 +75,22 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 
+		public FormRegisterRequestBuilder FilterByBpmnSuspended(bool suspended = true)
+		{
+			_formRegisterRequest.BpmnSuspended = suspended;
+			return this;
+		}
+
+		public FormRegisterRequestBuilder FilterByBpmnNodes(IEnumerable<int> nodeIds)
+		{
+			if (nodeIds == null)
+				throw new ArgumentNullException(nameof(nodeIds));
+			_formRegisterRequest.BpmnNodes = nodeIds.ToList();
+			return this;
+		}
+
+		public FormRegisterRequestBuilder FilterByBpmnNodes(params int[] nodeIds) => FilterByBpmnNodes((IEnumerable<int>)nodeIds);
+
 		public FormRegisterRequestBuilder ModifiedBefore(DateTime dateTime)
 		{
 			_formRegisterRequest.ModifiedBefore = dateTime;

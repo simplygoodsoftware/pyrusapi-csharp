@@ -29,6 +29,18 @@ namespace PyrusApiClient
 		[JsonProperty("folder")]
 		public string[] Folder { get; set; }
 
+		/// <summary>
+		/// Новые задачи формы создаются и маршрутизируются по BPMN диаграмме.
+		/// </summary>
+		[JsonProperty("use_bpmn_for_new_tasks")]
+		public bool UseBpmnForNewTasks { get; set; }
+
+		/// <summary>
+		/// Версия диаграммы для новых задач. Отдаётся только при UseBpmnForNewTasks == true.
+		/// </summary>
+		[JsonProperty("bpmn_version")]
+		public int? BpmnVersion { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsByForm(Fields);
 	}

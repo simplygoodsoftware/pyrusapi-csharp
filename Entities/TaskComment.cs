@@ -131,6 +131,12 @@ namespace PyrusApiClient
 		[JsonProperty("sms_info")]
 		public SmsInfo SmsInfo { get; set; }
 
+		/// <summary>
+		/// Узлы, на которые перешли BPMN-токены в результате этого комментария.
+		/// </summary>
+		[JsonProperty("bpmn_transitions")]
+		public List<BpmnTransition> BpmnTransitions { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFieldUpdates => FieldHelper.GetFlatFieldsListByTask(FieldUpdates);
 	}

@@ -69,6 +69,24 @@ namespace PyrusApiClient
 		[JsonProperty("is_closed")]
 		public bool IsClosed { get; set; }
 
+		/// <summary>
+		/// Версия BPMN диаграммы, по которой идёт задача. null — задача не по BPMN.
+		/// </summary>
+		[JsonProperty("bpmn_version")]
+		public int? BpmnVersion { get; set; }
+
+		/// <summary>
+		/// Есть приостановленные BPMN-потоки.
+		/// </summary>
+		[JsonProperty("bpmn_suspended")]
+		public bool? BpmnSuspended { get; set; }
+
+		/// <summary>
+		/// Текущее состояние BPMN-токенов задачи.
+		/// </summary>
+		[JsonProperty("bpmn_tokens")]
+		public List<BpmnToken> BpmnTokens { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsListByTask(Fields);
 	}

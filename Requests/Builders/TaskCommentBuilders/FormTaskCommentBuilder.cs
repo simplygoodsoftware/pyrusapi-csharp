@@ -140,6 +140,37 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 		
+		/// <summary>
+		/// Уточняет BPMN-узел, на котором производится согласование. Нужен, когда в задаче несколько токенов
+		/// ждут действия одного исполнителя. Используется вместе с Approve/Reject/Acknowledge/Revoke.
+		/// </summary>
+		public FormTaskCommentBuilder OnBpmnNode(int nodeId)
+		{
+			Comment.BpmnNodeId = nodeId;
+			return this;
+		}
+
+		/// <summary>
+		/// Возобновляет обработку приостановленных BPMN-токенов задачи.
+		/// </summary>
+		public FormTaskCommentBuilder ResumeBpmnProcessing()
+		{
+			Comment.BpmnResumeProcessing = true;
+			return this;
+		}
+
+		/// <summary>
+		/// Вручную переводит BPMN-токен на указанный узел.
+		/// </summary>
+		public FormTaskCommentBuilder MoveBpmnToken(int tokenId, int nodeId)
+		{
+			if (Comment.BpmnTokenMoves == null)
+				Comment.BpmnTokenMoves = new List<BpmnTokenMove>();
+
+			Comment.BpmnTokenMoves.Add(new BpmnTokenMove { TokenId = tokenId, NodeId = nodeId });
+			return this;
+		}
+
 		public FormTaskCommentBuilder SendToEmailChannel(string fromEmail = null)
 		{
 			Comment.Channel = new Channel
