@@ -87,6 +87,12 @@ namespace Pyrus.ApiClient.JsonConverters
 			if (!string.IsNullOrEmpty(request.IncludeText))
 				WriteString(writer, nameof(request.IncludeText), request.IncludeText);
 
+			if (request.BpmnSuspended.HasValue)
+				WriteString(writer, nameof(request.BpmnSuspended), request.BpmnSuspended.Value ? "y" : "n");
+
+			if (request.BpmnNodes?.Count > 0)
+				WriteString(writer, nameof(request.BpmnNodes), string.Join(",", request.BpmnNodes));
+
 			if (request.ResponseFormat == ResponseFormat.Csv)
 			{
 				writer.WritePropertyName(JsonNames[nameof(request.ResponseFormat)]);
