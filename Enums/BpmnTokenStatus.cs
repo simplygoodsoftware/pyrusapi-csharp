@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Статус BPMN-токена задачи.
+	/// Status of a BPMN token of a task.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnTokenStatus

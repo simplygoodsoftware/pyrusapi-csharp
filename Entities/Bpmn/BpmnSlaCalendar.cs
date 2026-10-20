@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Календарь SLA диаграммы: базовый календарь, режим и рабочее время.
+	/// SLA calendar of a diagram: base calendar, mode and working hours.
 	/// </summary>
 	public class BpmnSlaCalendar
 	{

@@ -141,11 +141,11 @@ namespace PyrusApiClient.Builders
 		}
 		
 		/// <summary>
-		/// Уточняет BPMN-узел, на котором производится согласование. Нужен, когда в задаче несколько токенов
-		/// ждут действия одного исполнителя.
+		/// Specifies the BPMN node on which the approval is made. Needed when several tokens in the task
+		/// wait for an action of the same assignee.
 		/// </summary>
 		/// <remarks>
-		/// Работает только вместе с Approve/Reject/Acknowledge/Revoke. Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// Works only together with Approve/Reject/Acknowledge/Revoke. The client does not check this; otherwise the server returns a validation error.
 		/// </remarks>
 		public FormTaskCommentBuilder OnBpmnNode(int nodeId)
 		{
@@ -154,11 +154,11 @@ namespace PyrusApiClient.Builders
 		}
 
 		/// <summary>
-		/// Возобновляет обработку приостановленных BPMN-токенов задачи.
+		/// Resumes processing of the suspended BPMN tokens of the task.
 		/// </summary>
 		/// <remarks>
-		/// Нельзя совмещать в одном комментарии с согласованием, MoveBpmnToken и WithAction(Finished/Reopened).
-		/// Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// Cannot be combined in one comment with an approval, MoveBpmnToken and WithAction(Finished/Reopened).
+		/// The client does not check this; otherwise the server returns a validation error.
 		/// </remarks>
 		public FormTaskCommentBuilder ResumeBpmnProcessing()
 		{
@@ -167,11 +167,11 @@ namespace PyrusApiClient.Builders
 		}
 
 		/// <summary>
-		/// Вручную переводит BPMN-токен на указанный узел.
+		/// Manually moves a BPMN token to the given node.
 		/// </summary>
 		/// <remarks>
-		/// Нельзя совмещать в одном комментарии с согласованием, ResumeBpmnProcessing и WithAction(Finished/Reopened).
-		/// Клиент это не проверяет: иначе сервер вернёт ошибку валидации.
+		/// Cannot be combined in one comment with an approval, ResumeBpmnProcessing and WithAction(Finished/Reopened).
+		/// The client does not check this; otherwise the server returns a validation error.
 		/// </remarks>
 		public FormTaskCommentBuilder MoveBpmnToken(int tokenId, int nodeId)
 		{

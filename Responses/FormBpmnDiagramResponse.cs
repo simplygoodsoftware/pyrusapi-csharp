@@ -46,7 +46,7 @@ namespace PyrusApiClient
 		public List<BpmnFrame> Frames { get; set; }
 
 		/// <summary>
-		/// Настройки SLA. null, если SLA на диаграмме не настраивался.
+		/// SLA settings. null if SLA was never configured on the diagram.
 		/// </summary>
 		[JsonProperty("sla")]
 		public BpmnSla Sla { get; set; }

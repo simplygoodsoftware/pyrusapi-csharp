@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Настройки SLA BPMN диаграммы. Отдаются только если SLA на диаграмме настраивался.
+	/// SLA settings of a BPMN diagram. Returned only if SLA was ever configured on the diagram.
 	/// </summary>
 	public class BpmnSla
 	{

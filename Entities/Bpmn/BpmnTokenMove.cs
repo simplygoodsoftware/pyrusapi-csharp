@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Ручное перемещение BPMN-токена на указанный узел (команда bpmn_token_moves в комментарии).
+	/// Manual move of a BPMN token to the given node (the bpmn_token_moves command in a comment).
 	/// </summary>
 	public class BpmnTokenMove
 	{

@@ -30,13 +30,13 @@ namespace PyrusApiClient
 		public string[] Folder { get; set; }
 
 		/// <summary>
-		/// Новые задачи формы создаются и маршрутизируются по BPMN диаграмме.
+		/// New tasks of the form are created and routed by the BPMN diagram.
 		/// </summary>
 		[JsonProperty("use_bpmn_for_new_tasks")]
 		public bool UseBpmnForNewTasks { get; set; }
 
 		/// <summary>
-		/// Версия диаграммы для новых задач. Отдаётся только при UseBpmnForNewTasks == true.
+		/// Diagram version for new tasks. Returned only when UseBpmnForNewTasks == true.
 		/// </summary>
 		[JsonProperty("bpmn_version")]
 		public int? BpmnVersion { get; set; }

@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Тип политики SLA: по этапам или по статусам.
+	/// SLA policy type: by step or by status.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnSlaPolicyType

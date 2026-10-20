@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Правило SLA: целевое время, условие применения и (для политики по статусам) значение статуса.
+	/// SLA rule: target time, condition and (for a by-status policy) the status value.
 	/// </summary>
 	public class BpmnSlaPolicy
 	{

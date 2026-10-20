@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Тип события, которого ожидает BPMN-токен.
+	/// Type of the event a BPMN token is waiting for.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnTokenEventType

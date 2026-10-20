@@ -70,33 +70,33 @@ namespace PyrusApiClient
 		public bool IsClosed { get; set; }
 
 		/// <summary>
-		/// Версия BPMN диаграммы, по которой идёт задача.
+		/// Version of the BPMN diagram the task follows.
 		/// </summary>
 		/// <remarks>
-		/// Заполняется только в ответе на получение задачи (GET /tasks/{id}) и в ответах на комментарий.
-		/// В реестре формы, календаре и вебхуках бота (если у формы выключен SendBpmnInfoToWebhooks) не приходит,
-		/// поэтому null не означает, что задача не по BPMN.
+		/// Filled only in the get task response (GET /tasks/{id}) and in comment responses.
+		/// Not returned in the form register, in the calendar and in bot webhooks (if SendBpmnInfoToWebhooks is off for the form),
+		/// so null does not mean the task is not a BPMN task.
 		/// </remarks>
 		[JsonProperty("bpmn_version")]
 		public int? BpmnVersion { get; set; }
 
 		/// <summary>
-		/// Есть приостановленные BPMN-потоки.
+		/// The task has suspended BPMN flows.
 		/// </summary>
 		/// <remarks>
-		/// В GET /tasks/{id} и в ответах на комментарий приходит у BPMN-задач всегда. В реестре формы — только
-		/// когда true, поэтому null там не означает false. В календаре и вебхуках бота (если у формы выключен
-		/// SendBpmnInfoToWebhooks) не приходит.
+		/// In GET /tasks/{id} and in comment responses it is always returned for BPMN tasks. In the form register it is returned only
+		/// when true, so null there does not mean false. Not returned in the calendar and in bot webhooks (if
+		/// SendBpmnInfoToWebhooks is off for the form).
 		/// </remarks>
 		[JsonProperty("bpmn_suspended")]
 		public bool? BpmnSuspended { get; set; }
 
 		/// <summary>
-		/// Текущее состояние BPMN-токенов задачи.
+		/// Current state of the BPMN tokens of the task.
 		/// </summary>
 		/// <remarks>
-		/// Заполняется только в GET /tasks/{id} и в ответах на комментарий. В реестре формы, календаре и вебхуках бота
-		/// (если у формы выключен SendBpmnInfoToWebhooks) не приходит.
+		/// Filled only in GET /tasks/{id} and in comment responses. Not returned in the form register, in the calendar and in bot webhooks
+		/// (if SendBpmnInfoToWebhooks is off for the form).
 		/// </remarks>
 		[JsonProperty("bpmn_tokens")]
 		public List<BpmnToken> BpmnTokens { get; set; }

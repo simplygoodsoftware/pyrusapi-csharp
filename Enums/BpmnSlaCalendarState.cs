@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Какой календарь используется при расчёте SLA: выключен, календарь формы или календарь организации.
+	/// Which calendar is used to calculate SLA: off, the form calendar or the organization calendar.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumWithDefaultConverter), (int)Unknown)]
 	public enum BpmnSlaCalendarState

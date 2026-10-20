@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Перемещение BPMN-токена в результате комментария.
+	/// Move of a BPMN token as a result of a comment.
 	/// </summary>
 	/// <remarks>
-	/// Если <see cref="NodeId"/> равен <c>null</c>, токен был удалён: известен только <see cref="TokenId"/>.
-	/// При статусе <see cref="BpmnTokenStatus.Suspended"/> <see cref="NodeId"/> — узел, на котором процесс остановился.
+	/// If <see cref="NodeId"/> is <c>null</c>, the token was removed: only <see cref="TokenId"/> is known.
+	/// With the <see cref="BpmnTokenStatus.Suspended"/> status, <see cref="NodeId"/> is the node where the process stopped.
 	/// </remarks>
 	public class BpmnTransition
 	{

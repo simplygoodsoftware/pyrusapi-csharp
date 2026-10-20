@@ -132,7 +132,7 @@ namespace PyrusApiClient
 		public SmsInfo SmsInfo { get; set; }
 
 		/// <summary>
-		/// Узлы, на которые перешли BPMN-токены в результате этого комментария.
+		/// Nodes the BPMN tokens moved to as a result of this comment.
 		/// </summary>
 		[JsonProperty("bpmn_transitions")]
 		public List<BpmnTransition> BpmnTransitions { get; set; }

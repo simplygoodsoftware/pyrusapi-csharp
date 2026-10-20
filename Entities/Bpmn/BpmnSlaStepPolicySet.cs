@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Набор правил SLA для группы узлов. Пустой набор правил означает, что SLA на этапе не ограничивается.
+	/// A set of SLA rules for a group of nodes. An empty set of rules means SLA is not limited on the step.
 	/// </summary>
 	public class BpmnSlaStepPolicySet
 	{

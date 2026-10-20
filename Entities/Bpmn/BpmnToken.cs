@@ -5,7 +5,7 @@ using Pyrus.ApiClient.JsonConverters;
 namespace PyrusApiClient
 {
 	/// <summary>
-	/// Текущее состояние BPMN-токена задачи.
+	/// Current state of a BPMN token of a task.
 	/// </summary>
 	public class BpmnToken
 	{
@@ -25,13 +25,13 @@ namespace PyrusApiClient
 		public BpmnTokenStatus Status { get; set; }
 
 		/// <summary>
-		/// Исполнитель узла, на котором стоит токен.
+		/// Assignee of the node the token is on.
 		/// </summary>
 		[JsonProperty("person")]
 		public Person Person { get; set; }
 
 		/// <summary>
-		/// Тип события, которого ожидает токен.
+		/// Type of the event the token is waiting for.
 		/// </summary>
 		[JsonProperty("event_type")]
 		public BpmnTokenEventType? EventType { get; set; }

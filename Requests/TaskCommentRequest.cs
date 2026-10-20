@@ -105,19 +105,19 @@ namespace PyrusApiClient
         public bool? SkipNotification { get; set; }
 
         /// <summary>
-        /// Уточнение узла BPMN при согласовании. Допустим только вместе с ApprovalChoice.
+        /// Specifies the BPMN node for an approval. Allowed only together with ApprovalChoice.
         /// </summary>
         [JsonProperty("bpmn_node_id")]
         public int? BpmnNodeId { get; set; }
 
         /// <summary>
-        /// Возобновить обработку приостановленных BPMN-токенов задачи.
+        /// Resume processing of the suspended BPMN tokens of the task.
         /// </summary>
         [JsonProperty("bpmn_resume_processing")]
         public bool? BpmnResumeProcessing { get; set; }
 
         /// <summary>
-        /// Вручную перевести BPMN-токены на указанные узлы.
+        /// Manually move BPMN tokens to the given nodes.
         /// </summary>
         [JsonProperty("bpmn_token_moves")]
         public List<BpmnTokenMove> BpmnTokenMoves { get; set; } = new List<BpmnTokenMove>();
