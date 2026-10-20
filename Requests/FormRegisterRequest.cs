@@ -61,6 +61,18 @@ namespace PyrusApiClient
 		[JsonProperty("sort")]
 		public FormRegisterSort Sort { get; set; }
 
+		/// <summary>
+		/// true - only tasks with suspended BPMN flows, false - only tasks without them.
+		/// </summary>
+		[JsonProperty("bpmn_suspended")]
+		public bool? BpmnSuspended { get; set; }
+
+		/// <summary>
+		/// Only tasks that have at least one BPMN token on one of the given nodes.
+		/// </summary>
+		[JsonProperty("bpmn_nodes")]
+		public List<int> BpmnNodes { get; set; }
+
 		[JsonProperty("include_text")]
 		public string IncludeText { get; set; }
 	}

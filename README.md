@@ -87,6 +87,18 @@ var diagramResponse = await RequestBuilder
 var nodes = diagramResponse.Nodes;
 ```
 
+`Sla` (SLA settings; `null` if SLA was never configured) is returned along with the nodes.
+
+* Filter the form register by BPMN state
+
+```csharp
+var registerResponse = await RequestBuilder
+	.GetRegistry(formId)
+	.FilterByBpmnSuspended()          // only tasks with suspended BPMN flows
+	.FilterByBpmnNodes(12, 15)        // only tasks with a token on one of these nodes
+	.Process(pyrusClient);
+```
+
 ## Tasks
 
 * Get task with all comments
@@ -95,6 +107,29 @@ var nodes = diagramResponse.Nodes;
 var taskId = 15353;
 var taskResponse = await RequestBuilder.GetTask(taskId).Process(pyrusClient);;
 var task = taskResponse.Task;
+```
+
+BPMN tasks have `BpmnVersion`, `BpmnSuspended` and `BpmnTokens` (token id, node, status, assignee and the awaited event).
+Comments have `BpmnTransitions`: the nodes the tokens moved to as a result of the comment.
+
+* Manage BPMN tokens of a task
+
+Only one of these commands can be used in a single comment: approval, resume, token moves.
+Resume and token moves also cannot be combined with closing or reopening the task (`WithAction(Finished/Reopened)`),
+and `OnBpmnNode` works only together with an approval choice (`Approve`, `Reject`, `Acknowledge`, `Revoke`).
+The client does not check this: the server returns a validation error.
+
+```csharp
+// resume suspended tokens
+await RequestBuilder.CommentFormTask(taskId).ResumeBpmnProcessing().Process(pyrusClient);
+
+// move tokens to nodes manually
+await RequestBuilder.CommentFormTask(taskId)
+	.MoveBpmnToken(tokenId: 3, nodeId: 12)
+	.Process(pyrusClient);
+
+// approve on a specific node when several tokens wait for the same assignee
+await RequestBuilder.CommentFormTask(taskId).Approve().OnBpmnNode(12).Process(pyrusClient);
 ```
 
 * Add task comment

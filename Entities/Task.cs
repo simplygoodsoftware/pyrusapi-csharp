@@ -69,6 +69,38 @@ namespace PyrusApiClient
 		[JsonProperty("is_closed")]
 		public bool IsClosed { get; set; }
 
+		/// <summary>
+		/// Version of the BPMN diagram the task follows.
+		/// </summary>
+		/// <remarks>
+		/// Filled only in the get task response (GET /tasks/{id}) and in comment responses.
+		/// Not returned in the form register, in the calendar and in bot webhooks (if SendBpmnInfoToWebhooks is off for the form),
+		/// so null does not mean the task is not a BPMN task.
+		/// </remarks>
+		[JsonProperty("bpmn_version")]
+		public int? BpmnVersion { get; set; }
+
+		/// <summary>
+		/// The task has suspended BPMN flows.
+		/// </summary>
+		/// <remarks>
+		/// In GET /tasks/{id} and in comment responses it is always returned for BPMN tasks. In the form register it is returned only
+		/// when true, so null there does not mean false. Not returned in the calendar and in bot webhooks (if
+		/// SendBpmnInfoToWebhooks is off for the form).
+		/// </remarks>
+		[JsonProperty("bpmn_suspended")]
+		public bool? BpmnSuspended { get; set; }
+
+		/// <summary>
+		/// Current state of the BPMN tokens of the task.
+		/// </summary>
+		/// <remarks>
+		/// Filled only in GET /tasks/{id} and in comment responses. Not returned in the form register, in the calendar and in bot webhooks
+		/// (if SendBpmnInfoToWebhooks is off for the form).
+		/// </remarks>
+		[JsonProperty("bpmn_tokens")]
+		public List<BpmnToken> BpmnTokens { get; set; }
+
 		[JsonIgnore]
 		public List<FormField> FlatFields => FieldHelper.GetFlatFieldsListByTask(Fields);
 	}
