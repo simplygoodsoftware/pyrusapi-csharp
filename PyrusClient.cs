@@ -396,11 +396,12 @@ namespace PyrusApiClient
             if (string.IsNullOrEmpty(file.Url) && file.Id == 0)
                 throw new ArgumentException("Url or Id must be filled");
 
-            var url = file.Url;
-            if (string.IsNullOrEmpty(url))
+            // Url of a link attachment is an arbitrary address set by a user,
+            // so a file with Id is always downloaded from FilesOrigin to keep the token there.
+            if (file.Id != 0)
                 return await DownloadFile(file.Id, accessToken);
 
-            return await DownloadFileByUrl(url, accessToken);
+            return await DownloadFileByUrl(file.Url, accessToken);
         }
 
         public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null, int? previewId = null)
