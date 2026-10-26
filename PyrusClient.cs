@@ -47,6 +47,7 @@ namespace PyrusApiClient
         internal const string ProfileEndpoint = "/profile";
         internal const string DownloadFilesEndpoint = "/services/attachment";
         internal const string DownloadFilesApiEndpoint = "/files/download";
+        internal const string PyrusCloudDomain = "pyrus.com";
         internal const string RolesEndpoint = "/roles";
         internal const string MembersEndpoint = "/members";
         internal const string BotsEndpoint = "/bots";
@@ -408,20 +409,21 @@ namespace PyrusApiClient
             if (IsFilesOriginDefined)
                 return await DownloadFile(file.Id, accessToken);
 
-            if (IsSameOrigin(file.Url, ClientSettings.Origin))
-                return await DownloadFileByUrl(file.Url, accessToken);
+            var originUri = new Uri(ClientSettings.Origin);
+            var url = IsPyrusCloudHost(originUri.Host)
+                ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{file.Id}"
+                : $"{originUri.GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={file.Id}";
 
-            return await DownloadFileByUrl($"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{file.Id}", accessToken);
+            return await DownloadFileByUrl(url, accessToken);
         }
 
         private bool IsFilesOriginDefined
             => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
                 == string.Equals(ClientSettings.FilesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
 
-        private static bool IsSameOrigin(string url, string origin)
-            => Uri.TryCreate(url, UriKind.Absolute, out var uri)
-                && Uri.TryCreate(origin, UriKind.Absolute, out var originUri)
-                && Uri.Compare(uri, originUri, UriComponents.SchemeAndServer, UriFormat.Unescaped, StringComparison.OrdinalIgnoreCase) == 0;
+        private static bool IsPyrusCloudHost(string host)
+            => string.Equals(host, PyrusCloudDomain, StringComparison.OrdinalIgnoreCase)
+                || host.EndsWith("." + PyrusCloudDomain, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
