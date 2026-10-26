@@ -46,6 +46,7 @@ namespace PyrusApiClient
         internal const string ContactsEndpoint = "/contacts";
         internal const string ProfileEndpoint = "/profile";
         internal const string DownloadFilesEndpoint = "/services/attachment";
+        internal const string DownloadFilesApiEndpoint = "/files/download";
         internal const string RolesEndpoint = "/roles";
         internal const string MembersEndpoint = "/members";
         internal const string BotsEndpoint = "/bots";
@@ -375,12 +376,9 @@ namespace PyrusApiClient
 
             var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
 
-            var isFilesOriginDefined = string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
-                == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase); 
-
 			var response = await this.RunQuery<UploadResponse>(async () =>
             {
-                var url = useFileService && isFilesOriginDefined
+                var url = useFileService && IsFilesOriginDefined
 					? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
                     : $"{ClientSettings.Origin}{UploadFilesEndpoint}";
 
@@ -396,11 +394,28 @@ namespace PyrusApiClient
             if (string.IsNullOrEmpty(file.Url) && file.Id == 0)
                 throw new ArgumentException("Url or Id must be filled");
 
-            if (file.Id != 0)
+            if (file.Id == 0)
+                return await DownloadFileByUrl(file.Url, accessToken);
+
+            if (IsLinkAttachment(file))
+                return new DownloadResponse
+                {
+                    Error = "Link attachment can not be downloaded",
+                    ErrorCode = ErrorCodeType.FileIsMissing
+                };
+
+            if (IsFilesOriginDefined)
                 return await DownloadFile(file.Id, accessToken);
 
-            return await DownloadFileByUrl(file.Url, accessToken);
+            return await DownloadFileByUrl($"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{file.Id}", accessToken);
         }
+
+        private bool IsFilesOriginDefined
+            => string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsLinkAttachment(File file)
+            => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
 
         public async Task<DownloadResponse> DownloadFile(int attachmentId, string accessToken = null, int? previewId = null)
         {
