@@ -401,6 +401,7 @@ namespace PyrusApiClient
                 return new DownloadResponse
                 {
                     Error = "Link attachment can not be downloaded",
+                    ErrorMessage = "Link attachment can not be downloaded",
                     ErrorCode = ErrorCodeType.FileIsMissing
                 };
 

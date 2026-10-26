@@ -96,7 +96,10 @@ namespace Pyrus.ApiClient
 				resp.ErrorCode = ErrorCodeType.ServerError;
 
 			if (res.StatusCode != HttpStatusCode.OK)
+			{
 				resp.Error = $"File download failed with status code {(int)res.StatusCode}";
+				resp.ErrorMessage = resp.Error;
+			}
 
 			return resp as TResponse;
 		}
