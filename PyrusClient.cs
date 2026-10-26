@@ -47,7 +47,6 @@ namespace PyrusApiClient
         internal const string ProfileEndpoint = "/profile";
         internal const string DownloadFilesEndpoint = "/services/attachment";
         internal const string DownloadFilesApiEndpoint = "/files/download";
-        internal const string PyrusCloudDomain = "pyrus.com";
         internal const string RolesEndpoint = "/roles";
         internal const string MembersEndpoint = "/members";
         internal const string BotsEndpoint = "/bots";
@@ -408,21 +407,16 @@ namespace PyrusApiClient
             if (IsFilesOriginDefined)
                 return await DownloadFile(file.Id, accessToken);
 
-            var originUri = new Uri(ClientSettings.Origin);
-            var url = IsPyrusCloudHost(originUri.Host)
+            var url = string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
                 ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{file.Id}"
-                : $"{originUri.GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={file.Id}";
+                : $"{new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={file.Id}";
 
             return await DownloadFileByUrl(url, accessToken);
         }
 
         private bool IsFilesOriginDefined
-            => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
-                == string.Equals(ClientSettings.FilesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
-
-        private static bool IsPyrusCloudHost(string host)
-            => string.Equals(host, PyrusCloudDomain, StringComparison.OrdinalIgnoreCase)
-                || host.EndsWith("." + PyrusCloudDomain, StringComparison.OrdinalIgnoreCase);
+            => string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
