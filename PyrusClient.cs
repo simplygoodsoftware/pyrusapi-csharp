@@ -1006,7 +1006,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatsEndpoint + "/group", payload, Token, cancellationToken), true, cancellationToken);
@@ -1016,7 +1016,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
                 ClientSettings.Origin + ChatPath(chatId), payload, Token, cancellationToken), true, cancellationToken);
@@ -1063,7 +1063,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
                 ClientSettings.Origin + ChatPath(chatId) + "/avatar", payload, Token, cancellationToken), true, cancellationToken);
@@ -1073,7 +1073,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/members/add", payload, Token, cancellationToken), true, cancellationToken);
@@ -1083,7 +1083,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/members/update", payload, Token, cancellationToken), true, cancellationToken);
@@ -1093,7 +1093,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatMembershipResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/members/remove", payload, Token, cancellationToken), true, cancellationToken);
@@ -1123,18 +1123,24 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatsEndpoint + "/join_by_invite", payload, Token, cancellationToken), true, cancellationToken);
         }
 
-        public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string cursor = null, string order = "desc", string accessToken = null, CancellationToken cancellationToken = default)
+        public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string firstMessageId = null, string lastMessageId = null, string order = "desc", string accessToken = null, CancellationToken cancellationToken = default)
         {
             Token = accessToken ?? Token;
 
+            var path = ChatPath(chatId) + "/messages?limit=" + limit.ToString(CultureInfo.InvariantCulture) + "&order=" + ChatSegment(order);
+            if (firstMessageId != null)
+                path += "&first_message_id=" + ChatSegment(firstMessageId);
+            if (lastMessageId != null)
+                path += "&last_message_id=" + ChatSegment(lastMessageId);
+
             return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
-                ClientSettings.Origin + ChatPath(chatId) + "/messages?limit=" + limit.ToString(CultureInfo.InvariantCulture) + "&order=" + ChatSegment(order) + (cursor == null ? "" : "&cursor=" + ChatSegment(cursor)), null, Token, cancellationToken), true, cancellationToken);
+                ClientSettings.Origin + path, null, Token, cancellationToken), true, cancellationToken);
         }
 
         public Task<ChatMessageResponse> GetChatMessageAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
@@ -1145,11 +1151,11 @@ namespace PyrusApiClient
                 ClientSettings.Origin + MessagePath(chatId, messageId), null, Token, cancellationToken), true, cancellationToken);
         }
 
-        public Task<ChatMessagesResponse> SearchChatMessagesAsync(string chatId, string query, int limit = 50, string cursor = null, string accessToken = null, CancellationToken cancellationToken = default)
+        public Task<ChatSearchMessagesResponse> SearchChatMessagesAsync(string chatId, string query, int limit = 50, string cursor = null, string accessToken = null, CancellationToken cancellationToken = default)
         {
             Token = accessToken ?? Token;
 
-            return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
+            return this.RunQuery<ChatSearchMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
                 ClientSettings.Origin + ChatPath(chatId) + "/messages/search?query=" + Uri.EscapeDataString(query) + "&limit=" + limit.ToString(CultureInfo.InvariantCulture) + (cursor == null ? "" : "&cursor=" + ChatSegment(cursor)), null, Token, cancellationToken), true, cancellationToken);
         }
 
@@ -1165,7 +1171,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/messages", payload, Token, cancellationToken), true, cancellationToken);
@@ -1175,7 +1181,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/forwards", payload, Token, cancellationToken), true, cancellationToken);
@@ -1185,7 +1191,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages", payload, Token, cancellationToken), true, cancellationToken);
@@ -1195,7 +1201,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/forwards", payload, Token, cancellationToken), true, cancellationToken);
@@ -1205,7 +1211,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
                 ClientSettings.Origin + MessagePath(chatId, messageId), payload, Token, cancellationToken), true, cancellationToken);
@@ -1302,7 +1308,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatScheduledMessageCreatedResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages", payload, Token, cancellationToken), true, cancellationToken);
@@ -1312,7 +1318,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
                 ClientSettings.Origin + ChatPath(chatId) + "/scheduled_messages/" + ChatSegment(id), payload, Token, cancellationToken), true, cancellationToken);
@@ -1346,7 +1352,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ChatScheduledMessageCreatedResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Post,
                 ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages", payload, Token, cancellationToken), true, cancellationToken);
@@ -1356,7 +1362,7 @@ namespace PyrusApiClient
         {
             Token = accessToken ?? Token;
 
-            var payload = RequestHelper.SerializeRequest(WithChatToken(request));
+            var payload = SerializeChatRequest(request);
 
             return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
                 ClientSettings.Origin + ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/scheduled_messages/" + ChatSegment(id), payload, Token, cancellationToken), true, cancellationToken);
@@ -1391,12 +1397,11 @@ namespace PyrusApiClient
 
         private static string CommandToken(string token) => token ?? Guid.NewGuid().ToString("D");
 
-        private static T WithChatToken<T>(T body) where T : ChatTokenRequest
+        private static string SerializeChatRequest(ChatTokenRequest body)
         {
             if (body == null)
                 throw new ArgumentNullException(nameof(body));
-            body.Token = CommandToken(body.Token);
-            return body;
+            return RequestHelper.SerializeChatRequest(body, CommandToken(body.Token));
         }
 
         private static string FilesChatUrl(string origin, string path)

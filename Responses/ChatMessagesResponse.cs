@@ -8,7 +8,7 @@ namespace Pyrus.ApiClient.Responses
         [JsonProperty("items")]
         public ChatMessage[] Items { get; set; }
 
-        [JsonProperty("next_cursor")]
-        public string NextCursor { get; set; }
+        [JsonProperty("has_more")]
+        public bool? HasMore { get; set; }
     }
 }

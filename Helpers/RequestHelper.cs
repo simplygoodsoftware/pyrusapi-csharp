@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.JsonConverters;
 
@@ -201,6 +202,13 @@ namespace PyrusApiClient
 		}
 
 		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
+
+		internal static string SerializeChatRequest(ChatTokenRequest request, string commandToken)
+		{
+			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
+			payload["token"] = commandToken;
+			return SerializeRequest(payload);
+		}
 
 		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
 			string payload, string token, CancellationToken cancellationToken)
