@@ -127,7 +127,8 @@ namespace PyrusApiClient
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
-				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				if (token != null)
+					httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
 				using (var response = await httpClient.GetAsync(url))
