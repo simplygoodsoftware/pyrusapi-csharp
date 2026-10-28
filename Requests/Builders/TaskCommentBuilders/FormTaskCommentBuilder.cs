@@ -140,6 +140,45 @@ namespace PyrusApiClient.Builders
 			return this;
 		}
 		
+		/// <summary>
+		/// Specifies the BPMN node on which the approval is made. Needed when several tokens in the task
+		/// wait for an action of the same assignee.
+		/// </summary>
+		/// <remarks>
+		/// Works only together with Approve/Reject/Acknowledge/Revoke. The client does not check this; otherwise the server returns a validation error.
+		/// </remarks>
+		public FormTaskCommentBuilder OnBpmnNode(int nodeId)
+		{
+			Comment.BpmnNodeId = nodeId;
+			return this;
+		}
+
+		/// <summary>
+		/// Resumes processing of the suspended BPMN tokens of the task.
+		/// </summary>
+		/// <remarks>
+		/// Cannot be combined in one comment with an approval, MoveBpmnToken and WithAction(Finished/Reopened).
+		/// The client does not check this; otherwise the server returns a validation error.
+		/// </remarks>
+		public FormTaskCommentBuilder ResumeBpmnProcessing()
+		{
+			Comment.BpmnResumeProcessing = true;
+			return this;
+		}
+
+		/// <summary>
+		/// Manually moves a BPMN token to the given node.
+		/// </summary>
+		/// <remarks>
+		/// Cannot be combined in one comment with an approval, ResumeBpmnProcessing and WithAction(Finished/Reopened).
+		/// The client does not check this; otherwise the server returns a validation error.
+		/// </remarks>
+		public FormTaskCommentBuilder MoveBpmnToken(int tokenId, int nodeId)
+		{
+			Comment.BpmnTokenMoves.Add(new BpmnTokenMove { TokenId = tokenId, NodeId = nodeId });
+			return this;
+		}
+
 		public FormTaskCommentBuilder SendToEmailChannel(string fromEmail = null)
 		{
 			Comment.Channel = new Channel

@@ -104,6 +104,24 @@ namespace PyrusApiClient
         [JsonProperty("skip_notification")]
         public bool? SkipNotification { get; set; }
 
+        /// <summary>
+        /// Specifies the BPMN node for an approval. Allowed only together with ApprovalChoice.
+        /// </summary>
+        [JsonProperty("bpmn_node_id")]
+        public int? BpmnNodeId { get; set; }
+
+        /// <summary>
+        /// Resume processing of the suspended BPMN tokens of the task.
+        /// </summary>
+        [JsonProperty("bpmn_resume_processing")]
+        public bool? BpmnResumeProcessing { get; set; }
+
+        /// <summary>
+        /// Manually move BPMN tokens to the given nodes.
+        /// </summary>
+        [JsonProperty("bpmn_token_moves")]
+        public List<BpmnTokenMove> BpmnTokenMoves { get; set; } = new List<BpmnTokenMove>();
+
         [JsonProperty("skip_auto_reopen")]
         public bool? SkipAutoReopen { get; set; }
     }

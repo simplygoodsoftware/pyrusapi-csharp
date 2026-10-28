@@ -68,6 +68,12 @@ namespace Pyrus.ApiClient.Requests.Builders
         public static OnePropertyBuilder<int, FormResponse> GetForm(int formId)
             => new OnePropertyBuilder<int, FormResponse>(formId);
 
+        public static OnePropertyBuilder<int, FormBpmnVersionsResponse> GetFormBpmnVersions(int formId)
+            => new OnePropertyBuilder<int, FormBpmnVersionsResponse>(formId);
+
+        public static GetFormBpmnDiagramRequestBuilder GetFormBpmnDiagram(int formId, int bpmnVersion)
+            => new GetFormBpmnDiagramRequestBuilder(formId, bpmnVersion);
+
         public static ContactsRequestBuilder GetContacts() => new ContactsRequestBuilder();
 
         public static EmptyBuilder<FormsResponse> GetForms() => new EmptyBuilder<FormsResponse>();
@@ -255,6 +261,12 @@ namespace Pyrus.ApiClient.Requests.Builders
 
         public static async Task<FormResponse> Process(this OnePropertyBuilder<int, FormResponse> builder, PyrusClient client)
             => await client.GetForm(builder.Property);
+
+        public static async Task<FormBpmnVersionsResponse> Process(this OnePropertyBuilder<int, FormBpmnVersionsResponse> builder, PyrusClient client)
+            => await client.GetFormBpmnVersions(builder.Property);
+
+        public static async Task<FormBpmnDiagramResponse> Process(this GetFormBpmnDiagramRequestBuilder builder, PyrusClient client)
+            => await client.GetFormBpmnDiagram(builder.FormId, builder.BpmnVersion);
 
         public static async Task<TaskListResponse> Process(this OnePropertyBuilder<int, TaskListResponse> builder, PyrusClient client)
             => await client.GetTasksByApproverAsync(builder.Property);
