@@ -378,7 +378,7 @@ namespace PyrusApiClient
 
 			var response = await this.RunQuery<UploadResponse>(async () =>
             {
-                var url = useFileService && IsFilesOriginDefined
+                var url = useFileService && IsFilesOriginConsistentWithOrigin
 					? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
                     : $"{ClientSettings.Origin}{UploadFilesEndpoint}";
 
@@ -413,10 +413,6 @@ namespace PyrusApiClient
 
             return await DownloadFileByUrl(url, accessToken);
         }
-
-        private bool IsFilesOriginDefined
-            => string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
-                == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase);
 
         private bool IsFilesOriginConsistentWithOrigin
             => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
