@@ -404,7 +404,7 @@ namespace PyrusApiClient
                     ErrorCode = ErrorCodeType.FileIsMissing
                 };
 
-            if (IsFilesOriginDefined)
+            if (IsFilesOriginConsistentWithOrigin)
                 return await DownloadFile(file.Id, accessToken);
 
             var url = string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
@@ -417,6 +417,10 @@ namespace PyrusApiClient
         private bool IsFilesOriginDefined
             => string.Equals(ClientSettings.Origin, Settings.Origin, StringComparison.OrdinalIgnoreCase)
                 == string.Equals(ClientSettings.FilesOrigin, Settings.FilesOrigin, StringComparison.OrdinalIgnoreCase);
+
+        private bool IsFilesOriginConsistentWithOrigin
+            => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(ClientSettings.FilesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
