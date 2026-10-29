@@ -395,24 +395,25 @@ namespace PyrusApiClient
                 throw new ArgumentException("Url or Id must be filled");
 
             if (file.Id == 0)
-                return await DownloadFileByUrl(file.Url, accessToken, withToken: IsPyrusDomainUrl(file.Url));
+                return await DownloadFileByUrl(() => file.Url, accessToken, withToken: IsPyrusDomainUrl(file.Url));
 
             if (IsLinkAttachment(file))
                 return new DownloadResponse
                 {
-                    Error = "Link attachment can not be downloaded",
+                    Error = "Link attachment cannot be downloaded",
                     ErrorCode = ErrorCodeType.FileIsMissing
                 };
 
             if (IsFilesOriginConsistentWithOrigin)
                 return await DownloadFile(file.Id, accessToken);
 
-            var url = string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
-                ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{file.Id}"
-                : $"{new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={file.Id}";
-
-            return await DownloadFileByUrl(url, accessToken);
+            return await DownloadFileByUrl(() => GetOriginDownloadUrl(file.Id), accessToken);
         }
+
+        private string GetOriginDownloadUrl(int fileId)
+            => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
+                ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{fileId}"
+                : $"{new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={fileId}";
 
         private bool IsFilesOriginConsistentWithOrigin
             => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
@@ -452,12 +453,13 @@ namespace PyrusApiClient
             return response;
         }
 
-        private async Task<DownloadResponse> DownloadFileByUrl(string url, string accessToken = null, bool withToken = true)
+        // url is built inside RunQuery so that an invalid Origin surfaces as PyrusApiClientException
+        private async Task<DownloadResponse> DownloadFileByUrl(Func<string> getUrl, string accessToken = null, bool withToken = true)
         {
             if (accessToken != null)
                 Token = accessToken;
 
-            var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this, url, withToken ? Token : null));
+            var response = await this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this, getUrl(), withToken ? Token : null));
             return response;
         }
 
