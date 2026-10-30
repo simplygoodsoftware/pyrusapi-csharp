@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.2] - 2026-10-30
+### Fixed
+- `DownloadFile(File)` no longer fails with "An invalid request URI was provided" when `FilesOrigin` is empty or has no scheme: a file with `Id` is downloaded by `File.Url`, or from the `Origin` host if `File.Url` is not an absolute address.
+
+### Notes
+- Since 5.7.0 `FilesOrigin` is used for downloads, so it must be reachable from the client network.
+
 ## [5.7.1] - 2026-10-30
 ### Changed
 - `DownloadFile(File)` downloads link attachments by `Url` without the access token instead of returning `ErrorCode.FileIsMissing`, as before 5.7.0 but without the token. The response may be a web page, not the file.

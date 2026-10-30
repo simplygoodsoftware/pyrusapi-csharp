@@ -404,8 +404,12 @@ namespace PyrusApiClient
             if (IsClientHostUrl(file.Url))
                 return await DownloadFileByUrl(() => file.Url, accessToken);
 
-            if (IsFilesOriginConsistentWithOrigin)
+            if (IsFilesOriginConsistentWithOrigin && IsAbsoluteHttpUrl(ClientSettings.FilesOrigin))
                 return await DownloadFile(file.Id, accessToken);
+
+            // FilesOrigin was not used for downloads before 5.7.0, so it may be empty or have no scheme.
+            if (IsFilesOriginConsistentWithOrigin && IsAbsoluteHttpUrl(file.Url))
+                return await DownloadFileByUrl(() => file.Url, accessToken);
 
             return await DownloadFileByUrl(() => GetOriginDownloadUrl(file.Id), accessToken);
         }
@@ -421,6 +425,10 @@ namespace PyrusApiClient
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
+
+        private static bool IsAbsoluteHttpUrl(string url)
+            => Uri.TryCreate(url, UriKind.Absolute, out var uri)
+                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
 
         private bool IsClientHostUrl(string url)
             => Uri.TryCreate(url, UriKind.Absolute, out var uri)
