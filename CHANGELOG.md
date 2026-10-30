@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.1] - 2026-10-30
+### Changed
+- `DownloadFile(File)` downloads link attachments by `Url` without the access token instead of returning `ErrorCode.FileIsMissing`, as before 5.7.0 but without the token. The response may be a web page, not the file.
+- `DownloadFile(File)` with `Id` uses `File.Url` when its host is the `Origin`/`FilesOrigin` host, which restores self-hosted installations under a path prefix.
+
 ## [5.7.0] - 2026-10-28
 ### Breaking
 - `DownloadFile(File)` does not download link attachments (no size and MD5) and returns `ErrorCode.FileIsMissing`; `EnsureSuccess()` on such a file now throws.

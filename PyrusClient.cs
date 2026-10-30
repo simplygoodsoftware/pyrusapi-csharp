@@ -397,12 +397,12 @@ namespace PyrusApiClient
             if (file.Id == 0)
                 return await DownloadFileByUrl(() => file.Url, accessToken, withToken: IsPyrusDomainUrl(file.Url));
 
+            // Url of a link attachment is set by a user, so it never gets the token, even on a Pyrus host.
             if (IsLinkAttachment(file))
-                return new DownloadResponse
-                {
-                    Error = "Link attachment cannot be downloaded",
-                    ErrorCode = ErrorCodeType.FileIsMissing
-                };
+                return await DownloadFileByUrl(() => file.Url, accessToken, withToken: false);
+
+            if (IsClientHostUrl(file.Url))
+                return await DownloadFileByUrl(() => file.Url, accessToken);
 
             if (IsFilesOriginConsistentWithOrigin)
                 return await DownloadFile(file.Id, accessToken);
@@ -421,6 +421,14 @@ namespace PyrusApiClient
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
+
+        private bool IsClientHostUrl(string url)
+            => Uri.TryCreate(url, UriKind.Absolute, out var uri)
+                && new[] { ClientSettings.Origin, ClientSettings.FilesOrigin }.Any(origin =>
+                    Uri.TryCreate(origin, UriKind.Absolute, out var originUri)
+                    && string.Equals(uri.Scheme, originUri.Scheme, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(uri.Host, originUri.Host, StringComparison.OrdinalIgnoreCase)
+                    && uri.Port == originUri.Port);
 
         private bool IsPyrusDomainUrl(string url)
             => Uri.TryCreate(url, UriKind.Absolute, out var uri)
