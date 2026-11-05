@@ -27,8 +27,5 @@ namespace PyrusApiClient
 
         [JsonProperty("members")]
         public ChatMember[] Members { get; set; }
-
-        [JsonProperty("invite_link")]
-        public string InviteLink { get; set; }
     }
 }
