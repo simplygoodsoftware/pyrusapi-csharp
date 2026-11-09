@@ -20,9 +20,9 @@ namespace PyrusApiClient
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty("created_at")]
+        [JsonProperty("create_date")]
         [JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat, true)]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreateDate { get; set; }
 
         [JsonProperty("edited_at")]
         [JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat, true)]

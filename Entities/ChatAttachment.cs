@@ -9,8 +9,8 @@ namespace PyrusApiClient
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("filename")]
-        public string Filename { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         [JsonProperty("size")]
         public long Size { get; set; }

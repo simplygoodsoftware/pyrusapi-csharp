@@ -5,8 +5,8 @@ namespace Pyrus.ApiClient.Responses
 {
     public class ChatMessagesResponse : ResponseBase
     {
-        [JsonProperty("items")]
-        public ChatMessage[] Items { get; set; }
+        [JsonProperty("messages")]
+        public ChatMessage[] Messages { get; set; }
 
         [JsonProperty("has_more")]
         public bool? HasMore { get; set; }

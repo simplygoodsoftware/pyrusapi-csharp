@@ -12,8 +12,8 @@ namespace PyrusApiClient
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty("title")]
-        public string Title { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         [JsonProperty("peer_id")]
         public int? PeerId { get; set; }

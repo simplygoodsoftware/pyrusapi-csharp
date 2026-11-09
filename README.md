@@ -37,6 +37,89 @@ var authResponse = await pyrusClient.Auth(
 
 Now you're ready to use other API methods.
 
+## Chats
+
+Use `GetChatsAsync()` to list chats and `GetChatAsync(chatId)` to read chat details.
+The JSON field `name` is the group name. It may be omitted for a direct chat, which identifies the other participant with `peer_id`.
+The `text`, `description`, and `reply_quote` fields contain Markdown.
+
+`GetChatMessagesAsync(chatId)` returns a page in `messages` (`Messages` in C#).
+Use either `first_message_id` to read from the boundary toward newer messages, or `last_message_id` to read toward older messages.
+The boundary message is included when it is available. Skip it when appending a page to a list that already contains it.
+The `order` parameter controls the direction only when neither boundary parameter is supplied.
+
+Upload each file using `UploadChatFileAsync` (`POST /v4/files/upload`), then copy the returned `guid` into the corresponding `attachments[].guid`.
+The array order determines the attachment order.
+
+```csharp
+var upload = await pyrusClient.UploadChatFileAsync(fileStream, "report.pdf");
+var sent = await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
+{
+    Text = "**Weekly report**",
+    Attachments = new[] { new ChatUpload { Guid = upload.Guid } }
+});
+var history = await pyrusClient.GetChatMessagesAsync(chatId);
+var messages = history.Messages;
+```
+
+JSON request to `POST /v4/chats/{chat_id}/messages`
+
+```json
+{
+  "token": "a5782aeb-3afa-4902-b88c-a9bc03cd918d",
+  "text": "**Weekly report**",
+  "attachments": [
+    { "guid": "08923d83-255b-4f18-b0eb-5c4d3b9bf1d2" }
+  ]
+}
+```
+
+Example fields from a chat detail response and a history response
+
+```json
+{
+  "chat": {
+    "name": "Project reports",
+    "create_date": "2026-10-01T09:00:00Z",
+    "description": "Reports for the **project team**."
+  }
+}
+```
+
+```json
+{
+  "messages": [
+    {
+      "type": "message",
+      "create_date": "2026-10-02T09:00:00Z",
+      "text": "**Weekly report**",
+      "attachments": [
+        { "name": "report.pdf" }
+      ],
+      "reactions": [
+        { "emoji": "👍", "count": 1, "is_set_by_me": true }
+      ]
+    }
+  ],
+  "has_more": false
+}
+```
+
+For a `group_created` system event, `system.data.name` is the initial group name.
+A `group_info_changed` event includes `name_changed`, `old_name`, and `new_name` when the name changes.
+
+```json
+{
+  "type": "group_info_changed",
+  "data": {
+    "name_changed": true,
+    "old_name": "Project reports",
+    "new_name": "Weekly reports"
+  }
+}
+```
+
+
 ## Forms
 
 * Get all form templates

@@ -4,17 +4,17 @@ namespace PyrusApiClient
 {
     public class ChatGroupInfoChangedEventData : ChatSystemEventData
     {
-        [JsonProperty("title_changed")]
-        public bool? TitleChanged { get; set; }
+        [JsonProperty("name_changed")]
+        public bool? NameChanged { get; set; }
 
         [JsonProperty("description_changed")]
         public bool? DescriptionChanged { get; set; }
 
-        [JsonProperty("old_title")]
-        public string OldTitle { get; set; }
+        [JsonProperty("old_name")]
+        public string OldName { get; set; }
 
-        [JsonProperty("new_title")]
-        public string NewTitle { get; set; }
+        [JsonProperty("new_name")]
+        public string NewName { get; set; }
 
         [JsonProperty("old_description")]
         public string OldDescription { get; set; }

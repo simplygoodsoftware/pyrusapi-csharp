@@ -108,25 +108,6 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
-			{
-				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-				httpClient.DefaultRequestHeaders.Add("ContentType", "multipart/form-data");
-				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-
-				var streamContent = new StreamContent(streamFactory.Create());
-
-				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
-				using (var response = await httpClient.PostAsync(url, multipart))
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					return CreateMessageWithStatusCode(response, message);
-				}
-			}
-		}
-
 		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
@@ -238,7 +219,7 @@ namespace PyrusApiClient
 
 				var streamContent = new StreamContent(streamFactory.Create());
 
-				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
+				using var multipart = new MultipartFormDataContent { { streamContent, "file", fileName } };
 				using (var response = await httpClient.PostAsync(url, multipart, cancellationToken))
 				{
 					var message = await response.Content.ReadAsStringAsync();

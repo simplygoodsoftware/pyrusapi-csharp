@@ -83,8 +83,55 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-		internal static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client,
+		internal static Task<ChatMessageResponse> SendChatCommandAsync(this PyrusClient client,
+			string path, string payload, string accessToken, CancellationToken cancellationToken)
+		{
+			var previous = client.CurrentToken;
+			var token = accessToken ?? previous?.Value;
+			var origin = client.ClientSettings.Origin;
+			Func<Task<bool>> refreshToken = null;
+			if (accessToken == null)
+			{
+				var needsToken = string.IsNullOrEmpty(token);
+				var credentials = needsToken ? GetCredentials(client) : previous.Credentials;
+				var authUrl = needsToken ? GetAuthUrl(client) : previous.AuthUrl;
+				if (credentials != null)
+				{
+					refreshToken = async () =>
+					{
+						var response = await RequestTokenAsync(client, authUrl, credentials, cancellationToken).ConfigureAwait(false);
+						if (string.IsNullOrEmpty(response?.AccessToken))
+							return false;
+
+						token = response.AccessToken;
+						if (!string.IsNullOrEmpty(response.ApiUrl))
+							origin = response.ApiUrl.TrimEnd('/');
+
+						var updated = new PyrusClient.TokenState(token, credentials, authUrl);
+						if (client.TryUpdateToken(previous, updated))
+						{
+							previous = updated;
+							SetOrigins(client, response);
+						}
+						return true;
+					};
+				}
+			}
+
+			return RunQuery<ChatMessageResponse>(client,
+				() => RequestHelper.SendRequest(client, HttpMethod.Post, origin + path, payload, token, cancellationToken),
+				true, refreshToken != null && string.IsNullOrEmpty(token), refreshToken, cancellationToken);
+		}
+
+		internal static Task<TResponse> RunQuery<TResponse>(this PyrusClient client,
 			Func<Task<MessageWithStatusCode>> action, bool safeRetry, CancellationToken cancellationToken)
+			where TResponse : ResponseBase, new()
+			=> RunQuery<TResponse>(client, action, safeRetry, string.IsNullOrEmpty(client.Token),
+				() => client.GetTokenAsync(cancellationToken), cancellationToken);
+
+		private static async Task<TResponse> RunQuery<TResponse>(PyrusClient client,
+			Func<Task<MessageWithStatusCode>> action, bool safeRetry, bool needsToken,
+			Func<Task<bool>> refreshToken, CancellationToken cancellationToken)
 			where TResponse : ResponseBase, new()
 		{
 			var timer = Stopwatch.StartNew();
@@ -92,8 +139,8 @@ namespace Pyrus.ApiClient
 			var retries = 0;
 			try
 			{
-				if (string.IsNullOrEmpty(client.Token))
-					await client.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+				if (needsToken)
+					await refreshToken().ConfigureAwait(false);
 
 				while (true)
 				{
@@ -113,10 +160,10 @@ namespace Pyrus.ApiClient
 						continue;
 					}
 
-					if (response.StatusCode == HttpStatusCode.Unauthorized && !refreshed)
+					if (response.StatusCode == HttpStatusCode.Unauthorized && refreshToken != null && !refreshed)
 					{
 						refreshed = true;
-						if (await client.GetTokenAsync(cancellationToken).ConfigureAwait(false))
+						if (await refreshToken().ConfigureAwait(false))
 						{
 							response.Content?.Dispose();
 							continue;
@@ -141,6 +188,10 @@ namespace Pyrus.ApiClient
 					{
 						result = JsonConvert.DeserializeObject<TResponse>(response.Message, new FormFieldJsonConverter()) ?? new TResponse();
 					}
+					catch (JsonException) when (response.StatusCode == HttpStatusCode.Unauthorized && refreshToken == null)
+					{
+						result = new TResponse();
+					}
 					catch (JsonException error)
 					{
 						ThrowIfResponseHtml(response, error);
@@ -149,7 +200,9 @@ namespace Pyrus.ApiClient
 					if ((int)response.StatusCode >= 400 && result.Error == null)
 					{
 						result.Error = "Request failed (HTTP " + (int)response.StatusCode + ").";
-						result.ErrorCode = ErrorCodeType.ServerError;
+						result.ErrorCode = response.StatusCode == HttpStatusCode.Unauthorized
+							? result.ErrorCode ?? ErrorCodeType.AuthorizationError
+							: ErrorCodeType.ServerError;
 					}
 					return result;
 				}
@@ -200,14 +253,12 @@ namespace Pyrus.ApiClient
 			try
 			{
 				var url = GetAuthUrl(client);
-
-				var response = await RequestHelper.PostRequest(client, url,
-					new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId }, cancellationToken: cancellationToken);
-				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
+				var credentials = GetCredentials(client);
+				var result = await RequestTokenAsync(client, url, credentials, cancellationToken).ConfigureAwait(false);
 				if (result.AccessToken == null)
 					return false;
 
-				client.Token = result.AccessToken;
+				client.CurrentToken = new PyrusClient.TokenState(result.AccessToken, credentials, url);
 
 				SetOrigins(client, result);
 
@@ -221,6 +272,16 @@ namespace Pyrus.ApiClient
 			{
 				throw new PyrusApiClientException(e.Message, e);
 			}
+		}
+
+		private static AuthRequest GetCredentials(PyrusClient client)
+			=> new AuthRequest { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId };
+
+		private static async Task<AuthResponse> RequestTokenAsync(PyrusClient client,
+			string url, AuthRequest credentials, CancellationToken cancellationToken)
+		{
+			var response = await RequestHelper.PostRequest(client, url, credentials, cancellationToken: cancellationToken).ConfigureAwait(false);
+			return JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 		}
 
 		internal static string GetAuthUrl(PyrusClient client)

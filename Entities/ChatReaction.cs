@@ -6,8 +6,8 @@ namespace PyrusApiClient
 {
     public class ChatReaction
     {
-        [JsonProperty("key")]
-        public string Key { get; set; }
+        [JsonProperty("emoji")]
+        public string Emoji { get; set; }
 
         [JsonProperty("count")]
         public int Count { get; set; }
