@@ -1,21 +1,20 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Pyrus.ApiClient.JsonConverters;
 using Pyrus.ApiClient.Requests;
 using Pyrus.ApiClient.Responses;
 using PyrusApiClient;
 using PyrusApiClient.Exceptions;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
 {
 	internal static class ClientExtensions
 	{
 		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
-
 		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
 		{
 			try
@@ -130,7 +129,6 @@ namespace Pyrus.ApiClient
 					ThrowIfResponseHtml(response, error);
 					throw;
 				}
-
 			}
 			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
 			{

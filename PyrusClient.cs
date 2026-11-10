@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Pyrus.ApiClient;
+using Pyrus.ApiClient.Helpers;
+using Pyrus.ApiClient.Requests;
+using Pyrus.ApiClient.Requests.Builders;
+using Pyrus.ApiClient.Responses;
+using PyrusApiClient.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -9,12 +15,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Pyrus.ApiClient;
-using Pyrus.ApiClient.Helpers;
-using Pyrus.ApiClient.Requests;
-using Pyrus.ApiClient.Requests.Builders;
-using Pyrus.ApiClient.Responses;
-using PyrusApiClient.Exceptions;
 
 namespace PyrusApiClient
 {
@@ -95,7 +95,6 @@ namespace PyrusApiClient
         internal const string OrgChartEndpoint = "/orgchart";
         internal const string ProfileIdentityEndpoint = "/profile/identity";
         internal const string KnowledgeBaseEndpoint = "/knowledgebase";
-
         internal const string ChatsEndpoint = "/chats";
 
         internal const string BulkSuffix = "/bulk";

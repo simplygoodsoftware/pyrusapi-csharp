@@ -68,68 +68,9 @@ var history = await pyrusClient.GetChatMessagesAsync(chatId);
 var messages = history.Messages;
 ```
 
-JSON request to `POST /v4/chats/{chat_id}/messages`
-
-```json
-{
-  "token": "a5782aeb-3afa-4902-b88c-a9bc03cd918d",
-  "text": "**Weekly report**",
-  "attachments": [
-    { "guid": "08923d83-255b-4f18-b0eb-5c4d3b9bf1d2" }
-  ]
-}
-```
-
-Example fields from a chat detail response and a history response
-
-```json
-{
-  "chat": {
-    "name": "Project reports",
-    "create_date": "2026-10-01T09:00:00Z",
-    "description": "Reports for the **project team**."
-  }
-}
-```
-
-```json
-{
-  "messages": [
-    {
-      "type": "message",
-      "create_date": "2026-10-02T09:00:00Z",
-      "content": {
-        "text": "**Weekly report**",
-        "attachments": [
-          { "name": "report.pdf" }
-        ]
-      },
-      "reactions": [
-        { "emoji": "👍", "count": 1, "is_set_by_me": true }
-      ]
-    }
-  ],
-  "has_more": false
-}
-```
-
 Use the message's `Type` (`ChatMessageType`) to choose which property to read in
 `Content`. For `GroupCreated`, `Content.GroupCreated.Name` contains the initial group
 name. For `GroupInfoChanged`, `Content.GroupInfoChanged` contains the changed fields.
-
-```json
-{
-  "type": "group_info_changed",
-  "content": {
-    "group_info_changed": {
-      "name_changed": true,
-      "old_name": "Project reports",
-      "new_name": "Weekly reports"
-    }
-  }
-}
-```
-
 
 ## Forms
 

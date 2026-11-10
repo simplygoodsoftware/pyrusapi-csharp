@@ -18,9 +18,7 @@ namespace PyrusApiClient
 	internal static class RequestHelper
 	{
 		private static readonly TimeSpan RequestTimeout = TimeSpan.FromMinutes(2);
-
 		private static readonly TimeSpan FileRequestTimeout = TimeSpan.FromMinutes(20);
-
 		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
 
 		private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
@@ -70,65 +68,6 @@ namespace PyrusApiClient
 				using (var response = await httpClient.SendAsync(httpRequest))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					return CreateMessageWithStatusCode(response, message);
-				}
-			}
-		}
-
-		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
-		{
-			for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
-			{
-				try
-				{
-					if (i > 0)
-						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
-
-					return await SendRequest(client, HttpMethod.Get, url, null, token).ConfigureAwait(false);
-				}
-				catch (HttpRequestException)
-				{
-					if (i == client.ClientSettings.RetryCount)
-						throw;
-				}
-				catch (WebException)
-				{
-					if (i == client.ClientSettings.RetryCount)
-						throw;
-				}
-				catch (TaskCanceledException)
-				{
-					if (i == client.ClientSettings.RetryCount)
-						throw;
-				}
-			}
-			return null;
-		}
-
-		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
-
-		internal static string SerializeChatRequest(SendChatMessageRequest request, string commandToken)
-		{
-			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
-			payload["token"] = commandToken;
-			return SerializeRequest(payload);
-		}
-
-		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
-			string payload, string token, CancellationToken cancellationToken = default,
-			IReadOnlyDictionary<string, string> headers = null)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
-			using (var request = new HttpRequestMessage(method, url))
-			{
-				SetHeaders(httpClient, token, UserAgent);
-				AddHeaders(request, headers);
-				if (payload != null)
-					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
-				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
-				{
-					var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-					cancellationToken.ThrowIfCancellationRequested();
 					return CreateMessageWithStatusCode(response, message);
 				}
 			}
@@ -192,6 +131,65 @@ namespace PyrusApiClient
 			}
 		}
 
+		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
+		{
+			for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
+			{
+				try
+				{
+					if (i > 0)
+						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
+
+					return await SendRequest(client, HttpMethod.Get, url, null, token).ConfigureAwait(false);
+				}
+				catch (HttpRequestException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+				catch (WebException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+				catch (TaskCanceledException)
+				{
+					if (i == client.ClientSettings.RetryCount)
+						throw;
+				}
+			}
+			return null;
+		}
+
+		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
+
+		internal static string SerializeChatRequest(SendChatMessageRequest request, string commandToken)
+		{
+			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
+			payload["token"] = commandToken;
+			return SerializeRequest(payload);
+		}
+
+		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
+			string payload, string token, CancellationToken cancellationToken = default,
+			IReadOnlyDictionary<string, string> headers = null)
+		{
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+			using (var request = new HttpRequestMessage(method, url))
+			{
+				SetHeaders(httpClient, token, UserAgent);
+				AddHeaders(request, headers);
+				if (payload != null)
+					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
+				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
+				{
+					var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+					cancellationToken.ThrowIfCancellationRequested();
+					return CreateMessageWithStatusCode(response, message);
+				}
+			}
+		}
+
 		private static MessageWithStatusCode CreateMessageWithStatusCode(HttpResponseMessage response, string message)
 		{
 			return new MessageWithStatusCode
@@ -222,21 +220,14 @@ namespace PyrusApiClient
 			}
 		}
 	}
-
 	internal class MessageWithStatusCode
 	{
 		internal string Message;
-
 		internal HttpStatusCode StatusCode;
-
 		internal Stream Content;
-
 		internal string FileName;
-
 		internal string ContentType;
-
 		internal string ResponseDescription;
-
 		internal bool ToCsv => ContentType == "text/csv";
 	}
 }
