@@ -7,7 +7,7 @@ namespace PyrusApiClient
     public class Chat : ChatSummary
     {
         [JsonProperty("create_date")]
-        [JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat, true)]
+        [JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]
         public DateTime CreateDate { get; set; }
 
         [JsonProperty("notification_mode")]

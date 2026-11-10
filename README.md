@@ -39,38 +39,19 @@ Now you're ready to use other API methods.
 
 ## Chats
 
-Use `GetChatsAsync()` to list chats and `GetChatAsync(chatId)` to read chat details.
-The JSON field `name` is the group name. It may be omitted for a direct chat, which identifies the other participant with `peer_id`.
-The `text`, `description`, and `reply_quote` fields contain Markdown.
-
-`GetChatMessagesAsync(chatId)` returns a page in `messages` (`Messages` in C#).
-Use either `first_message_id` to read from the boundary toward newer messages, or `last_message_id` to read toward older messages.
-The boundary message is included when it is available. Skip it when appending a page to a list that already contains it.
-The `order` parameter controls the direction only when neither boundary parameter is supplied.
-
-Upload each file using `UploadChatFileAsync` (`POST /v4/files/upload`), then copy the returned `guid` into the corresponding `attachments[].guid`.
-The array order determines the attachment order.
-
-Use `SendChatMessageAsync(chatId, request)` for a group and
-`SendDirectMessageAsync(peerId, request)` for a direct message.
-
-Chat methods return network and rate-limit failures to the caller. After HTTP 401, the SDK can repeat the request once if it refreshes a token it obtained.
-To retry a message after a timeout, set `SendChatMessageRequest.Token` before the first attempt and reuse it for the same message.
+Use `GetChatsAsync()` to list chats and `GetChatMessagesAsync(chatId)` to read messages.
+Use `SendDirectMessageAsync(peerId, request)` to send a direct message.
 
 ```csharp
-var upload = await pyrusClient.UploadChatFileAsync(fileStream, "report.pdf");
-var sent = await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
+var upload = await pyrusClient.UploadFile(fileStream, "report.pdf");
+await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
 {
     Text = "**Weekly report**",
     Attachments = new[] { new ChatUpload { Guid = upload.Guid } }
 });
-var history = await pyrusClient.GetChatMessagesAsync(chatId);
-var messages = history.Messages;
 ```
 
-Use the message's `Type` (`ChatMessageType`) to choose which property to read in
-`Content`. For `GroupCreated`, `Content.GroupCreated.Name` contains the initial group
-name. For `GroupInfoChanged`, `Content.GroupInfoChanged` contains the changed fields.
+To retry a send after a timeout, set `SendChatMessageRequest.Token` before the first attempt and reuse it.
 
 ## Forms
 

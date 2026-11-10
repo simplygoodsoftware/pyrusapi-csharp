@@ -7,7 +7,6 @@ using PyrusApiClient.Exceptions;
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
@@ -81,14 +80,14 @@ namespace Pyrus.ApiClient
 		}
 
 		internal static Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
-			HttpMethod method, string path, string payload, string accessToken, CancellationToken cancellationToken)
+			HttpMethod method, string path, string payload, string accessToken)
 			where TResponse : ResponseBase
 			=> client.RunChatQueryAsync<TResponse>(
-				(apiOrigin, _, token) => RequestHelper.SendRequest(client, method, apiOrigin + path, payload, token, cancellationToken),
-				accessToken, cancellationToken);
+				(apiOrigin, _, token) => RequestHelper.SendRequest(client, method, apiOrigin + path, payload, token),
+				accessToken);
 
 		internal static async Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
-			Func<string, string, string, Task<MessageWithStatusCode>> action, string accessToken, CancellationToken cancellationToken)
+			Func<string, string, string, Task<MessageWithStatusCode>> action, string accessToken)
 			where TResponse : ResponseBase
 		{
 			var previous = client.CurrentToken;
@@ -100,7 +99,6 @@ namespace Pyrus.ApiClient
 
 			try
 			{
-				cancellationToken.ThrowIfCancellationRequested();
 				if (accessToken == null && string.IsNullOrEmpty(token))
 				{
 					credentials = GetCredentials(client);
@@ -113,7 +111,6 @@ namespace Pyrus.ApiClient
 				if (response.StatusCode == HttpStatusCode.Unauthorized && credentials != null
 					&& await RefreshTokenAsync().ConfigureAwait(false))
 				{
-					response.Content?.Dispose();
 					response = await action(apiOrigin, filesOrigin, token).ConfigureAwait(false);
 				}
 
@@ -122,17 +119,13 @@ namespace Pyrus.ApiClient
 
 				try
 				{
-					return JsonConvert.DeserializeObject<TResponse>(response.Message, new FormFieldJsonConverter());
+					return JsonConvert.DeserializeObject<TResponse>(response.Message);
 				}
 				catch (JsonException error)
 				{
 					ThrowIfResponseHtml(response, error);
 					throw;
 				}
-			}
-			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-			{
-				throw;
 			}
 			catch (PyrusApiClientException)
 			{
@@ -145,7 +138,7 @@ namespace Pyrus.ApiClient
 
 			async Task<bool> RefreshTokenAsync()
 			{
-				var response = await RequestTokenAsync(client, authUrl, credentials, cancellationToken).ConfigureAwait(false);
+				var response = await RequestTokenAsync(client, authUrl, credentials).ConfigureAwait(false);
 				if (string.IsNullOrEmpty(response?.AccessToken))
 					return false;
 
@@ -191,7 +184,7 @@ namespace Pyrus.ApiClient
 			{
 				var url = GetAuthUrl(client);
 				var credentials = GetCredentials(client);
-				var result = await RequestTokenAsync(client, url, credentials, CancellationToken.None).ConfigureAwait(false);
+				var result = await RequestTokenAsync(client, url, credentials).ConfigureAwait(false);
 				if (result.AccessToken == null)
 					return false;
 
@@ -211,9 +204,9 @@ namespace Pyrus.ApiClient
 			=> new AuthRequest { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId };
 
 		private static async Task<AuthResponse> RequestTokenAsync(PyrusClient client,
-			string url, AuthRequest credentials, CancellationToken cancellationToken)
+			string url, AuthRequest credentials)
 		{
-			var response = await RequestHelper.PostRequest(client, url, credentials, cancellationToken: cancellationToken).ConfigureAwait(false);
+			var response = await RequestHelper.PostRequest(client, url, credentials).ConfigureAwait(false);
 			return JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 		}
 

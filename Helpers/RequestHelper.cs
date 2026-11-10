@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -35,7 +34,7 @@ namespace PyrusApiClient
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
 		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
-			IReadOnlyDictionary<string, string> headers = null, CancellationToken cancellationToken = default)
+			IReadOnlyDictionary<string, string> headers = null)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, url))
@@ -49,10 +48,9 @@ namespace PyrusApiClient
 						),
 					Encoding.UTF8, "application/json");
 
-				using (var response = await httpClient.SendAsync(httpRequest, cancellationToken))
+				using (var response = await httpClient.SendAsync(httpRequest))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					cancellationToken.ThrowIfCancellationRequested();
 					return CreateMessageWithStatusCode(response, message);
 				}
 			}
@@ -107,7 +105,7 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token, CancellationToken cancellationToken)
+		internal static async Task<MessageWithStatusCode> PostFileRequest(PyrusClient client, string url, NoDisposeStreamWrapperFactory streamFactory, string fileName, string token)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
@@ -118,17 +116,15 @@ namespace PyrusApiClient
 				var streamContent = new StreamContent(streamFactory.Create());
 
 				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
-				using (var response = await httpClient.PostAsync(url, multipart, cancellationToken))
+				using (var response = await httpClient.PostAsync(url, multipart))
 				{
 					var message = await response.Content.ReadAsStringAsync();
-					cancellationToken.ThrowIfCancellationRequested();
 					return CreateMessageWithStatusCode(response, message);
 				}
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token,
-			CancellationToken cancellationToken = default, bool readErrorBody = false)
+		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token, bool readErrorBody = false)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
@@ -136,7 +132,7 @@ namespace PyrusApiClient
 					httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
-				using (var response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false))
+				using (var response = await httpClient.GetAsync(url))
 				{
 					var result = new MessageWithStatusCode
 					{
@@ -147,16 +143,7 @@ namespace PyrusApiClient
 					if (response.StatusCode == HttpStatusCode.OK)
 					{
 						result.Content = new MemoryStream();
-						try
-						{
-							using var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-							await stream.CopyToAsync(result.Content, 81920, cancellationToken).ConfigureAwait(false);
-						}
-						catch
-						{
-							result.Content.Dispose();
-							throw;
-						}
+						await response.Content.CopyToAsync(result.Content);
 						result.Content.Position = 0;
 
 						if (response.Content.Headers.ContentDisposition != null)
@@ -167,11 +154,9 @@ namespace PyrusApiClient
 							result.FileName = fileName?.TrimStart('"').TrimEnd('"');
 						}
 					}
-					else
+					else if (readErrorBody && (int)response.StatusCode >= 400 && response.Content != null)
 					{
-						if (readErrorBody && (int)response.StatusCode >= 400 && response.Content != null)
-							result.Message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-						cancellationToken.ThrowIfCancellationRequested();
+						result.Message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					}
 
 					return result;
@@ -220,15 +205,18 @@ namespace PyrusApiClient
 
 		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
 
-		internal static string SerializeChatRequest(SendChatMessageRequest request, string commandToken)
+		internal static string SerializeChatRequest(SendChatMessageRequest request)
 		{
+			if (request == null)
+				throw new ArgumentNullException(nameof(request));
+
 			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
-			payload["token"] = commandToken;
+			payload["token"] = request.Token ?? Guid.NewGuid().ToString("D");
 			return SerializeRequest(payload);
 		}
 
 		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
-			string payload, string token, CancellationToken cancellationToken)
+			string payload, string token)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var request = new HttpRequestMessage(method, url))
@@ -236,10 +224,9 @@ namespace PyrusApiClient
 				SetHeaders(httpClient, token, UserAgent);
 				if (payload != null)
 					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
-				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
+				using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
 				{
 					var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-					cancellationToken.ThrowIfCancellationRequested();
 					return CreateMessageWithStatusCode(response, message);
 				}
 			}
