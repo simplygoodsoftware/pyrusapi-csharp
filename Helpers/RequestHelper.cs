@@ -34,12 +34,46 @@ namespace PyrusApiClient
 		private static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
-		internal static Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
+		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
 			IReadOnlyDictionary<string, string> headers = null, CancellationToken cancellationToken = default)
-			=> SendRequest(client, HttpMethod.Post, url, SerializeRequest(request), token, cancellationToken, headers);
+		{
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, url))
+			{
+				SetHeaders(httpClient, token, UserAgent);
+				AddHeaders(httpRequest, headers);
 
-		internal static Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
-			=> SendRequest(client, HttpMethod.Put, url, SerializeRequest(request), token);
+				httpRequest.Content = new StringContent(
+					JsonConvert.SerializeObject(request,
+						JsonSerializerSettings
+						),
+					Encoding.UTF8, "application/json");
+
+				using (var response = await httpClient.SendAsync(httpRequest, cancellationToken))
+				{
+					var message = await response.Content.ReadAsStringAsync();
+					cancellationToken.ThrowIfCancellationRequested();
+					return CreateMessageWithStatusCode(response, message);
+				}
+			}
+		}
+
+		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
+		{
+			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+			{
+				SetHeaders(httpClient, token, UserAgent);
+				using (var response = await httpClient.PutAsync(url,
+					new StringContent(
+						JsonConvert.SerializeObject(request,
+							JsonSerializerSettings),
+						Encoding.UTF8, "application/json")))
+				{
+					var message = await response.Content.ReadAsStringAsync();
+					return CreateMessageWithStatusCode(response, message);
+				}
+			}
+		}
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, string token = null)
 		{
@@ -83,7 +117,7 @@ namespace PyrusApiClient
 
 				var streamContent = new StreamContent(streamFactory.Create());
 
-				using var multipart = new MultipartFormDataContent { { streamContent, "file", fileName } };
+				var multipart = new MultipartFormDataContent { { streamContent, "file", $"{fileName}" } };
 				using (var response = await httpClient.PostAsync(url, multipart, cancellationToken))
 				{
 					var message = await response.Content.ReadAsStringAsync();
@@ -101,32 +135,46 @@ namespace PyrusApiClient
 				if (!string.IsNullOrEmpty(token))
 					httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+
 				using (var response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false))
 				{
-					var result = CreateMessageWithStatusCode(response, null);
-					if (response.StatusCode != HttpStatusCode.OK)
+					var result = new MessageWithStatusCode
+					{
+						StatusCode = response.StatusCode,
+						ContentType = response.Content?.Headers?.ContentType?.MediaType,
+						ResponseDescription = response.ToString()
+					};
+					if (response.StatusCode == HttpStatusCode.OK)
+					{
+						result.Content = new MemoryStream();
+						try
+						{
+							using var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+							await stream.CopyToAsync(result.Content, 81920, cancellationToken).ConfigureAwait(false);
+						}
+						catch
+						{
+							result.Content.Dispose();
+							throw;
+						}
+						result.Content.Position = 0;
+
+						if (response.Content.Headers.ContentDisposition != null)
+						{
+							var fileName = !string.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
+								? response.Content.Headers.ContentDisposition.FileNameStar
+								: response.Content.Headers.ContentDisposition.FileName;
+							result.FileName = fileName?.TrimStart('"').TrimEnd('"');
+						}
+					}
+					else
 					{
 						if (readErrorBody && (int)response.StatusCode >= 400 && response.Content != null)
 							result.Message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 						cancellationToken.ThrowIfCancellationRequested();
-						return result;
 					}
-					var buffer = new MemoryStream();
-					try
-					{
-						using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-							await stream.CopyToAsync(buffer, 81920, cancellationToken).ConfigureAwait(false);
-						buffer.Position = 0;
-						result.Content = buffer;
-						var disposition = response.Content.Headers.ContentDisposition;
-						result.FileName = (!string.IsNullOrWhiteSpace(disposition?.FileNameStar) ? disposition.FileNameStar : disposition?.FileName)?.Trim('"');
-						return result;
-					}
-					catch
-					{
-						buffer.Dispose();
-						throw;
-					}
+
+					return result;
 				}
 			}
 		}
@@ -140,7 +188,16 @@ namespace PyrusApiClient
 					if (i > 0)
 						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-					return await SendRequest(client, HttpMethod.Get, url, null, token).ConfigureAwait(false);
+					using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
+					{
+						SetHeaders(httpClient, token, UserAgent);
+						using (var response = await httpClient.GetAsync(url))
+						{
+							var message = await response.Content.ReadAsStringAsync();
+							return CreateMessageWithStatusCode(response, message);
+						}
+					}
+
 				}
 				catch (HttpRequestException)
 				{
@@ -171,14 +228,12 @@ namespace PyrusApiClient
 		}
 
 		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
-			string payload, string token, CancellationToken cancellationToken = default,
-			IReadOnlyDictionary<string, string> headers = null)
+			string payload, string token, CancellationToken cancellationToken)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var request = new HttpRequestMessage(method, url))
 			{
 				SetHeaders(httpClient, token, UserAgent);
-				AddHeaders(request, headers);
 				if (payload != null)
 					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
