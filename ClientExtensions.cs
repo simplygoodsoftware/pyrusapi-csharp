@@ -119,7 +119,11 @@ namespace Pyrus.ApiClient
 
 				try
 				{
-					return JsonConvert.DeserializeObject<TResponse>(response.Message);
+					var result = JsonConvert.DeserializeObject<TResponse>(response.Message);
+					if (typeof(TResponse) == typeof(DownloadResponse) && response.StatusCode != HttpStatusCode.OK
+						&& string.IsNullOrEmpty(result?.Error) && result?.ErrorCode == null)
+						return CreateDownloadResponse<TResponse>(response);
+					return result;
 				}
 				catch (JsonException error)
 				{
