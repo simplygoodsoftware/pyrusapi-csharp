@@ -51,6 +51,12 @@ The `order` parameter controls the direction only when neither boundary paramete
 Upload each file using `UploadChatFileAsync` (`POST /v4/files/upload`), then copy the returned `guid` into the corresponding `attachments[].guid`.
 The array order determines the attachment order.
 
+Use `SendChatMessageAsync(chatId, request)` for a group and
+`SendDirectMessageAsync(peerId, request)` for a direct message.
+
+Chat methods return network and rate-limit failures to the caller. After HTTP 401, the SDK can repeat the request once if it refreshes a token it obtained.
+To retry a message after a timeout, set `SendChatMessageRequest.Token` before the first attempt and reuse it for the same message.
+
 ```csharp
 var upload = await pyrusClient.UploadChatFileAsync(fileStream, "report.pdf");
 var sent = await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
@@ -92,10 +98,12 @@ Example fields from a chat detail response and a history response
     {
       "type": "message",
       "create_date": "2026-10-02T09:00:00Z",
-      "text": "**Weekly report**",
-      "attachments": [
-        { "name": "report.pdf" }
-      ],
+      "content": {
+        "text": "**Weekly report**",
+        "attachments": [
+          { "name": "report.pdf" }
+        ]
+      },
       "reactions": [
         { "emoji": "👍", "count": 1, "is_set_by_me": true }
       ]
@@ -105,16 +113,19 @@ Example fields from a chat detail response and a history response
 }
 ```
 
-For a `group_created` system event, `system.data.name` is the initial group name.
-A `group_info_changed` event includes `name_changed`, `old_name`, and `new_name` when the name changes.
+Use the message's `Type` (`ChatMessageType`) to choose which property to read in
+`Content`. For `GroupCreated`, `Content.GroupCreated.Name` contains the initial group
+name. For `GroupInfoChanged`, `Content.GroupInfoChanged` contains the changed fields.
 
 ```json
 {
   "type": "group_info_changed",
-  "data": {
-    "name_changed": true,
-    "old_name": "Project reports",
-    "new_name": "Weekly reports"
+  "content": {
+    "group_info_changed": {
+      "name_changed": true,
+      "old_name": "Project reports",
+      "new_name": "Weekly reports"
+    }
   }
 }
 ```

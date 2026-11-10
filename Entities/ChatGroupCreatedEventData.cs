@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-    public class ChatGroupCreatedEventData : ChatSystemEventData
+    public class ChatGroupCreatedEventData
     {
         [JsonProperty("name")]
         public string Name { get; set; }

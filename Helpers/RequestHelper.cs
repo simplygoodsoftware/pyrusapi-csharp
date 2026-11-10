@@ -36,45 +36,12 @@ namespace PyrusApiClient
 		private static string UserAgent =>
 			$"PyrusApiClient/{CurrentVersion} ({Environment.OSVersion}; {(Environment.Is64BitOperatingSystem ? "x64" : "x32")})";
 
-		internal static async Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
+		internal static Task<MessageWithStatusCode> PostRequest(PyrusClient client, string url, object request, string token = null,
 			IReadOnlyDictionary<string, string> headers = null, CancellationToken cancellationToken = default)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
-			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, url))
-			{
-				SetHeaders(httpClient, token, UserAgent);
-				AddHeaders(httpRequest, headers);
+			=> SendRequest(client, HttpMethod.Post, url, SerializeRequest(request), token, cancellationToken, headers);
 
-				httpRequest.Content = new StringContent(
-					JsonConvert.SerializeObject(request,
-						JsonSerializerSettings
-						),
-					Encoding.UTF8, "application/json");
-
-				using (var response = await httpClient.SendAsync(httpRequest, cancellationToken))
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					return CreateMessageWithStatusCode(response, message);
-				}
-			}
-		}
-
-		internal static async Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
-			{
-				SetHeaders(httpClient, token, UserAgent);
-				using (var response = await httpClient.PutAsync(url,
-					new StringContent(
-						JsonConvert.SerializeObject(request,
-							JsonSerializerSettings),
-						Encoding.UTF8, "application/json")))
-				{
-					var message = await response.Content.ReadAsStringAsync();
-					return CreateMessageWithStatusCode(response, message);
-				}
-			}
-		}
+		internal static Task<MessageWithStatusCode> PutRequest(PyrusClient client, string url, object request, string token = null)
+			=> SendRequest(client, HttpMethod.Put, url, SerializeRequest(request), token);
 
 		internal static async Task<MessageWithStatusCode> DeleteRequest(PyrusClient client, string url, string token = null)
 		{
@@ -108,42 +75,6 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
-			{
-				if (!string.IsNullOrEmpty(token))
-					httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-
-				using (var response = await httpClient.GetAsync(url))
-				{
-					var result = new MessageWithStatusCode
-					{
-						StatusCode = response.StatusCode,
-						ContentType = response.Content?.Headers?.ContentType?.MediaType,
-						ResponseDescription = response.ToString()
-					};
-					if (response.StatusCode == HttpStatusCode.OK)
-					{
-						result.Content = new MemoryStream();
-						await response.Content.CopyToAsync(result.Content);
-						result.Content.Position = 0;
-
-						if (response.Content.Headers.ContentDisposition != null)
-						{
-							var fileName = !string.IsNullOrWhiteSpace(response.Content.Headers.ContentDisposition.FileNameStar)
-								? response.Content.Headers.ContentDisposition.FileNameStar
-								: response.Content.Headers.ContentDisposition.FileName;
-							result.FileName = fileName?.TrimStart('"').TrimEnd('"');
-						}
-					}
-
-					return result;
-				}
-			}
-		}
-
 		internal static async Task<MessageWithStatusCode> GetRequest(PyrusClient client, string url, string token = null)
 		{
 			for (var i = 0; i <= client.ClientSettings.RetryCount; i++)
@@ -153,16 +84,7 @@ namespace PyrusApiClient
 					if (i > 0)
 						await System.Threading.Tasks.Task.Delay(DefaultRetryTimeout);
 
-					using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
-					{
-						SetHeaders(httpClient, token, UserAgent);
-						using (var response = await httpClient.GetAsync(url))
-						{
-							var message = await response.Content.ReadAsStringAsync();
-							return CreateMessageWithStatusCode(response, message);
-						}
-					}
-
+					return await SendRequest(client, HttpMethod.Get, url, null, token).ConfigureAwait(false);
 				}
 				catch (HttpRequestException)
 				{
@@ -185,7 +107,7 @@ namespace PyrusApiClient
 
 		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
 
-		internal static string SerializeChatRequest(ChatTokenRequest request, string commandToken)
+		internal static string SerializeChatRequest(SendChatMessageRequest request, string commandToken)
 		{
 			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
 			payload["token"] = commandToken;
@@ -193,12 +115,14 @@ namespace PyrusApiClient
 		}
 
 		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
-			string payload, string token, CancellationToken cancellationToken)
+			string payload, string token, CancellationToken cancellationToken = default,
+			IReadOnlyDictionary<string, string> headers = null)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
 			using (var request = new HttpRequestMessage(method, url))
 			{
 				SetHeaders(httpClient, token, UserAgent);
+				AddHeaders(request, headers);
 				if (payload != null)
 					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
 				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
@@ -231,19 +155,19 @@ namespace PyrusApiClient
 		}
 
 		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token,
-			CancellationToken cancellationToken)
+			CancellationToken cancellationToken = default, bool readErrorBody = false)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
-			using (var request = new HttpRequestMessage(HttpMethod.Get, url))
 			{
-				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				if (!string.IsNullOrEmpty(token))
+					httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 				httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-				using (var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
+				using (var response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false))
 				{
 					var result = CreateMessageWithStatusCode(response, null);
 					if (response.StatusCode != HttpStatusCode.OK)
 					{
-						if ((int)response.StatusCode >= 400)
+						if (readErrorBody && (int)response.StatusCode >= 400 && response.Content != null)
 							result.Message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 						cancellationToken.ThrowIfCancellationRequested();
 						return result;
@@ -275,9 +199,7 @@ namespace PyrusApiClient
 				Message = message,
 				StatusCode = response.StatusCode,
 				ContentType = response.Content?.Headers?.ContentType?.MediaType,
-				ResponseDescription = response.ToString(),
-				RetryAfter = response.Headers.RetryAfter?.Delta
-					?? (response.Headers.RetryAfter?.Date.HasValue == true ? response.Headers.RetryAfter.Date.Value - DateTimeOffset.UtcNow : (TimeSpan?)null)
+				ResponseDescription = response.ToString()
 			};
 		}
 
@@ -314,8 +236,6 @@ namespace PyrusApiClient
 		internal string ContentType;
 
 		internal string ResponseDescription;
-
-		internal TimeSpan? RetryAfter;
 
 		internal bool ToCsv => ContentType == "text/csv";
 	}

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace PyrusApiClient
 {
@@ -20,8 +18,5 @@ namespace PyrusApiClient
 
         [JsonProperty("download_path")]
         public string DownloadPath { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> AdditionalData { get; set; }
     }
 }

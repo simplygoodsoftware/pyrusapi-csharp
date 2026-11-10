@@ -410,29 +410,30 @@ namespace PyrusApiClient
         }
 
         public async Task<UploadResponse> UploadFile(Stream fileStream, string fileName, string accessToken = null, bool useFileService = true)
-            => await this.RunQuery<UploadResponse>(CreateFileUploadRequest(fileStream, fileName, accessToken, useFileService));
-
-        private Func<Task<MessageWithStatusCode>> CreateFileUploadRequest(
-            Stream fileStream, string fileName, string accessToken, bool useFileService, CancellationToken cancellationToken = default)
         {
             if (fileStream == null)
                 throw new ArgumentNullException(nameof(fileStream));
-
             if (accessToken != null)
                 Token = accessToken;
 
+            var upload = CreateFileUploadRequest(fileStream, fileName, useFileService);
+            return await this.RunQuery<UploadResponse>(() => upload(ClientSettings.Origin, ClientSettings.FilesOrigin, Token));
+        }
+
+        private Func<string, string, string, Task<MessageWithStatusCode>> CreateFileUploadRequest(
+            Stream fileStream, string fileName, bool useFileService, CancellationToken cancellationToken = default)
+        {
             if (fileStream.Length == 0)
                 throw new PyrusApiClientException("Uploaded file can not be empty");
 
             var streamFactory = new NoDisposeStreamWrapperFactory(fileStream);
-
-            return () =>
+            return (apiOrigin, filesOrigin, token) =>
             {
-                var url = useFileService && IsFilesOriginConsistentWithOrigin
-                    ? FileServiceV4Url(ClientSettings.FilesOrigin, UploadFilesEndpoint)
-                    : $"{ClientSettings.Origin}{UploadFilesEndpoint}";
+                var url = useFileService && AreFileOriginsConsistent(apiOrigin, filesOrigin)
+                    ? FileServiceV4Url(filesOrigin, UploadFilesEndpoint)
+                    : apiOrigin + UploadFilesEndpoint;
 
-                return RequestHelper.PostFileRequest(this, url, streamFactory, fileName, Token, cancellationToken);
+                return RequestHelper.PostFileRequest(this, url, streamFactory, fileName, token, cancellationToken);
             };
         }
 
@@ -462,11 +463,16 @@ namespace PyrusApiClient
         private string GetOriginDownloadUrl(int fileId)
             => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
                 ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{fileId}"
-                : $"{new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={fileId}";
+                : $"{GetApiOriginAuthority(ClientSettings.Origin)}{DownloadFilesEndpoint}?Id={fileId}";
+
+        private static string GetApiOriginAuthority(string apiOrigin) => new Uri(apiOrigin).GetLeftPart(UriPartial.Authority);
 
         private bool IsFilesOriginConsistentWithOrigin
-            => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
-                == string.Equals(ClientSettings.FilesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
+            => AreFileOriginsConsistent(ClientSettings.Origin, ClientSettings.FilesOrigin);
+
+        private static bool AreFileOriginsConsistent(string apiOrigin, string filesOrigin)
+            => string.Equals(apiOrigin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(filesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
@@ -1118,79 +1124,58 @@ namespace PyrusApiClient
         }
 
         public Task<ChatsResponse> GetChatsAsync(string accessToken = null, CancellationToken cancellationToken = default)
-        {
-            if (accessToken != null)
-                Token = accessToken;
-
-            return this.RunQuery<ChatsResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
-                ClientSettings.Origin + ChatsEndpoint, null, Token, cancellationToken), true, cancellationToken);
-        }
+            => this.RunChatQueryAsync<ChatsResponse>(HttpMethod.Get, ChatsEndpoint, null, accessToken, cancellationToken);
 
         public Task<ChatResponse> GetChatAsync(string chatId, string accessToken = null, CancellationToken cancellationToken = default)
-        {
-            if (accessToken != null)
-                Token = accessToken;
-
-            return this.RunQuery<ChatResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
-                ClientSettings.Origin + ChatPath(chatId), null, Token, cancellationToken), true, cancellationToken);
-        }
+            => this.RunChatQueryAsync<ChatResponse>(HttpMethod.Get, ChatPath(chatId), null, accessToken, cancellationToken);
 
         public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string firstMessageId = null, string lastMessageId = null, string order = "desc", string accessToken = null, CancellationToken cancellationToken = default)
         {
-            if (accessToken != null)
-                Token = accessToken;
-
-            var path = ChatPath(chatId) + "/messages?limit=" + limit.ToString(CultureInfo.InvariantCulture) + "&order=" + ChatSegment(order);
+            var parameters = new NameValueCollection
+            {
+                { "limit", limit.ToString(CultureInfo.InvariantCulture) },
+                { "order", RequireChatValue(order) }
+            };
             if (firstMessageId != null)
-                path += "&first_message_id=" + ChatSegment(firstMessageId);
+                parameters.Add("first_message_id", RequireChatValue(firstMessageId));
             if (lastMessageId != null)
-                path += "&last_message_id=" + ChatSegment(lastMessageId);
+                parameters.Add("last_message_id", RequireChatValue(lastMessageId));
 
-            return this.RunQuery<ChatMessagesResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
-                ClientSettings.Origin + path, null, Token, cancellationToken), true, cancellationToken);
+            var path = ChatPath(chatId) + "/messages" + ToQueryString(parameters);
+            return this.RunChatQueryAsync<ChatMessagesResponse>(HttpMethod.Get, path, null, accessToken, cancellationToken);
         }
 
         public Task<ChatMessageResponse> GetChatMessageAsync(string chatId, string messageId, string accessToken = null, CancellationToken cancellationToken = default)
-        {
-            if (accessToken != null)
-                Token = accessToken;
-
-            return this.RunQuery<ChatMessageResponse>(() => RequestHelper.SendRequest(this, HttpMethod.Get,
-                ClientSettings.Origin + MessagePath(chatId, messageId), null, Token, cancellationToken), true, cancellationToken);
-        }
+            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Get, MessagePath(chatId, messageId), null, accessToken, cancellationToken);
 
         public Task<ChatMessageResponse> SendChatMessageAsync(string chatId, SendChatMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
-            => this.SendChatCommandAsync(ChatPath(chatId) + "/messages", SerializeChatRequest(request), accessToken, cancellationToken);
+            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Post, ChatPath(chatId) + "/messages",
+                SerializeChatRequest(request), accessToken, cancellationToken);
 
         public Task<ChatMessageResponse> SendDirectMessageAsync(int peerId, SendChatMessageRequest request, string accessToken = null, CancellationToken cancellationToken = default)
-            => this.SendChatCommandAsync(ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages",
+            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Post,
+                ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages",
                 SerializeChatRequest(request), accessToken, cancellationToken);
 
         public Task<ResponseBase> SetChatReadStateAsync(string chatId, ChatReadStateRequest request, string accessToken = null, CancellationToken cancellationToken = default)
-        {
-            if (accessToken != null)
-                Token = accessToken;
+            => this.RunChatQueryAsync<ResponseBase>(HttpMethod.Put, ChatPath(chatId) + "/read_state",
+                RequestHelper.SerializeRequest(request), accessToken, cancellationToken);
 
-            var payload = RequestHelper.SerializeRequest(request);
-
-            return this.RunQuery<ResponseBase>(() => RequestHelper.SendRequest(this, HttpMethod.Put,
-                ClientSettings.Origin + ChatPath(chatId) + "/read_state", payload, Token, cancellationToken), false, cancellationToken);
-        }
-
-        private static string ChatSegment(string value)
+        private static string RequireChatValue(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("An identifier is required.", nameof(value));
-            return Uri.EscapeDataString(value);
+            return value;
         }
 
-        private static string ChatPath(string id) => ChatsEndpoint + "/" + ChatSegment(id);
+        private static string ChatPath(string id) => ChatsEndpoint + "/" + Uri.EscapeDataString(RequireChatValue(id));
 
-        private static string MessagePath(string chatId, string messageId) => ChatPath(chatId) + "/messages/" + ChatSegment(messageId);
+        private static string MessagePath(string chatId, string messageId)
+            => ChatPath(chatId) + "/messages/" + Uri.EscapeDataString(RequireChatValue(messageId));
 
         private static string CommandToken(string token) => token ?? Guid.NewGuid().ToString("D");
 
-        private static string SerializeChatRequest(ChatTokenRequest body)
+        private static string SerializeChatRequest(SendChatMessageRequest body)
         {
             if (body == null)
                 throw new ArgumentNullException(nameof(body));
@@ -1207,13 +1192,17 @@ namespace PyrusApiClient
 
         public Task<DownloadResponse> DownloadChatAttachmentAsync(string downloadPath, string accessToken = null, CancellationToken cancellationToken = default)
         {
-            if (downloadPath == null || !downloadPath.StartsWith("chats/", StringComparison.Ordinal) || Uri.IsWellFormedUriString(downloadPath, UriKind.Absolute) || downloadPath.Contains("..") || downloadPath.Contains("\\"))
+            const string prefix = "chats/attachments/";
+            var path = downloadPath?.Split(new[] { '?' }, 2)[0];
+            if (path?.Length != prefix.Length + 36 || !path.StartsWith(prefix, StringComparison.Ordinal)
+                || !Guid.TryParseExact(path.Substring(prefix.Length), "D", out _))
                 throw new ArgumentException("A relative chat download_path is required.", nameof(downloadPath));
 
-            if (accessToken != null)
-                Token = accessToken;
-            return this.RunQuery<DownloadResponse>(() => RequestHelper.GetFileRequest(this,
-                FileServiceV4Url(ClientSettings.FilesOrigin, downloadPath), Token, cancellationToken), true, cancellationToken);
+            return this.RunChatQueryAsync<DownloadResponse>((apiOrigin, filesOrigin, token) =>
+            {
+                var origin = AreFileOriginsConsistent(apiOrigin, filesOrigin) ? filesOrigin : GetApiOriginAuthority(apiOrigin);
+                return RequestHelper.GetFileRequest(this, FileServiceV4Url(origin, downloadPath), token, cancellationToken, readErrorBody: true);
+            }, accessToken, cancellationToken);
         }
 
         public async Task<UploadResponse> UploadChatFileAsync(Stream file, string fileName, string accessToken = null, CancellationToken cancellationToken = default)
@@ -1221,9 +1210,9 @@ namespace PyrusApiClient
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
 
-            return await this.RunQuery<UploadResponse>(
-                CreateFileUploadRequest(file, fileName, accessToken, useFileService: true, cancellationToken),
-                false, cancellationToken).ConfigureAwait(false);
+            return await this.RunChatQueryAsync<UploadResponse>(
+                CreateFileUploadRequest(file, fileName, useFileService: true, cancellationToken),
+                accessToken, cancellationToken).ConfigureAwait(false);
         }
     }
 }

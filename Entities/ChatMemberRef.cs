@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace PyrusApiClient
 {
@@ -11,8 +9,5 @@ namespace PyrusApiClient
 
         [JsonProperty("id")]
         public long Id { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> AdditionalData { get; set; }
     }
 }

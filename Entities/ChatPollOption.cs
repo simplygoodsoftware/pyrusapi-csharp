@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace PyrusApiClient
 {
@@ -17,8 +15,5 @@ namespace PyrusApiClient
 
         [JsonProperty("voter_ids")]
         public int[] VoterIds { get; set; }
-
-        [JsonExtensionData]
-        public IDictionary<string, JToken> AdditionalData { get; set; }
     }
 }

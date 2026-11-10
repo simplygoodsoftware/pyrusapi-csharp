@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-    public class ChatGroupInfoChangedEventData : ChatSystemEventData
+    public class ChatGroupInfoChangedEventData
     {
         [JsonProperty("name_changed")]
         public bool? NameChanged { get; set; }
