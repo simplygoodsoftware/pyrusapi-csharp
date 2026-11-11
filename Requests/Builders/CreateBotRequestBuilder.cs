@@ -1,4 +1,4 @@
-﻿namespace Pyrus.ApiClient.Requests.Builders
+namespace Pyrus.ApiClient.Requests.Builders
 {
 	public class CreateBotRequestBuilder
 	{
@@ -15,6 +15,12 @@
 		public CreateBotRequestBuilder Linked(string hookUrl)
 		{
 			_request.HookUrl = hookUrl;
+			return this;
+		}
+
+		public CreateBotRequestBuilder AddSupervisors(params int[] personIds)
+		{
+			_request.AddSupervisors = personIds;
 			return this;
 		}
 

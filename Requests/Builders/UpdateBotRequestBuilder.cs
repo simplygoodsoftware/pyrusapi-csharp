@@ -1,4 +1,4 @@
-﻿using Pyrus.ApiClient.Enums;
+using Pyrus.ApiClient.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +51,18 @@ namespace Pyrus.ApiClient.Requests.Builders
 		public UpdateBotRequestBuilder ChangeRights(PersonRights rights)
 		{
 			_request.Rights = rights;
+			return this;
+		}
+
+		public UpdateBotRequestBuilder AddSupervisors(params int[] personIds)
+		{
+			_request.AddSupervisors = personIds;
+			return this;
+		}
+
+		public UpdateBotRequestBuilder RemoveSupervisors(params int[] personIds)
+		{
+			_request.RemoveSupervisors = personIds;
 			return this;
 		}
 

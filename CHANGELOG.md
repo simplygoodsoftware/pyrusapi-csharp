@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.0] - 2026-11-11
+### Added
+- Add supervisors when creating or updating a bot with the request builders.
+- Remove supervisors when updating a bot with the request builder.
+- Bot responses expose supervisor IDs through the Supervisors property.
+
 ## [5.7.1] - 2026-10-30
 ### Changed
 - `DownloadFile(File)` downloads link attachments by `Url` without the access token instead of returning `ErrorCode.FileIsMissing`, as before 5.7.0 but without the token. The response may be a web page, not the file.
