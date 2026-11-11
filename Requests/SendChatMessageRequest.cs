@@ -10,7 +10,7 @@ namespace PyrusApiClient
         [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonProperty("attachments", DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonProperty("attachments")]
         public ChatUpload[] Attachments { get; set; }
 
         [JsonProperty("reply_to_message_id")]

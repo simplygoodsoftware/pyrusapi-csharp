@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace PyrusApiClient
 {
-    public class ChatSummary
+    public class ChatInfo
     {
         [JsonProperty("id")]
         public string Id { get; set; }

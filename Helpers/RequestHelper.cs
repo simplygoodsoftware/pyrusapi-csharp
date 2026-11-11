@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Pyrus.ApiClient.Helpers;
 using Pyrus.ApiClient.JsonConverters;
 
@@ -124,7 +123,7 @@ namespace PyrusApiClient
 			}
 		}
 
-		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token, bool readErrorBody = false)
+		internal static async Task<MessageWithStatusCode> GetFileRequest(PyrusClient client, string url, string token)
 		{
 			using (var httpClient = client.ClientSettings.NewHttpClient(FileRequestTimeout))
 			{
@@ -153,10 +152,6 @@ namespace PyrusApiClient
 								: response.Content.Headers.ContentDisposition.FileName;
 							result.FileName = fileName?.TrimStart('"').TrimEnd('"');
 						}
-					}
-					else if (readErrorBody && (int)response.StatusCode >= 400 && response.Content != null)
-					{
-						result.Message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					}
 
 					return result;
@@ -201,35 +196,6 @@ namespace PyrusApiClient
 				}
 			}
 			return null;
-		}
-
-		internal static string SerializeRequest(object request) => JsonConvert.SerializeObject(request, JsonSerializerSettings);
-
-		internal static string SerializeChatRequest(SendChatMessageRequest request)
-		{
-			if (request == null)
-				throw new ArgumentNullException(nameof(request));
-
-			var payload = JObject.FromObject(request, JsonSerializer.Create(JsonSerializerSettings));
-			payload["token"] = request.Token ?? Guid.NewGuid().ToString("D");
-			return SerializeRequest(payload);
-		}
-
-		internal static async Task<MessageWithStatusCode> SendRequest(PyrusClient client, HttpMethod method, string url,
-			string payload, string token)
-		{
-			using (var httpClient = client.ClientSettings.NewHttpClient(RequestTimeout))
-			using (var request = new HttpRequestMessage(method, url))
-			{
-				SetHeaders(httpClient, token, UserAgent);
-				if (payload != null)
-					request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
-				using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
-				{
-					var message = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-					return CreateMessageWithStatusCode(response, message);
-				}
-			}
 		}
 
 		private static MessageWithStatusCode CreateMessageWithStatusCode(HttpResponseMessage response, string message)

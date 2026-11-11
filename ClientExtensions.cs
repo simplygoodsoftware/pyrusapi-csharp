@@ -6,7 +6,6 @@ using PyrusApiClient;
 using PyrusApiClient.Exceptions;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Pyrus.ApiClient
@@ -79,13 +78,6 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-		internal static Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
-			HttpMethod method, string path, string payload, string accessToken)
-			where TResponse : ResponseBase
-			=> client.RunChatQueryAsync<TResponse>(
-				token => RequestHelper.SendRequest(client, method, client.ClientSettings.Origin + path, payload, token),
-				accessToken);
-
 		internal static async Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
 			Func<string, Task<MessageWithStatusCode>> action, string accessToken)
 			where TResponse : ResponseBase
@@ -97,16 +89,12 @@ namespace Pyrus.ApiClient
 
 				var response = await action(accessToken ?? client.Token).ConfigureAwait(false);
 
-				if (typeof(TResponse) == typeof(DownloadResponse) && string.IsNullOrEmpty(response.Message))
+				if (typeof(TResponse) == typeof(DownloadResponse))
 					return CreateDownloadResponse<TResponse>(response);
 
 				try
 				{
-					var result = JsonConvert.DeserializeObject<TResponse>(response.Message);
-					if (typeof(TResponse) == typeof(DownloadResponse) && response.StatusCode != HttpStatusCode.OK
-						&& string.IsNullOrEmpty(result?.Error) && result?.ErrorCode == null)
-						return CreateDownloadResponse<TResponse>(response);
-					return result;
+					return JsonConvert.DeserializeObject<TResponse>(response.Message);
 				}
 				catch (JsonException error)
 				{

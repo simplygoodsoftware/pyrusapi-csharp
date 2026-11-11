@@ -515,9 +515,6 @@ namespace PyrusApiClient
         [EnumMember(Value = "chat_action_forbidden")]
         ChatActionForbidden = 529,
 
-        [EnumMember(Value = "chat_state_conflict")]
-        ChatStateConflict = 530,
-
         [EnumMember(Value = "value_is_too_long")]
         ValueIsTooLong = 600,
 

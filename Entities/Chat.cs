@@ -4,7 +4,7 @@ using Pyrus.ApiClient.JsonConverters;
 
 namespace PyrusApiClient
 {
-    public class Chat : ChatSummary
+    public class Chat : ChatInfo
     {
         [JsonProperty("create_date")]
         [JsonConverter(typeof(DateTimeJsonConverter), Constants.DateTimeFormat)]

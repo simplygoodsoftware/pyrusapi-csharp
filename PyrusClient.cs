@@ -12,7 +12,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PyrusApiClient
@@ -1043,42 +1042,58 @@ namespace PyrusApiClient
         }
 
         public Task<ChatsResponse> GetChatsAsync(string accessToken = null)
-            => this.RunChatQueryAsync<ChatsResponse>(HttpMethod.Get, ChatsEndpoint, null, accessToken);
+            => GetChatResponseAsync<ChatsResponse>(ChatsEndpoint, accessToken);
 
         public Task<ChatResponse> GetChatAsync(string chatId, string accessToken = null)
-            => this.RunChatQueryAsync<ChatResponse>(HttpMethod.Get, ChatPath(chatId), null, accessToken);
+            => GetChatResponseAsync<ChatResponse>(ChatPath(chatId), accessToken);
 
         public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string firstMessageId = null, string lastMessageId = null, string order = "desc", string accessToken = null)
         {
             var parameters = new NameValueCollection
             {
-                { "limit", limit.ToString(CultureInfo.InvariantCulture) },
-                { "order", RequireChatValue(order) }
+                { "limit", limit.ToString(CultureInfo.InvariantCulture) }
             };
+            if (order != null)
+                parameters.Add("order", order);
             if (firstMessageId != null)
-                parameters.Add("first_message_id", RequireChatValue(firstMessageId));
+                parameters.Add("first_message_id", firstMessageId);
             if (lastMessageId != null)
-                parameters.Add("last_message_id", RequireChatValue(lastMessageId));
+                parameters.Add("last_message_id", lastMessageId);
 
             var path = ChatPath(chatId) + "/messages" + ToQueryString(parameters);
-            return this.RunChatQueryAsync<ChatMessagesResponse>(HttpMethod.Get, path, null, accessToken);
+            return GetChatResponseAsync<ChatMessagesResponse>(path, accessToken);
         }
 
         public Task<ChatMessageResponse> GetChatMessageAsync(string chatId, string messageId, string accessToken = null)
-            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Get, MessagePath(chatId, messageId), null, accessToken);
+            => GetChatResponseAsync<ChatMessageResponse>(MessagePath(chatId, messageId), accessToken);
 
         public Task<ChatMessageResponse> SendChatMessageAsync(string chatId, SendChatMessageRequest request, string accessToken = null)
-            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Post, ChatPath(chatId) + "/messages",
-                RequestHelper.SerializeChatRequest(request), accessToken);
+            => PostChatMessageAsync(ChatPath(chatId) + "/messages", request, accessToken);
 
         public Task<ChatMessageResponse> SendDirectMessageAsync(int peerId, SendChatMessageRequest request, string accessToken = null)
-            => this.RunChatQueryAsync<ChatMessageResponse>(HttpMethod.Post,
+            => PostChatMessageAsync(
                 ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages",
-                RequestHelper.SerializeChatRequest(request), accessToken);
+                request, accessToken);
 
         public Task<ResponseBase> SetChatReadStateAsync(string chatId, ChatReadStateRequest request, string accessToken = null)
-            => this.RunChatQueryAsync<ResponseBase>(HttpMethod.Put, ChatPath(chatId) + "/read_state",
-                RequestHelper.SerializeRequest(request), accessToken);
+        {
+            var path = ChatPath(chatId) + "/read_state";
+            return this.RunChatQueryAsync<ResponseBase>(
+                token => RequestHelper.PutRequest(this, ClientSettings.Origin + path, request, token), accessToken);
+        }
+
+        private Task<TResponse> GetChatResponseAsync<TResponse>(string path, string accessToken) where TResponse : ResponseBase
+            => this.RunChatQueryAsync<TResponse>(
+                token => RequestHelper.GetRequest(this, ClientSettings.Origin + path, token), accessToken);
+
+        private Task<ChatMessageResponse> PostChatMessageAsync(string path, SendChatMessageRequest request, string accessToken)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            return this.RunChatQueryAsync<ChatMessageResponse>(
+                token => RequestHelper.PostRequest(this, ClientSettings.Origin + path, request, token), accessToken);
+        }
 
         private static string RequireChatValue(string value)
         {
@@ -1113,7 +1128,7 @@ namespace PyrusApiClient
                 var origin = IsFilesOriginConsistentWithOrigin
                     ? ClientSettings.FilesOrigin
                     : new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority);
-                return RequestHelper.GetFileRequest(this, FileServiceV4Url(origin, downloadPath), token, readErrorBody: true);
+                return RequestHelper.GetFileRequest(this, FileServiceV4Url(origin, downloadPath), token);
             }, accessToken);
         }
     }
