@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace PyrusApiClient
@@ -5,7 +6,7 @@ namespace PyrusApiClient
     public class SendChatMessageRequest
     {
         [JsonProperty("token")]
-        public string Token { get; set; }
+        public Guid? Token { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }

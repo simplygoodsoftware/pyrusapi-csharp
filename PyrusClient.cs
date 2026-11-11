@@ -1095,17 +1095,18 @@ namespace PyrusApiClient
                 token => RequestHelper.PostRequest(this, ClientSettings.Origin + path, request, token), accessToken);
         }
 
-        private static string RequireChatValue(string value)
+        private static string RequireChatValue(string value, string parameterName)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("An identifier is required.", nameof(value));
+                throw new ArgumentException("An identifier is required.", parameterName);
             return value;
         }
 
-        private static string ChatPath(string id) => ChatsEndpoint + "/" + Uri.EscapeDataString(RequireChatValue(id));
+        private static string ChatPath(string chatId)
+            => ChatsEndpoint + "/" + Uri.EscapeDataString(RequireChatValue(chatId, nameof(chatId)));
 
         private static string MessagePath(string chatId, string messageId)
-            => ChatPath(chatId) + "/messages/" + Uri.EscapeDataString(RequireChatValue(messageId));
+            => ChatPath(chatId) + "/messages/" + Uri.EscapeDataString(RequireChatValue(messageId, nameof(messageId)));
 
         private static string FileServiceV4Url(string origin, string path)
         {

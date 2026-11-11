@@ -13,7 +13,8 @@ namespace Pyrus.ApiClient
 	internal static class ClientExtensions
 	{
 		private static readonly TimeSpan DefaultRetryTimeout = TimeSpan.FromMilliseconds(200);
-		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action) where TResponse : ResponseBase
+		public static async Task<TResponse> RunQuery<TResponse>(this PyrusClient client, Func<Task<MessageWithStatusCode>> action,
+			bool reportDownloadRateLimit = false) where TResponse : ResponseBase
 		{
 			try
 			{
@@ -28,7 +29,12 @@ namespace Pyrus.ApiClient
 						continue;
 
 					if (typeof(TResponse) == typeof(DownloadResponse))
-						return CreateDownloadResponse<TResponse>(res);
+					{
+						var download = CreateDownloadResponse<TResponse>(res);
+						if (reportDownloadRateLimit && (int)res.StatusCode == 429)
+							download.ErrorCode = ErrorCodeType.TooManyRequests;
+						return download;
+					}
 
 					if (typeof(TResponse) == typeof(FormRegisterResponse) && res.ToCsv)
 						return new FormRegisterResponse { Csv = res.Message } as TResponse;
@@ -78,38 +84,14 @@ namespace Pyrus.ApiClient
 			}
 		}
 
-		internal static async Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
+		internal static Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
 			Func<string, Task<MessageWithStatusCode>> action, string accessToken)
 			where TResponse : ResponseBase
 		{
-			try
-			{
-				if (accessToken == null && string.IsNullOrEmpty(client.Token))
-					await client.GetTokenAsync().ConfigureAwait(false);
+			if (accessToken != null)
+				client.Token = accessToken;
 
-				var response = await action(accessToken ?? client.Token).ConfigureAwait(false);
-
-				if (typeof(TResponse) == typeof(DownloadResponse))
-					return CreateDownloadResponse<TResponse>(response);
-
-				try
-				{
-					return JsonConvert.DeserializeObject<TResponse>(response.Message);
-				}
-				catch (JsonException error)
-				{
-					ThrowIfResponseHtml(response, error);
-					throw;
-				}
-			}
-			catch (PyrusApiClientException)
-			{
-				throw;
-			}
-			catch (Exception error)
-			{
-				throw new PyrusApiClientException(error.Message, error);
-			}
+			return client.RunQuery<TResponse>(() => action(client.Token), reportDownloadRateLimit: true);
 		}
 
 		private static TResponse CreateDownloadResponse<TResponse>(MessageWithStatusCode res) where TResponse : ResponseBase

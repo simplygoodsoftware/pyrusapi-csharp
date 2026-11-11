@@ -51,7 +51,7 @@ await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
 });
 ```
 
-To retry a send after a timeout, set `SendChatMessageRequest.Token` before the first attempt and reuse it.
+Set `SendChatMessageRequest.Token` to a new GUID before the first send and reuse it when retrying the same request.
 
 ## Forms
 
