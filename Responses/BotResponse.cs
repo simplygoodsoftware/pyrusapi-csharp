@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
 using PyrusApiClient;
 
@@ -14,6 +15,9 @@ namespace Pyrus.ApiClient.Responses
 
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
+
+		[JsonProperty("supervisors")]
+		public List<int> Supervisors { get; set; }
 
 		[JsonProperty("is_enabled")]
 		public bool? IsEnabled { get; set; }
@@ -58,6 +62,7 @@ namespace Pyrus.ApiClient.Responses
 			new Bot
 			{
 				Id = Id,
+				Supervisors = Supervisors,
 				Name = Name,
 				ExternalId = ExternalId,
 				IsEnabled = IsEnabled,
