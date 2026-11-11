@@ -83,36 +83,19 @@ namespace Pyrus.ApiClient
 			HttpMethod method, string path, string payload, string accessToken)
 			where TResponse : ResponseBase
 			=> client.RunChatQueryAsync<TResponse>(
-				(apiOrigin, _, token) => RequestHelper.SendRequest(client, method, apiOrigin + path, payload, token),
+				token => RequestHelper.SendRequest(client, method, client.ClientSettings.Origin + path, payload, token),
 				accessToken);
 
 		internal static async Task<TResponse> RunChatQueryAsync<TResponse>(this PyrusClient client,
-			Func<string, string, string, Task<MessageWithStatusCode>> action, string accessToken)
+			Func<string, Task<MessageWithStatusCode>> action, string accessToken)
 			where TResponse : ResponseBase
 		{
-			var previous = client.CurrentToken;
-			var token = accessToken ?? previous?.Value;
-			var apiOrigin = client.ClientSettings.Origin;
-			var filesOrigin = client.ClientSettings.FilesOrigin;
-			var credentials = accessToken == null ? previous?.Credentials : null;
-			var authUrl = previous?.AuthUrl;
-
 			try
 			{
-				if (accessToken == null && string.IsNullOrEmpty(token))
-				{
-					credentials = GetCredentials(client);
-					authUrl = GetAuthUrl(client);
-					if (!await RefreshTokenAsync().ConfigureAwait(false))
-						credentials = null;
-				}
+				if (accessToken == null && string.IsNullOrEmpty(client.Token))
+					await client.GetTokenAsync().ConfigureAwait(false);
 
-				var response = await action(apiOrigin, filesOrigin, token).ConfigureAwait(false);
-				if (response.StatusCode == HttpStatusCode.Unauthorized && credentials != null
-					&& await RefreshTokenAsync().ConfigureAwait(false))
-				{
-					response = await action(apiOrigin, filesOrigin, token).ConfigureAwait(false);
-				}
+				var response = await action(accessToken ?? client.Token).ConfigureAwait(false);
 
 				if (typeof(TResponse) == typeof(DownloadResponse) && string.IsNullOrEmpty(response.Message))
 					return CreateDownloadResponse<TResponse>(response);
@@ -138,27 +121,6 @@ namespace Pyrus.ApiClient
 			catch (Exception error)
 			{
 				throw new PyrusApiClientException(error.Message, error);
-			}
-
-			async Task<bool> RefreshTokenAsync()
-			{
-				var response = await RequestTokenAsync(client, authUrl, credentials).ConfigureAwait(false);
-				if (string.IsNullOrEmpty(response?.AccessToken))
-					return false;
-
-				token = response.AccessToken;
-				if (!string.IsNullOrEmpty(response.ApiUrl))
-					apiOrigin = response.ApiUrl.TrimEnd('/');
-				if (!string.IsNullOrEmpty(response.FilesUrl))
-					filesOrigin = response.FilesUrl.TrimEnd('/');
-
-				var updated = new PyrusClient.TokenState(token, credentials, authUrl);
-				if (client.TryUpdateToken(previous, updated))
-				{
-					previous = updated;
-					SetOrigins(client, response);
-				}
-				return true;
 			}
 		}
 
@@ -187,12 +149,13 @@ namespace Pyrus.ApiClient
 			try
 			{
 				var url = GetAuthUrl(client);
-				var credentials = GetCredentials(client);
-				var result = await RequestTokenAsync(client, url, credentials).ConfigureAwait(false);
+
+				var response = await RequestHelper.PostRequest(client, url, new AuthRequest() { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId });
+				var result = JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 				if (result.AccessToken == null)
 					return false;
 
-				client.CurrentToken = new PyrusClient.TokenState(result.AccessToken, credentials, url);
+				client.Token = result.AccessToken;
 
 				SetOrigins(client, result);
 
@@ -202,16 +165,6 @@ namespace Pyrus.ApiClient
 			{
 				throw new PyrusApiClientException(e.Message, e);
 			}
-		}
-
-		private static AuthRequest GetCredentials(PyrusClient client)
-			=> new AuthRequest { Login = client.Login, SecurityKey = client.SecretKey, PersonId = client.PersonId };
-
-		private static async Task<AuthResponse> RequestTokenAsync(PyrusClient client,
-			string url, AuthRequest credentials)
-		{
-			var response = await RequestHelper.PostRequest(client, url, credentials).ConfigureAwait(false);
-			return JsonConvert.DeserializeObject<AuthResponse>(response.Message);
 		}
 
 		internal static string GetAuthUrl(PyrusClient client)

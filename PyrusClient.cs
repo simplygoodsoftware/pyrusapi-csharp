@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PyrusApiClient
@@ -24,36 +23,7 @@ namespace PyrusApiClient
 
         public string Login { get; set; }
 
-        private TokenState _tokenState;
-
-        public string Token
-        {
-            get => CurrentToken?.Value;
-            set => CurrentToken = new TokenState(value);
-        }
-
-        internal TokenState CurrentToken
-        {
-            get => Volatile.Read(ref _tokenState);
-            set => Volatile.Write(ref _tokenState, value);
-        }
-
-        internal bool TryUpdateToken(TokenState previous, TokenState updated)
-            => ReferenceEquals(Interlocked.CompareExchange(ref _tokenState, updated, previous), previous);
-
-        internal sealed class TokenState
-        {
-            internal TokenState(string value, AuthRequest credentials = null, string authUrl = null)
-            {
-                Value = value;
-                Credentials = credentials;
-                AuthUrl = authUrl;
-            }
-
-            internal string Value { get; }
-            internal AuthRequest Credentials { get; }
-            internal string AuthUrl { get; }
-        }
+        public string Token { get; set; }
 
         public int? PersonId { get; set; }
 
@@ -125,10 +95,9 @@ namespace PyrusApiClient
         public async Task<AuthResponse> Auth(string login, string securityKey, int? personId = null)
         {
             var url = ClientExtensions.GetAuthUrl(this);
-            var credentials = new AuthRequest { Login = login, SecurityKey = securityKey, PersonId = personId };
             var response = await this.RunQuery<AuthResponse>(()
-                => RequestHelper.PostRequest(this, url, credentials));
-            CurrentToken = new TokenState(response.AccessToken, credentials, url);
+                => RequestHelper.PostRequest(this, url, new AuthRequest() { Login = login, SecurityKey = securityKey, PersonId = personId }));
+            Token = response.AccessToken;
 
             ClientExtensions.SetOrigins(this, response);
 
@@ -292,8 +261,7 @@ namespace PyrusApiClient
 
         public Task<CatalogResponse> GetCatalog(int catalogId, string accessToken = null, bool includeDeleted = false)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var request = new GetCatalogRequest() { IncludeDeletedItems = includeDeleted };
 
             return GetCatalog(catalogId, request, accessToken);
@@ -302,8 +270,7 @@ namespace PyrusApiClient
         public async Task<CatalogResponse> GetCatalog(int catalogId, GetCatalogRequest request, string accessToken = null)
         {
             var path = $"{CatalogsEndpoint}/{catalogId}";
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             
             var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{path}{request.ToString()}", Token));
             return response;
@@ -311,8 +278,7 @@ namespace PyrusApiClient
 
         public async Task<CatalogsResponse> GetCatalogs(string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
 
             var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}", Token));
             return response;
@@ -320,8 +286,7 @@ namespace PyrusApiClient
 
         public async Task<SyncCatalogResponse> SyncCatalog(int catalogId, SyncCatalogRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
 
             var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}", request, Token));
             return response;
@@ -329,32 +294,28 @@ namespace PyrusApiClient
 
         public async Task<SyncCatalogsResponse> SyncCatalogs(SyncCatalogRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<SyncCatalogsResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<CatalogResponse> CreateCatalog(CreateCatalogRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<CatalogResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}", request, Token));
             return response;
         }
 
         public async Task<CatalogsResponse> CreateCatalogs(CreateCatalogRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<CatalogsResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<ResponseBase> DeleteCatalogs(DeleteCatalogRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<ResponseBase>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
@@ -368,8 +329,7 @@ namespace PyrusApiClient
         /// <returns>Response of type <see cref="SyncCatalogResponse"/> with items that have been added, updated or deleted.</returns>
         public async Task<SyncCatalogResponse> UpdateCatalogItems(int catalogId, UpdateCatalogItemsRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
 
             var response = await this.RunQuery<SyncCatalogResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CatalogsEndpoint}/{catalogId}/diff", request, Token));
             return response;
@@ -455,16 +415,11 @@ namespace PyrusApiClient
         private string GetOriginDownloadUrl(int fileId)
             => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
                 ? $"{ClientSettings.Origin}{DownloadFilesApiEndpoint}/{fileId}"
-                : $"{GetApiOriginAuthority(ClientSettings.Origin)}{DownloadFilesEndpoint}?Id={fileId}";
-
-        private static string GetApiOriginAuthority(string apiOrigin) => new Uri(apiOrigin).GetLeftPart(UriPartial.Authority);
+                : $"{new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority)}{DownloadFilesEndpoint}?Id={fileId}";
 
         private bool IsFilesOriginConsistentWithOrigin
-            => AreFileOriginsConsistent(ClientSettings.Origin, ClientSettings.FilesOrigin);
-
-        private static bool AreFileOriginsConsistent(string apiOrigin, string filesOrigin)
-            => string.Equals(apiOrigin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
-                == string.Equals(filesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
+            => string.Equals(ClientSettings.Origin, Settings.PyrusOrigin, StringComparison.OrdinalIgnoreCase)
+                == string.Equals(ClientSettings.FilesOrigin, Settings.PyrusFilesOrigin, StringComparison.OrdinalIgnoreCase);
 
         private static bool IsLinkAttachment(File file)
             => file.Size == 0 && file.MD5 == null && !string.IsNullOrEmpty(file.Url);
@@ -606,104 +561,91 @@ namespace PyrusApiClient
 
         public async Task<RoleResponse> CreateRole(CreateRoleRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}", request, Token));
             return response;
         }
 
         public async Task<RolesResponse> CreateRoles(CreateRoleRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<RoleResponse> UpdateRole(int roleId, UpdateRoleRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RoleResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}/{roleId}", request, Token));
             return response;
         }
 
         public async Task<RolesResponse> UpdateRoles(UpdateRoleRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RolesResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<RoleResponse> DeleteRole(DeleteRoleRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RoleResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}/{request.Id}", request, Token));
             return response;
         }
 
         public async Task<RolesResponse> DeleteRoles(DeleteRoleRequest[] request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RolesResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<MemberResponse> CreateMember(CreateMemberRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}", request, Token));
             return response;
         }
 
         public async Task<MemberResponse> UpdateMember(int memberId, UpdateMemberRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}", request, Token));
             return response;
         }
 
         public async Task<ChangeMembersResponse> UpdateMembers(ChangeMembersRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<ChangeMembersResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}{BulkSuffix}", request, Token));
             return response;
         }
 
         public async Task<MemberResponse> SetAvatar(int memberId, SetAvatarRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<MemberResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}/{memberId}/avatar", request, Token));
             return response;
         }
 
         public async Task<BotResponse> CreateBot(CreateBotRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<BotResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{BotsEndpoint}", request, Token));
             return response;
         }
 
         public async Task<BotResponse> UpdateBot(int botId, UpdateBotRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<BotResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{BotsEndpoint}/{botId}", request, Token));
             return response;
         }
 
         public async Task<BotResponse> DeleteBot(int botId, DeleteBotRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<BotResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{BotsEndpoint}/{botId}", request, Token));
             return response;
         }
@@ -726,32 +668,28 @@ namespace PyrusApiClient
 
         public async Task<RoleResponse> GetRole(int id, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<RoleResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{RolesEndpoint}/{id}", Token));
             return response;
         }
 
         public async Task<MembersResponse> GetMembers(string accessToken = null, bool includeFired = false)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<MembersResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}?include_fired={includeFired}", Token));
             return response;
         }
 
         public async Task<MemberResponse> GetMember(int id, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<MemberResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{MembersEndpoint}/{id}", Token));
             return response;
         }
 
         public async Task<BotsResponse> GetBots(string accessToken = null, bool includeFired = false)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<BotsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{BotsEndpoint}?include_fired={includeFired}", Token));
             return response;
         }
@@ -893,16 +831,14 @@ namespace PyrusApiClient
 
         public async Task<CallResponse> RegisterCallAsync(CallRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
 
             return await this.RunQuery<CallResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{CallEndpoint}", request, Token));
         }
 
         public async Task<ResponseBase> AttachCallRecordAsync(AttachCallRecordRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
 
             return await this.RunQuery<ResponseBase>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{AttachCallRecordEndpoint}", request, Token));
         }
@@ -964,16 +900,14 @@ namespace PyrusApiClient
 
         public async Task<PermissionsResponse> GetFormPermissions(int id, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<PermissionsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{FormsEndpoint}/{id}/permissions", Token));
             return response;
         }
 
         public async Task<PermissionsResponse> ChangeFormPermissions(int id, ChangePermissionsRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var response = await this.RunQuery<PermissionsResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{FormsEndpoint}/{id}/permissions", request, Token));
             return response;
         }
@@ -1046,36 +980,31 @@ namespace PyrusApiClient
 
         public async Task<KnowledgeBaseEntityResponse> GetKnowledgeBaseEntity(string id, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}", Token));
         }
 
         public async Task<KnowledgeBaseEntityResponse> CreateKnowledgeBaseEntity(CreateKnowledgeBaseEntityRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.PostRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}", request, Token));
         }
 
         public async Task<KnowledgeBaseEntityResponse> UpdateKnowledgeBaseEntity(string id, UpdateKnowledgeBaseEntityRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBaseEntityResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}", request, Token));
         }
 
         public async Task<KnowledgeBaseDeleteResponse> DeleteKnowledgeBaseEntity(string id, bool deleteWithChildren = false, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBaseDeleteResponse>(() => RequestHelper.DeleteRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}?delete_with_children={deleteWithChildren.ToString().ToLower()}", Token));
         }
 
         public async Task<KnowledgeBaseStructureResponse> GetKnowledgeBaseStructure(string parentTopicId = null, int? depth = null, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             var url = $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}{StructureSuffix}";
             
             var queryParams = new List<string>();
@@ -1092,15 +1021,13 @@ namespace PyrusApiClient
 
         public async Task<KnowledgeBasePermissionsResponse> GetKnowledgeBasePermissions(string id, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.GetRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", Token));
         }
 
         public async Task<KnowledgeBasePermissionsResponse> UpdateKnowledgeBasePermissions(string id, UpdateKnowledgeBasePermissionsRequest request, string accessToken = null)
         {
-            if (accessToken != null)
-                Token = accessToken;
+            Token = accessToken ?? Token;
             return await this.RunQuery<KnowledgeBasePermissionsResponse>(() => RequestHelper.PutRequest(this, $"{ClientSettings.Origin}{KnowledgeBaseEndpoint}/{id}{PermissionsSuffix}", request, Token));
         }
 
@@ -1181,9 +1108,11 @@ namespace PyrusApiClient
                 || !Guid.TryParseExact(path.Substring(prefix.Length), "D", out _))
                 throw new ArgumentException("A relative chat download_path is required.", nameof(downloadPath));
 
-            return this.RunChatQueryAsync<DownloadResponse>((apiOrigin, filesOrigin, token) =>
+            return this.RunChatQueryAsync<DownloadResponse>(token =>
             {
-                var origin = AreFileOriginsConsistent(apiOrigin, filesOrigin) ? filesOrigin : GetApiOriginAuthority(apiOrigin);
+                var origin = IsFilesOriginConsistentWithOrigin
+                    ? ClientSettings.FilesOrigin
+                    : new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority);
                 return RequestHelper.GetFileRequest(this, FileServiceV4Url(origin, downloadPath), token, readErrorBody: true);
             }, accessToken);
         }
