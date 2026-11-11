@@ -1091,8 +1091,9 @@ namespace PyrusApiClient
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
+            var payload = request.CopyWithToken();
             return this.RunChatQueryAsync<ChatMessageResponse>(
-                token => RequestHelper.PostRequest(this, ClientSettings.Origin + path, request, token), accessToken);
+                token => RequestHelper.PostRequest(this, ClientSettings.Origin + path, payload, token), accessToken);
         }
 
         private static string RequireChatValue(string value, string parameterName)

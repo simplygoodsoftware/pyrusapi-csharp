@@ -19,5 +19,12 @@ namespace PyrusApiClient
 
         [JsonProperty("reply_quote")]
         public string ReplyQuote { get; set; }
+
+        internal SendChatMessageRequest CopyWithToken()
+        {
+            var copy = (SendChatMessageRequest)MemberwiseClone();
+            copy.Token ??= Guid.NewGuid();
+            return copy;
+        }
     }
 }

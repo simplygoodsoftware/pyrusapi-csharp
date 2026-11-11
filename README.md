@@ -51,7 +51,7 @@ await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
 });
 ```
 
-Set `SendChatMessageRequest.Token` to a new GUID before the first send and reuse it when retrying the same request.
+The SDK reuses one token across automatic retries. To retry a send yourself, set `SendChatMessageRequest.Token` before the first call and reuse it.
 
 ## Forms
 
