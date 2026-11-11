@@ -37,6 +37,22 @@ var authResponse = await pyrusClient.Auth(
 
 Now you're ready to use other API methods.
 
+## Chats
+
+Use `GetChatsAsync()` to list chats and `GetChatMessagesAsync(chatId)` to read messages.
+Use `SendDirectMessageAsync(peerId, request)` to send a direct message.
+
+```csharp
+var upload = await pyrusClient.UploadFile(fileStream, "report.pdf");
+await pyrusClient.SendChatMessageAsync(chatId, new SendChatMessageRequest
+{
+    Text = "**Weekly report**",
+    Attachments = new[] { new ChatUpload { Guid = upload.Guid } }
+});
+```
+
+The SDK reuses one token across automatic retries. To retry a send yourself, set `SendChatMessageRequest.Token` before the first call and reuse it.
+
 ## Forms
 
 * Get all form templates
