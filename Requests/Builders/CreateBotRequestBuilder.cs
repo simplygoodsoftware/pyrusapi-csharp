@@ -18,7 +18,11 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public CreateBotRequestBuilder AddSupervisors(params int[] personIds)
+		/// <summary>
+		/// Sets the IDs of the initial bot supervisors. Each call replaces the list in the request.
+		/// </summary>
+		/// <param name="personIds">IDs of the people to assign as supervisors.</param>
+		public CreateBotRequestBuilder SetSupervisors(params int[] personIds)
 		{
 			_request.AddSupervisors = personIds;
 			return this;

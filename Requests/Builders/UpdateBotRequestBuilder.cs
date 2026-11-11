@@ -54,13 +54,21 @@ namespace Pyrus.ApiClient.Requests.Builders
 			return this;
 		}
 
-		public UpdateBotRequestBuilder AddSupervisors(params int[] personIds)
+		/// <summary>
+		/// Sets which supervisors to add. Each call replaces the list of additions in the request.
+		/// </summary>
+		/// <param name="personIds">IDs of the people to add as supervisors.</param>
+		public UpdateBotRequestBuilder SetSupervisorsToAdd(params int[] personIds)
 		{
 			_request.AddSupervisors = personIds;
 			return this;
 		}
 
-		public UpdateBotRequestBuilder RemoveSupervisors(params int[] personIds)
+		/// <summary>
+		/// Sets which supervisors to remove. Each call replaces the list of removals in the request.
+		/// </summary>
+		/// <param name="personIds">IDs of the people to remove from the supervisors list.</param>
+		public UpdateBotRequestBuilder SetSupervisorsToRemove(params int[] personIds)
 		{
 			_request.RemoveSupervisors = personIds;
 			return this;
