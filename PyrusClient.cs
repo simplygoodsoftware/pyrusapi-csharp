@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -42,7 +43,6 @@ namespace PyrusApiClient
         internal const string TasksByApproverEndpoint = "/tasksbyapprover";
         internal const string CatalogsEndpoint = "/catalogs";
         internal const string UploadFilesEndpoint = "/files/upload";
-        internal const string UploadFileServiceEndpoint = "/v4/files/upload";
         internal const string ContactsEndpoint = "/contacts";
         internal const string ProfileEndpoint = "/profile";
         internal const string DownloadFilesEndpoint = "/services/attachment";
@@ -64,6 +64,7 @@ namespace PyrusApiClient
         internal const string OrgChartEndpoint = "/orgchart";
         internal const string ProfileIdentityEndpoint = "/profile/identity";
         internal const string KnowledgeBaseEndpoint = "/knowledgebase";
+        internal const string ChatsEndpoint = "/chats";
 
         internal const string BulkSuffix = "/bulk";
         internal const string RegisterSuffix = "/register";
@@ -379,7 +380,7 @@ namespace PyrusApiClient
 			var response = await this.RunQuery<UploadResponse>(async () =>
             {
                 var url = useFileService && IsFilesOriginConsistentWithOrigin
-					? $"{ClientSettings.FilesOrigin}{UploadFileServiceEndpoint}"
+					? FileServiceV4Url(ClientSettings.FilesOrigin, UploadFilesEndpoint)
                     : $"{ClientSettings.Origin}{UploadFilesEndpoint}";
 
                 return await RequestHelper.PostFileRequest(this, url, streamFactory, fileName, Token);
@@ -1038,6 +1039,99 @@ namespace PyrusApiClient
             {
                 { Constants.IdempotencyKeyHeader, idempotencyKey.Value.ToString("D") }
             };
+        }
+
+        public Task<ChatsResponse> GetChatsAsync(string accessToken = null)
+            => GetChatResponseAsync<ChatsResponse>(ChatsEndpoint, accessToken);
+
+        public Task<ChatResponse> GetChatAsync(string chatId, string accessToken = null)
+            => GetChatResponseAsync<ChatResponse>(ChatPath(chatId), accessToken);
+
+        public Task<ChatMessagesResponse> GetChatMessagesAsync(string chatId, int limit = 50, string firstMessageId = null, string lastMessageId = null, string order = "desc", string accessToken = null)
+        {
+            var parameters = new NameValueCollection
+            {
+                { "limit", limit.ToString(CultureInfo.InvariantCulture) }
+            };
+            if (order != null)
+                parameters.Add("order", order);
+            if (firstMessageId != null)
+                parameters.Add("first_message_id", firstMessageId);
+            if (lastMessageId != null)
+                parameters.Add("last_message_id", lastMessageId);
+
+            var path = ChatPath(chatId) + "/messages" + ToQueryString(parameters);
+            return GetChatResponseAsync<ChatMessagesResponse>(path, accessToken);
+        }
+
+        public Task<ChatMessageResponse> GetChatMessageAsync(string chatId, string messageId, string accessToken = null)
+            => GetChatResponseAsync<ChatMessageResponse>(MessagePath(chatId, messageId), accessToken);
+
+        public Task<ChatMessageResponse> SendChatMessageAsync(string chatId, SendChatMessageRequest request, string accessToken = null)
+            => PostChatMessageAsync(ChatPath(chatId) + "/messages", request, accessToken);
+
+        public Task<ChatMessageResponse> SendDirectMessageAsync(int peerId, SendChatMessageRequest request, string accessToken = null)
+            => PostChatMessageAsync(
+                ChatsEndpoint + "/direct/" + peerId.ToString(CultureInfo.InvariantCulture) + "/messages",
+                request, accessToken);
+
+        public Task<ResponseBase> SetChatReadStateAsync(string chatId, ChatReadStateRequest request, string accessToken = null)
+        {
+            var path = ChatPath(chatId) + "/read_state";
+            return this.RunChatQueryAsync<ResponseBase>(
+                token => RequestHelper.PutRequest(this, ClientSettings.Origin + path, request, token), accessToken);
+        }
+
+        private Task<TResponse> GetChatResponseAsync<TResponse>(string path, string accessToken) where TResponse : ResponseBase
+            => this.RunChatQueryAsync<TResponse>(
+                token => RequestHelper.GetRequest(this, ClientSettings.Origin + path, token), accessToken);
+
+        private Task<ChatMessageResponse> PostChatMessageAsync(string path, SendChatMessageRequest request, string accessToken)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            var payload = request.CopyWithToken();
+            return this.RunChatQueryAsync<ChatMessageResponse>(
+                token => RequestHelper.PostRequest(this, ClientSettings.Origin + path, payload, token), accessToken);
+        }
+
+        private static string RequireChatValue(string value, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("An identifier is required.", parameterName);
+            return value;
+        }
+
+        private static string ChatPath(string chatId)
+            => ChatsEndpoint + "/" + Uri.EscapeDataString(RequireChatValue(chatId, nameof(chatId)));
+
+        private static string MessagePath(string chatId, string messageId)
+            => ChatPath(chatId) + "/messages/" + Uri.EscapeDataString(RequireChatValue(messageId, nameof(messageId)));
+
+        private static string FileServiceV4Url(string origin, string path)
+        {
+            var root = origin.TrimEnd('/');
+            if (!root.EndsWith("/v4", StringComparison.OrdinalIgnoreCase))
+                root += "/v4";
+            return root + "/" + path.TrimStart('/');
+        }
+
+        public Task<DownloadResponse> DownloadChatAttachmentAsync(string downloadPath, string accessToken = null)
+        {
+            const string prefix = "chats/attachments/";
+            var path = downloadPath?.Split(new[] { '?' }, 2)[0];
+            if (path?.Length != prefix.Length + 36 || !path.StartsWith(prefix, StringComparison.Ordinal)
+                || !Guid.TryParseExact(path.Substring(prefix.Length), "D", out _))
+                throw new ArgumentException("A relative chat download_path is required.", nameof(downloadPath));
+
+            return this.RunChatQueryAsync<DownloadResponse>(token =>
+            {
+                var origin = IsFilesOriginConsistentWithOrigin
+                    ? ClientSettings.FilesOrigin
+                    : new Uri(ClientSettings.Origin).GetLeftPart(UriPartial.Authority);
+                return RequestHelper.GetFileRequest(this, FileServiceV4Url(origin, downloadPath), token);
+            }, accessToken);
         }
     }
 }
