@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Pyrus.ApiClient.Enums;
 
 namespace PyrusApiClient
@@ -24,6 +25,9 @@ namespace PyrusApiClient
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
+
+		[JsonProperty("supervisors")]
+		public List<int> Supervisors { get; set; }
 
 		[JsonProperty("is_enabled")]
 		public bool? IsEnabled { get; set; }

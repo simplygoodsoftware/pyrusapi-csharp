@@ -10,6 +10,9 @@ namespace Pyrus.ApiClient.Requests
 		[JsonProperty(PropertyName = "hook_url")]
 		public string HookUrl { get; set; }
 
+		[JsonProperty("add_supervisors")]
+		public int[] AddSupervisors { get; set; }
+
 		[JsonProperty(PropertyName = "external_id")]
 		public string ExternalId { get; set; }
 	}
