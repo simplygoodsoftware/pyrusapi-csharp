@@ -16,6 +16,9 @@ namespace PyrusApiClient
 		Timer = 0,
 
 		[EnumMember(Value = "AwaitingStatus")]
-		AwaitingStatus = 1
+		AwaitingStatus = 1,
+
+		[EnumMember(Value = "AwaitingNodeApproval")]
+		AwaitingNodeApproval = 2
 	}
 }

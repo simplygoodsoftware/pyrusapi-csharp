@@ -26,6 +26,9 @@ namespace PyrusApiClient
 		[JsonProperty("awaiting_statuses")]
 		public List<int> AwaitingStatuses { get; set; }
 
+		[JsonProperty("awaiting_node_approval")]
+		public BpmnAwaitingNodeApproval AwaitingNodeApproval { get; set; }
+
 		[JsonProperty("task_status")]
 		public int? TaskStatus { get; set; }
 
